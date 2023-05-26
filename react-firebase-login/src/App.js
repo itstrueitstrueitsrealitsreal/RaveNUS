@@ -4,6 +4,7 @@ import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import Auth from './components/Auth';
 
+
 function App() {
   return (
     <div className="App">
@@ -12,6 +13,7 @@ function App() {
       <Auth />
     </div>
   );
+
 }
 
 export default App;
