@@ -2,13 +2,13 @@
 A web application designed for students from the National University of Singapore (NUS) to provide meal recommendations on campus based on the user's timetable, which will be synced with [NUSMods] (https://github.com/nusmodifications/nusmods), real-time data, and dietary preferences. It also indexes user reviews and uses them for further recommendations.
 
 ## Poster & Video
--[Poster](https://drive.google.com/file/d/1AuS9f640TlgS1EVCeeXc1YyT9Agw40KQ/view)
--[Video](https://drive.google.com/file/d/1vRImC_zf8TfHF2xV_1dpIJZHlvOIF2FS/view) 
+- [Poster](https://drive.google.com/file/d/1iyXjW-vgu9QGRsBrjlbMNfMrBichI53U/view?usp=share_link)
+- [Video](https://drive.google.com/file/d/1vRImC_zf8TfHF2xV_1dpIJZHlvOIF2FS/view) 
 ## Tech Stack
 This application is developed using React, Node, Bootstrap, Firebase, and Python.
 
 ## Documentation
-A more detailed documentation of our project can be found [here](https://docs.google.com/document/d/1F-nAj3m0RbJd0uo2rgUO_xF8WZ6S5WRq/edit).
+A more detailed documentation of our project can be found [here](https://docs.google.com/document/d/19NkIt3C7WZdKLojUQWhlJf7AswuNIgGGnAyUwSRe0hw/edit?usp=share_link).
 
 ## Running the application locally
 ### 1. Cloning the repository
