@@ -1,5 +1,5 @@
 # RaveNUS
-A web application designed for students from the National University of Singapore (NUS) to provide meal recommendations on campus based on the user's timetable, which will be synced with [NUSMods] (https://github.com/nusmodifications/nusmods), real-time data, and dietary preferences. It also indexes user reviews and uses them for further recommendations.
+A web application designed for students from the National University of Singapore (NUS) to provide meal recommendations on campus based on the user's timetable, which will be synced with [NUSMods](https://github.com/nusmodifications/nusmods), real-time data, and dietary preferences. It also indexes user reviews and uses them for further recommendations.
 
 ## Poster & Video
 - [Poster](https://drive.google.com/file/d/1iyXjW-vgu9QGRsBrjlbMNfMrBichI53U/view?usp=share_link)
