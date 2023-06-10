@@ -1,7 +1,7 @@
 import React from 'react';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import Auth from './Auth';
+import SignIn from '../components/auth/SignIn';
+import SignUp from '../components/auth/SignUp';
+import Auth from '../components/auth/Auth';
 
 function Login() {
   return (
