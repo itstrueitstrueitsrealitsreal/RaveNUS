@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Button } from "react-bootstrap";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { auth } from '../firebase';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');

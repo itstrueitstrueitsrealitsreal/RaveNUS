@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "react-bootstrap";
-import { auth } from '../../firebase';
+import { auth } from '../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 const Auth = () => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import SignIn from './components/auth/SignIn';
-import SignUp from './components/auth/SignUp';
-import Auth from './components/auth/Auth';
+import SignIn from './auth/SignIn';
+import SignUp from './auth/SignUp';
+import Auth from './auth/Auth';
 
 
 function App() {
