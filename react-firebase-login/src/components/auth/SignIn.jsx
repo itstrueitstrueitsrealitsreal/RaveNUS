@@ -5,9 +5,10 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import Input from '../Input';
 
-const SignIn = () => {
+const SignIn = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const signIn = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
@@ -43,6 +44,10 @@ const SignIn = () => {
       <Button className="mb-3" variant="primary" type="submit" onClick={signIn}>
         Sign In
       </Button>
+      <div></div>
+      <Form.Text muted>
+        Not registered? <a href="#!" name="Sign Up" onClick={props.render}>Register here</a>
+      </Form.Text>
     </Form>
     )
 }

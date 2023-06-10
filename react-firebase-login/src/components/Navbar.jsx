@@ -7,6 +7,9 @@ import Settings from "../pages/Settings";
 import Reviews from "../pages/Reviews";
 import Sync from "../pages/Sync";
 import Leaderboard from "../pages/Leaderboard";
+import SignUp from "./auth/SignUp";
+import SignIn from "./auth/SignIn";
+
 
 
 function Navbar() {
@@ -19,7 +22,7 @@ function Navbar() {
 
   function currentPage() {
     if (page === "Login") {
-      return <Login />;
+      return <Login render={render}/>;
     } else if (page === "Home") {
       return <Home />;
     } else if (page === "Statistics") {
@@ -34,13 +37,15 @@ function Navbar() {
       return <Sync />;
     } else if (page === "Leaderboard") {
       return <Leaderboard />;
-    } 
+    } else if (page === "Sign Up") {
+      return <SignUp />;
+    }
   }
 
-  return <div class="d-flex" id="wrapper">
-              <div class="border-end bg-white" id="sidebar-wrapper">
-                  <div class="sidebar-heading border-bottom bg-light">RaveNUS</div>
-                  <div class="list-group list-group-flush">
+  return <div className="d-flex" id="wrapper">
+              <div className="border-end bg-white" id="sidebar-wrapper">
+                  <div className="sidebar-heading border-bottom bg-light">RaveNUS</div>
+                  <div className="list-group list-group-flush">
                       <a onClick={render} name="Home" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Home</a>
                       <a onClick={render} name="Statistics" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Statistics</a>
                       <a onClick={render} name="Profile" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
@@ -51,7 +56,7 @@ function Navbar() {
                   </div>
               </div>
               <div id="page-content-wrapper">
-                  <div class="container-fluid" id="main-content">
+                  <div className="container-fluid" id="main-content">
                       {currentPage()}
                   </div>
               </div>
