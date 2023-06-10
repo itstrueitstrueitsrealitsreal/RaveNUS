@@ -23,6 +23,7 @@ const Auth = () => {
         const userSignOut = () => {
             signOut(auth).then(() => {
                 console.log('signed out');
+                // alert("Successfully signed out. Redirecting you to login page...");
             }).catch(error => console.log(error));
         };
 
@@ -30,7 +31,7 @@ const Auth = () => {
     <div>
         { authUser ? <><p>{`Signed In as ${authUser.email}`}</p>
         <>
-        <Button onClick={userSignOut} variant="primary">Sign Out</Button>{' '}
+        <Button onClick={userSignOut} name="Sign In" variant="primary">Sign Out</Button>{' '}
         </>
         </> : <p>Signed Out</p>}
     </div>
