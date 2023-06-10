@@ -20,7 +20,7 @@ const SignIn = () => {
   return (
     <Form className='AuthForm'>
       <h1>Sign In</h1>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Group className="mb-3">
         <Form.Label>Email address</Form.Label>
         <Form.Control 
           type="email" 
@@ -29,7 +29,7 @@ const SignIn = () => {
           onChange={(e) => setEmail(e.target.value)}/>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="mb-3">
         <Form.Label>Password</Form.Label>
         <Form.Control 
           type="password" 
