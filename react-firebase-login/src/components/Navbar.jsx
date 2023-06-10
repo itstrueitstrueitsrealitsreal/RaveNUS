@@ -41,13 +41,13 @@ function Navbar() {
               <div class="border-end bg-white" id="sidebar-wrapper">
                   <div class="sidebar-heading border-bottom bg-light">RaveNUS</div>
                   <div class="list-group list-group-flush">
-                      <a onClick={render} name="Home" class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Home</a>
-                      <a onClick={render} name="Statistics" class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Statistics</a>
-                      <a onClick={render} name="Profile" class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
-                      <a onClick={render} name="Settings" class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Settings</a>
-                      <a onClick={render} name="Reviews" class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Reviews</a>
-                      <a onClick={render} name="Sync" class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Sync</a>
-                      <a onClick={render} name="Leaderboard" class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Leaderboard</a>
+                      <a onClick={render} name="Home" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Home</a>
+                      <a onClick={render} name="Statistics" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Statistics</a>
+                      <a onClick={render} name="Profile" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
+                      <a onClick={render} name="Settings" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Settings</a>
+                      <a onClick={render} name="Reviews" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Reviews</a>
+                      <a onClick={render} name="Sync" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Sync</a>
+                      <a onClick={render} name="Leaderboard" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Leaderboard</a>
                   </div>
               </div>
               <div id="page-content-wrapper">

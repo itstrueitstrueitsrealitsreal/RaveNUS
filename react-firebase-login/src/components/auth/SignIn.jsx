@@ -3,6 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import Input from '../Input';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -20,23 +21,25 @@ const SignIn = () => {
   return (
     <Form className='AuthForm'>
       <h1>Sign In</h1>
-      <Form.Group className="mb-3">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control 
-          type="email" 
-          placeholder="Enter email" 
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}/>
-      </Form.Group>
+      <Input 
+        className="mb-3"
+        controlId="formBasicEmail"
+        text="Email address" 
+        type="email" 
+        placeholder="Enter email" 
+        value={email} 
+        onChange={(e) => setEmail(e.target.value)} 
+      />
 
-      <Form.Group className="mb-3">
-        <Form.Label>Password</Form.Label>
-        <Form.Control 
-          type="password" 
-          placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)} />
-      </Form.Group>
+      <Input 
+        className="mb-3"
+        controlId="formBasicPassword"
+        text="Password" 
+        type="password" 
+        placeholder="Enter password" 
+        value={password} 
+        onChange={(e) => setPassword(e.target.value)} 
+      />
       <Button className="mb-3" variant="primary" type="submit" onClick={signIn}>
         Sign In
       </Button>
