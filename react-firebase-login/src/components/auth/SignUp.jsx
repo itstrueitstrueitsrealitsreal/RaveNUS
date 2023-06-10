@@ -17,7 +17,7 @@ const SignUp = () => {
   };
 
   return (
-    <Form>
+    <Form className='AuthForm'>
       <h1>Create an account</h1>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
@@ -32,7 +32,7 @@ const SignUp = () => {
         <Form.Label>Password</Form.Label>
         <Form.Control 
           type="password" 
-          placeholder="Password" 
+          placeholder="Enter Password" 
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

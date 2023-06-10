@@ -18,7 +18,7 @@ const SignIn = () => {
   };
 
   return (
-    <Form>
+    <Form className='AuthForm'>
       <h1>Sign In</h1>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
