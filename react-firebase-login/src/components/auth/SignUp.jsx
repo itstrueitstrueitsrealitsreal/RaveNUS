@@ -13,8 +13,12 @@ const SignUp = () => {
       e.preventDefault();
       if (confirmPassword === '' || password === '' || email === ''){
         alert("All fields are mandatory.");
+        setPassword('');
+        setConfirmPassword('');
       } else if (confirmPassword !== password) {
         alert("Passwords do not match!");
+        setPassword('');
+        setConfirmPassword('');
       } else if (password === confirmPassword) {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -22,6 +26,10 @@ const SignUp = () => {
           }).catch((error) => {
             console.log(error);
           });
+        alert('Successfully registered. Redirecting to home page.');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
       }
   };
 
@@ -46,6 +54,9 @@ const SignUp = () => {
         value={password} 
         onChange={(e) => setPassword(e.target.value)} 
       />
+      <Form.Text className="mb-3" id="passwordHelpBlock" muted>
+        Your password must be 8-20 characters long and must not contain spaces, special characters, or emoji.
+      </Form.Text>
       <Input 
         className="mb-3"
         controlId="formBasicPassword"
