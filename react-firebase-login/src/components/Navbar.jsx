@@ -113,6 +113,7 @@ function Navbar(props) {
         <Route path="/reviews" />
         <Route path="/sync" />
         <Route path="/leaderboard" />
+        <Route path="/recommendation" />
       </Routes>
     </div>
   );
