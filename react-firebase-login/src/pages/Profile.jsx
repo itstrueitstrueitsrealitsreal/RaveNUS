@@ -1,12 +1,7 @@
 import React from "react";
-import Auth from "../components/auth/Auth"
+
 function Profile() {
-  return (
-    <div>
-      <h1>PROFILE PAGE</h1>
-      <Auth />
-    </div>
-  )
+  return <h1>PROFILE PAGE</h1>
 }
 
 export default Profile;
