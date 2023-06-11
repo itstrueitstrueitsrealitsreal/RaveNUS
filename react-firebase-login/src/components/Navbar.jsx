@@ -76,7 +76,7 @@ function Navbar(props) {
       case "/leaderboard":
         return <Leaderboard />;
       case "/recommendation":
-        return <Recommendation rec={Math.floor(Math.random()*10)} recPage={navigateToRecommendation} />;
+        return <Recommendation recPage={navigateToRecommendation} />;
       default:
         return <SignIn />;
     }
