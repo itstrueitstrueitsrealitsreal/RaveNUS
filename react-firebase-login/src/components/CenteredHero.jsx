@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 
 export default function CenteredHero() {
+  const now = new Date().toLocaleTimeString();
   const [time, setTime] = useState(now);
   setInterval(updateTime, 1000);
-
-  const now = new Date().toLocaleTimeString();
 
   function updateTime() {
     setTime(new Date().toLocaleTimeString());
