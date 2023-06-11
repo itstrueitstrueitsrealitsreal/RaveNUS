@@ -71,7 +71,7 @@ function Navbar(props) {
       case "/leaderboard":
         return <Leaderboard />;
       default:
-        return <Home />;
+        return <SignIn />;
     }
   }
 
@@ -97,15 +97,15 @@ function Navbar(props) {
               </div>
           </div>
       <Routes>
-        <Route path="/signin" element={<Navbar path="/signin"/>} />
-        <Route path="/signup" element={<Navbar path="/signup"/>} />
-        <Route path="/home" element={<Navbar path="/home"/>} />
-        <Route path="/statistics" element={<Navbar path="/statistics"/>} />
-        <Route path="/profile" element={<Navbar path="/profile"/>} />
-        <Route path="/settings" element={<Navbar path="/settings"/>} />
-        <Route path="/reviews" element={<Navbar path="reviews/"/>} />
-        <Route path="/sync" element={<Navbar path="/sync"/>} />
-        <Route path="/leaderboard" element={<Navbar path="leaderboard/"/>} />
+        <Route path="/signin" />
+        <Route path="/signup" />
+        <Route path="/home" />
+        <Route path="/statistics" />
+        <Route path="/profile" />
+        <Route path="/settings" />
+        <Route path="/reviews" />
+        <Route path="/sync" />
+        <Route path="/leaderboard" />
       </Routes>
     </div>
   );
