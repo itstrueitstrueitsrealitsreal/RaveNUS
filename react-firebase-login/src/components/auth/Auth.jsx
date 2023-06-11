@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { auth } from '../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
-const Auth = () => {
+const Auth = (props) => {
     const [authUser, setAuthUser] = useState(null);
 
     useEffect(() => {
@@ -23,6 +23,8 @@ const Auth = () => {
         const userSignOut = () => {
             signOut(auth).then(() => {
                 console.log('signed out');
+                alert("Successfully signed out. Redirecting you to login page...");
+                props.logout();
             }).catch(error => console.log(error));
         };
 
@@ -32,7 +34,7 @@ const Auth = () => {
         <>
         <Button onClick={userSignOut} name="Sign In" variant="primary">Sign Out</Button>{' '}
         </>
-        </> : <p>Signed Out</p>}
+        </> : <p>Signed Out</p> }
     </div>
   );
 };

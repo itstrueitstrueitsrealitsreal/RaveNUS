@@ -14,8 +14,10 @@ const SignIn = (props) => {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       console.log(userCredential);
+      props.login();
       }).catch((error) => {
         console.log(error);
+        alert("Unable to sign in. Please try again.");
       });
   };
 
@@ -46,7 +48,7 @@ const SignIn = (props) => {
       </Button>
       <div></div>
       <Form.Text muted>
-        Not registered? <a href="#!" name="Sign Up" onClick={props.render}>Register here</a>
+        Not registered? <a href="#!" name="Sign Up" onClick={props.signUp}>Register here</a>
       </Form.Text>
     </Form>
     )
