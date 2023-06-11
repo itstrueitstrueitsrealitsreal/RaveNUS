@@ -17,6 +17,7 @@ const SignIn = (props) => {
       }).catch((error) => {
         console.log(error);
       });
+    props.login();
   };
 
   return (
@@ -46,7 +47,7 @@ const SignIn = (props) => {
       </Button>
       <div></div>
       <Form.Text muted>
-        Not registered? <a href="#!" name="Sign Up" onClick={props.render}>Register here</a>
+        Not registered? <a href="#!" name="Sign Up" onClick={props.signUp}>Register here</a>
       </Form.Text>
     </Form>
     )

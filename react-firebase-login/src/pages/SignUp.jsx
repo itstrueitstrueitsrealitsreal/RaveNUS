@@ -26,7 +26,8 @@ const SignUp = (props) => {
           }).catch((error) => {
             console.log(error);
           });
-        alert('Successfully registered. Redirecting to home page.');
+        alert('Successfully registered. Redirecting to login page...');
+        props.login();
         setEmail('');
         setPassword('');
         setConfirmPassword('');
@@ -50,7 +51,7 @@ const SignUp = (props) => {
         controlId="formBasicPassword"
         text="Password" 
         type="password" 
-        placeholder="Enter password" 
+        placeholder="Enter password"
         value={password} 
         onChange={(e) => setPassword(e.target.value)} 
       />
@@ -71,7 +72,7 @@ const SignUp = (props) => {
       </Button>
       <div></div>
       <Form.Text muted>
-        Already have an account? <a href="#!" name="Sign In" onClick={props.render}>Sign in</a>
+        Already have an account? <a href="#!" name="Sign In" onClick={props.signIn}>Sign in</a>
       </Form.Text>
     </Form>
     )
