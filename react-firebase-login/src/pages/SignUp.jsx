@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Form, Button } from "react-bootstrap";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
-import Input from '../Input';
+import { auth } from '../components/firebase';
+import Input from '../components/Input';
 
-const SignUp = () => {
+const SignUp = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -69,6 +69,10 @@ const SignUp = () => {
       <Button className="mb-3" variant="primary" type="submit" onClick={signUp}>
         Create Account
       </Button>
+      <div></div>
+      <Form.Text muted>
+        Already have an account? <a href="#!" name="Sign In" onClick={props.render}>Sign in</a>
+      </Form.Text>
     </Form>
     )
 }
