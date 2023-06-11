@@ -8,6 +8,7 @@ import Sync from "../pages/Sync";
 import Leaderboard from "../pages/Leaderboard";
 import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
+import Recommendation from "../pages/Recommendation";
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
 
@@ -50,6 +51,10 @@ function Navbar(props) {
     navigate('/leaderboard');
   }
 
+  const navigateToRecommendation = () => {
+    navigate('/recommendation');
+  }
+
   function currentPage(pathname) {
     switch(pathname) {
       case "/signin":
@@ -57,7 +62,7 @@ function Navbar(props) {
       case "/signup":
         return <SignUp signIn={navigateToSignIn} login={navigateToSignIn} />;
       case "/home":
-        return <Home />;
+        return <Home recPage={navigateToRecommendation} />;
       case "/statistics":
         return <Statistics />;
       case "/profile":
@@ -70,6 +75,8 @@ function Navbar(props) {
         return <Sync />;
       case "/leaderboard":
         return <Leaderboard />;
+      case "/recommendation":
+        return <Recommendation rec={Math.floor(Math.random()*10)} recPage={navigateToRecommendation} />;
       default:
         return <SignIn />;
     }

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-export default function CenteredHero() {
+export default function CenteredHero(props) {
   const now = new Date().toLocaleTimeString();
   const [time, setTime] = useState(now);
   setInterval(updateTime, 1000);
@@ -16,7 +16,7 @@ export default function CenteredHero() {
         <div class="col-lg-6 mx-auto">
           <p class="lead mb-4">-Aristophenes</p>
           <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Generate Recommendation</button>
+            <button onClick={props.recPage} type="button" class="btn btn-primary btn-lg px-4 gap-3">Generate Recommendation</button>
           </div>
         </div>
       </div>

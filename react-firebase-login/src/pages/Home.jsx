@@ -2,11 +2,11 @@ import React from "react";
 import HeroImage from "../components/HeroImage";
 import CenteredHero from "../components/CenteredHero";
 
-function Home() {
+function Home(props) {
   return (
     <div>
       {/* <HeroImage /> */}
-      <CenteredHero />
+      <CenteredHero recPage={props.recPage} />
     </div>
   );
 }
