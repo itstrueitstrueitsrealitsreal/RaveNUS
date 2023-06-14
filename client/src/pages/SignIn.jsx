@@ -14,7 +14,7 @@ const SignIn = (props) => {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       console.log(userCredential);
-      props.login();
+      // props.login();
       }).catch((error) => {
         console.log(error);
         alert("Unable to sign in. Please try again.");

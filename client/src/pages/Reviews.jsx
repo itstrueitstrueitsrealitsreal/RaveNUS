@@ -10,7 +10,8 @@ function Reviews() {
   useEffect(() => {
     const getRevs = async () => {
       const data = await getDocs(revsCollectionRef);
-      setRevs(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
+      const x = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
+      setRevs(x);
     }
 
     getRevs()
@@ -20,7 +21,7 @@ function Reviews() {
     <div>
       <h1>REVIEWS PAGE</h1>
       {revs.map((rev) => {
-        return (<div>
+        return (<div key={rev.id}>
           <p>Poster: {rev.Poster}</p>
           <p>Content: {rev.Content}</p>
           <p>Rating: {rev.Rating}</p>

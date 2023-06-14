@@ -55,38 +55,11 @@ function Navbar(props) {
     navigate('/recommendation');
   }
 
-  function currentPage(pathname) {
-    switch(pathname) {
-      case "/signin":
-        return <SignIn signUp={navigateToSignUp} login={navigateToHome} />;
-      case "/signup":
-        return <SignUp signIn={navigateToSignIn} login={navigateToSignIn} />;
-      case "/home":
-        return <Home recPage={navigateToRecommendation} />;
-      case "/statistics":
-        return <Statistics />;
-      case "/profile":
-        return <Profile logout={navigateToSignIn} />;
-      case "/settings":
-        return <Settings />;
-      case "/reviews":
-        return <Reviews />;
-      case "/sync":
-        return <Sync />;
-      case "/leaderboard":
-        return <Leaderboard />;
-      case "/recommendation":
-        return <Recommendation recPage={navigateToRecommendation} />;
-      default:
-        return <SignIn />;
-    }
-  }
-
   return (
     <div>
     <div className="d-flex" id="wrapper">
               <div className="border-end bg-white" id="sidebar-wrapper">
-                  <div onClick={navigateToSignIn} name="Sign In" className="sidebar-heading border-bottom bg-light">RaveNUS</div>
+                  <div className="sidebar-heading border-bottom bg-light">RaveNUS</div>
                   <div className="list-group list-group-flush">
                       <a onClick={navigateToHome} name="Home" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Home</a>
                       <a onClick={navigateToStatistics} name="Statistics" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Statistics</a>
@@ -99,22 +72,22 @@ function Navbar(props) {
               </div>
               <div id="page-content-wrapper">
                   <div className="container-fluid" id="main-content">
-                      {currentPage(window.location.pathname)}
+                      <Routes>
+                        <Route path="/signin" element={<SignIn signUp={navigateToSignUp} login={navigateToHome}/>} />
+                        <Route path="/signup" element={<SignUp signIn={navigateToSignIn} login={navigateToSignIn}/>} />
+                        <Route path="/home" element={<Home recPage={navigateToRecommendation}/>} />
+                        <Route path="/statistics" element={<Statistics />} />
+                        <Route path="/profile" element={<Profile logout={navigateToSignIn}/>} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/reviews" element={<Reviews />} />
+                        <Route path="/sync" element={<Sync />} />
+                        <Route path="/leaderboard" element={<Leaderboard />} />
+                        <Route path="/recommendation" element={<Recommendation recPage={navigateToRecommendation}/>} />
+                      </Routes>
                   </div>
               </div>
           </div>
-      <Routes>
-        <Route path="/signin" />
-        <Route path="/signup" />
-        <Route path="/home" />
-        <Route path="/statistics" />
-        <Route path="/profile" />
-        <Route path="/settings" />
-        <Route path="/reviews" />
-        <Route path="/sync" />
-        <Route path="/leaderboard" />
-        <Route path="/recommendation" />
-      </Routes>
+      
     </div>
   );
 }
