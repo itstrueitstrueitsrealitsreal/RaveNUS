@@ -1,30 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
+// import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import Navbar from "./Navbar";
-import {BrowserRouter as Router} from 'react-router-dom';
-import Axios from 'axios';
+// import Navbar from "./Navbar";
+// import {BrowserRouter as Router} from 'react-router-dom';
+// import Axios from 'axios';
+import Auth from "./auth/Auth";
 
 function App() {
-  const [data, setData] = useState();
+  // const [data, setData] = useState();
 
-  const getData = async() => {
-    try {
-      const response = await Axios.get("http://localhost:5001/getData");
-      setData(response.data);
-    } catch(err) {
-      console.log(err)
-    }
-  }
+  // const getData = async() => {
+  //   try {
+  //     const response = await Axios.get("http://localhost:5001/getData");
+  //     setData(response.data);
+  //   } catch(err) {
+  //     console.log(err)
+  //   }
+  // }
 
-  useEffect(() => {
-    getData()
-  }, []);
+  // useEffect(() => {
+  //   getData()
+  // }, []);
+
   return (
       <div className="App">
-        <Router>
+        {/* <Router>
           <Navbar />
           <div>{data}</div>
-        </Router>
+        </Router> */}
+        <Auth />
       </div>
   );
 

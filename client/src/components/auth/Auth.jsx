@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Button } from "react-bootstrap";
 import { auth } from '../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { BrowserRouter as Router } from 'react-router-dom';
+import SignIn from '../../pages/SignIn';
+import Navbar from "../Navbar";
 
 const Auth = (props) => {
     const [authUser, setAuthUser] = useState(null);
@@ -24,7 +27,7 @@ const Auth = (props) => {
             signOut(auth).then(() => {
                 console.log('signed out');
                 alert("Successfully signed out. Redirecting you to login page...");
-                props.logout();
+                // props.logout();
             }).catch(error => console.log(error));
         };
 
@@ -34,7 +37,14 @@ const Auth = (props) => {
         <>
         <Button onClick={userSignOut} name="Sign In" variant="primary">Sign Out</Button>{' '}
         </>
-        </> : <p>Signed Out</p> }
+        <div className="App">
+            <Router>
+            <Navbar />
+            </Router>
+        </div>
+        </> : <div><p>Signed Out</p>
+        <SignIn />
+        </div> }
     </div>
   );
 };
