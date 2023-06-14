@@ -8,8 +8,12 @@ function App() {
   const [data, setData] = useState();
 
   const getData = async() => {
-    const response = await Axios.get("http://localhost:5001/getData");
-    setData(response.data);
+    try {
+      const response = await Axios.get("http://localhost:5001/getData");
+      setData(response.data);
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   useEffect(() => {
