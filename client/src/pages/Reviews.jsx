@@ -17,19 +17,30 @@ function Reviews() {
     }
 
     getRevs()
-  }, [])
+  }, []);
 
   return (
     <div>
       <h1>REVIEWS PAGE</h1>
-      {revs.map((rev) => {
-        return (<div key={rev.id}>
-          <p>Poster: {rev.Poster}</p>
-          <p>Content: {rev.Content}</p>
-          <p>Rating: {rev.Rating}</p>
-          {/* <p>Time: {rev.Time}</p> */}
-        </div>)
+
+      <input placeholder="Poster"/>
+      <input placeholder="Content"/>
+      <input placeholder="Rating"/>
+      <button>Add Review</button>
+
+      {/* Reviews */}
+      <div>
+        {revs.map((rev) => {
+          const date = new Date(rev.Time.seconds * 1000);
+          return (<div key={rev.id}>
+            <p>Poster: {rev.Poster}</p>
+            <p>Content: {rev.Content}</p>
+            <p>Rating: {rev.Rating}</p>
+            <p>Time: {date.toString()}</p>
+          </div>);
         })}
+      </div>
+      
     </div>)
   
 }
