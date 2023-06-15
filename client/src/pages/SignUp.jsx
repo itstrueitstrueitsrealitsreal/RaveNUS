@@ -5,6 +5,8 @@ import { auth } from '../components/firebase';
 import Input from '../components/Input';
 
 const SignUp = (props) => {
+  console.log("SignUp Component called");
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

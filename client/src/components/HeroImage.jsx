@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 
 export default function HeroImage() {
+  console.log("HeroImage Component called");
+
   setInterval(updateTime, 1000);
 
   const now = new Date().toLocaleTimeString();

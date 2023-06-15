@@ -9,6 +9,8 @@ import Navbar from "../Navbar";
 const Auth = (props) => {
     const [authUser, setAuthUser] = useState(null);
 
+    console.log("Auth Component called");
+
     useEffect(() => {
         const listen = onAuthStateChanged(auth, (user) => {
             if (user) {

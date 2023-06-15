@@ -1,6 +1,8 @@
 import React from "react";
 
 function Rec(props) {
+  console.log("Rec Component called");
+
   return <div>
     <h1>Recommendation: {Math.floor(Math.random()*10)}</h1>
     <h2>Not to your liking?</h2>

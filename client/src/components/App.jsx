@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Auth from "./auth/Auth";
 
 function App() {
+  console.log("App called");
+
   // const [data, setData] = useState();
 
   // const getData = async() => {
