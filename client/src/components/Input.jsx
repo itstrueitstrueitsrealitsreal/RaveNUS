@@ -3,6 +3,8 @@ import { Form } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css';
 
 function Input(props) {
+  console.log("Input Component called");
+
   return(
       <Form.Group className={props.className} controlId={props.controlId}>
         <Form.Label>{props.text}</Form.Label>

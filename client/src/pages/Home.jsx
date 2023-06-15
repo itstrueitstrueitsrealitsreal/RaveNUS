@@ -3,6 +3,8 @@ import React from "react";
 import CenteredHero from "../components/CenteredHero";
 
 function Home(props) {
+  console.log("Home Page called");
+
   return (
     <div>
       {/* <HeroImage /> */}

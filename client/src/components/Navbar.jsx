@@ -13,6 +13,8 @@ import {Routes, Route, useNavigate} from 'react-router-dom';
 
 
 function Navbar(props) {
+  console.log("Navbar called");
+
   const navigate = useNavigate();
 
   const navigateToSignIn = () => {

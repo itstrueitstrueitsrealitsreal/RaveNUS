@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 
 export default function CenteredHero(props) {
+  console.log("CenteredHero Component called");
+
   const now = new Date().toLocaleTimeString();
   const [time, setTime] = useState(now);
   setInterval(updateTime, 1000);
