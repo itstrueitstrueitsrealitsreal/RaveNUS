@@ -28,6 +28,12 @@ function Reviews() {
   const addReview = async () => {
     console.log("adding...");
     await addDoc(revsCollectionRef, newRev);
+    setNewRev({
+      Poster: "",
+      Content: "",
+      Rating: 0,
+      Time: new Date(Date.now())
+    });
   };
 
   // Read db 
