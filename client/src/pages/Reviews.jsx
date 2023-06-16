@@ -1,16 +1,22 @@
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db } from "../components/firebase";
+import { auth } from "../components/firebase"
 
 function Reviews() {
   console.log("Reviews Page called");
+
+  // current user 
+  const user = auth.currentUser;
+  const uid = user.uid;
 
   // Add to db 
   const [newRev, setNewRev] = useState({
     Poster: "",
     Content: "",
     Rating: 0,
-    Time: new Date(Date.now())
+    Time: new Date(Date.now()),
+    UserID: uid
   });
 
   function handleRev(event) {
@@ -32,7 +38,8 @@ function Reviews() {
       Poster: "",
       Content: "",
       Rating: 0,
-      Time: new Date(Date.now())
+      Time: new Date(Date.now()),
+      UserID: uid
     });
   };
 
