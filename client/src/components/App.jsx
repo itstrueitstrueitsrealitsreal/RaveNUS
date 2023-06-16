@@ -10,7 +10,7 @@ import Home from "../pages/Home";
 import Statistics from "../pages/Statistics";
 import Profile from "../pages/Profile";
 import Settings from "../pages/Settings";
-import Reviews from "../pages/Reviews";
+import Reviews from "../pages/reviews/Reviews";
 import Sync from "../pages/Sync";
 import Leaderboard from "../pages/Leaderboard";
 import SignUp from "../pages/SignUp";
@@ -54,7 +54,7 @@ function App() {
             <Route path="/sync" element={<Sync />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/recommendation" element={<Recommendation />} />
-            <Route path="/updatereview" element={<UpdateReview />} />
+            <Route path="/updatereview/:id" element={<UpdateReview />} />
             <Route path="/createreview" element={<CreateReview />} />
           </Routes>
         </Router>

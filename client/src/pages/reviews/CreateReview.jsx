@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import UserID from "../../components/auth/UserID";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../components/firebase";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
 function CreateReview(props) {
   console.log("Create Review..");
@@ -35,7 +35,8 @@ function CreateReview(props) {
       return {
         ...prevRev,
         [name]: value,
-        UserID: uid
+        UserID: uid,
+        Time: new Date(Date.now())
       };
     });
   }
