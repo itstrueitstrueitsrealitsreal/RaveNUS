@@ -52,8 +52,8 @@ function Reviews() {
     const getRevs = async () => {
       console.log("Reviews getRev called");
       const data = await getDocs(revsCollectionRef);
-      const x = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
-      setRevs(x);
+      const allRevs = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
+      setRevs(allRevs);
     }
     getRevs()
   }, []);
@@ -74,7 +74,8 @@ function Reviews() {
       {/* Reviews */}
       {/* uses getDocs  */}
       <div>
-        {revs.map((rev) => {
+        {/* Filter by User's own reviews and map to display  */}
+        {revs.filter((r) => r.UserID === uid ? true : false).map((rev) => {
           const date = new Date(rev.Time.seconds * 1000);
           return (<div key={rev.id}>
             <p>Poster: {rev.Poster}</p>
