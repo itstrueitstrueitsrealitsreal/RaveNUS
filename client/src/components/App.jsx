@@ -2,9 +2,23 @@ import React from 'react';
 // import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 // import Navbar from "./Navbar";
-// import {BrowserRouter as Router} from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 // import Axios from 'axios';
-import Auth from "./auth/Auth";
+
+import Home from "../pages/Home";
+import Statistics from "../pages/Statistics";
+import Profile from "../pages/Profile";
+import Settings from "../pages/Settings";
+import Reviews from "../pages/Reviews";
+import Sync from "../pages/Sync";
+import Leaderboard from "../pages/Leaderboard";
+import SignUp from "../pages/SignUp";
+import SignIn from "../pages/SignIn";
+import Recommendation from "../pages/Recommendation";
+import Start from '../pages/Start';
+
+
 
 function App() {
   console.log("App called");
@@ -26,11 +40,21 @@ function App() {
 
   return (
       <div className="App">
-        {/* <Router>
-          <Navbar />
-          <div>{data}</div>
-        </Router> */}
-        <Auth />
+        <Router>
+          <Routes>
+            <Route path="/" element={<Start />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/statistics" element={<Statistics />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/reviews" element={<Reviews />} />
+            <Route path="/sync" element={<Sync />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/recommendation" element={<Recommendation />} />
+          </Routes>
+        </Router>
       </div>
   );
 

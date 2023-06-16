@@ -2,14 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Button } from "react-bootstrap";
 import { auth } from '../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { BrowserRouter as Router } from 'react-router-dom';
-import SignIn from '../../pages/SignIn';
-import Navbar from "../Navbar";
+import { useNavigate } from 'react-router-dom';
 
 const Auth = (props) => {
-    const [authUser, setAuthUser] = useState(null);
-
     console.log("Auth Component called");
+
+    const navigate = useNavigate();
+
+    const navigateToStart = () => {
+        navigate('/');
+    }
+
+    const [authUser, setAuthUser] = useState(null);
 
     useEffect(() => {
         const listen = onAuthStateChanged(auth, (user) => {
@@ -28,8 +32,8 @@ const Auth = (props) => {
         const userSignOut = () => {
             signOut(auth).then(() => {
                 console.log('signed out');
-                alert("Successfully signed out. Redirecting you to login page...");
-                // props.logout();
+                alert("Successfully signed out. Redirecting you to start page...");
+                navigateToStart();
             }).catch(error => console.log(error));
         };
 
@@ -39,13 +43,7 @@ const Auth = (props) => {
         <>
         <Button onClick={userSignOut} name="Sign In" variant="primary">Sign Out</Button>{' '}
         </>
-        <div className="App">
-            <Router>
-            <Navbar />
-            </Router>
-        </div>
         </> : <div><p>Signed Out</p>
-        <SignIn />
         </div> }
     </div>
   );

@@ -3,9 +3,16 @@ import { Form, Button } from "react-bootstrap";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../components/firebase';
 import Input from '../components/Input';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = (props) => {
   console.log("SignUp Component called");
+
+  const navigate = useNavigate();
+
+  const navigateToSignIn = () => {
+    navigate('/signin');
+  }
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,10 +36,10 @@ const SignUp = (props) => {
             console.log(error);
           });
         alert('Successfully registered. Redirecting to login page...');
-        props.login();
         setEmail('');
         setPassword('');
         setConfirmPassword('');
+        navigateToSignIn();
       }
   };
 
@@ -74,7 +81,7 @@ const SignUp = (props) => {
       </Button>
       <div></div>
       <Form.Text muted>
-        Already have an account? <a href="#!" name="Sign In" onClick={props.signIn}>Sign in</a>
+        Already have an account? <a href="#!" name="Sign In" onClick={navigateToSignIn}>Sign in</a>
       </Form.Text>
     </Form>
     )
