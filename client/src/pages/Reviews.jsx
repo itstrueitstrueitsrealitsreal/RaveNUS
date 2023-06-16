@@ -1,14 +1,14 @@
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db } from "../components/firebase";
-import { auth } from "../components/firebase"
+import Navbar from "../components/Navbar";
+import UserID from "../components/auth/UserID";
 
 function Reviews() {
   console.log("Reviews Page called");
 
-  // current user 
-  const user = auth.currentUser;
-  const uid = user.uid;
+  // current userID
+  const uid = UserID();
 
   // Add to db 
   const [newRev, setNewRev] = useState({
@@ -26,7 +26,8 @@ function Reviews() {
     setNewRev(prevRev => {
       return {
         ...prevRev,
-        [name]: value
+        [name]: value,
+        UserID: uid
       };
     });
   }
@@ -57,7 +58,7 @@ function Reviews() {
     getRevs()
   }, []);
 
-  return (
+  const cont = (
     <div>
       <h1>REVIEWS PAGE</h1>
 
@@ -86,6 +87,7 @@ function Reviews() {
       
     </div>)
   
+  return <Navbar content={cont} />
 }
 
 export default Reviews;

@@ -4,9 +4,19 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../components/firebase';
 import Input from '../components/Input';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = (props) => {
   console.log("SignIn Component called");
+
+  const navigate = useNavigate();
+
+  const navigateToHome = () => {
+    navigate('/home');
+  }
+  const navigateToSignUp = () => {
+    navigate('/signup');
+  }
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +26,7 @@ const SignIn = (props) => {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       console.log(userCredential);
-      // props.login();
+      navigateToHome();
       }).catch((error) => {
         console.log(error);
         alert("Unable to sign in. Please try again.");
@@ -50,7 +60,7 @@ const SignIn = (props) => {
       </Button>
       <div></div>
       <Form.Text muted>
-        Not registered? <a href="#!" name="Sign Up" onClick={props.signUp}>Register here</a>
+        Not registered? <a href="#!" name="Sign Up" onClick={navigateToSignUp}>Register here</a>
       </Form.Text>
     </Form>
     )
