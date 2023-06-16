@@ -3,46 +3,60 @@ import React, { useState, useEffect } from "react";
 import { db } from "../components/firebase";
 import Navbar from "../components/Navbar";
 import UserID from "../components/auth/UserID";
+import UpdateReview from "./reviews/UpdateReview";
+import CreateReview from "./reviews/CreateReview";
+import { useNavigate } from "react-router-dom";
 
 function Reviews() {
   console.log("Reviews Page called");
+
+  // navigation 
+  const navigate = useNavigate();
+
+  const navigateToUpdateReview = () => {
+    navigate('/updatereview');
+  }
+
+  const navigateToCreateReview = () => {
+    navigate('/createreview');
+  }
 
   // current userID
   const uid = UserID();
 
   // Add to db 
-  const [newRev, setNewRev] = useState({
-    Poster: "",
-    Content: "",
-    Rating: 0,
-    Time: new Date(Date.now()),
-    UserID: uid
-  });
+  // const [newRev, setNewRev] = useState({
+  //   Poster: "",
+  //   Content: "",
+  //   Rating: 0,
+  //   Time: new Date(Date.now()),
+  //   UserID: uid
+  // });
 
-  function handleRev(event) {
-    const { name, value } = event.target;
-    console.log("handling rev...");
+  // function handleRev(event) {
+  //   const { name, value } = event.target;
+  //   console.log("handling rev...");
 
-    setNewRev(prevRev => {
-      return {
-        ...prevRev,
-        [name]: value,
-        UserID: uid
-      };
-    });
-  }
+  //   setNewRev(prevRev => {
+  //     return {
+  //       ...prevRev,
+  //       [name]: value,
+  //       UserID: uid
+  //     };
+  //   });
+  // }
 
-  const addReview = async () => {
-    console.log("adding...");
-    await addDoc(revsCollectionRef, newRev);
-    setNewRev({
-      Poster: "",
-      Content: "",
-      Rating: 0,
-      Time: new Date(Date.now()),
-      UserID: uid
-    });
-  };
+  // const addReview = async () => {
+  //   console.log("adding...");
+  //   await addDoc(revsCollectionRef, newRev);
+  //   setNewRev({
+  //     Poster: "",
+  //     Content: "",
+  //     Rating: 0,
+  //     Time: new Date(Date.now()),
+  //     UserID: uid
+  //   });
+  // };
 
   // Read db 
   const [revs, setRevs] = useState([]);
@@ -58,18 +72,24 @@ function Reviews() {
     getRevs()
   }, []);
 
+  // const updateRev = async (old) => {
+
+  // }
+
   const cont = (
     <div>
       <h1>REVIEWS PAGE</h1>
 
+      <button onClick={navigateToCreateReview}>Create New Review</button>
+
       {/* Add review  */}
       {/* uses addDoc  */}
-      <div>
+      {/* <div>
         <input name="Poster" value={newRev.Poster} placeholder="Poster" onChange={handleRev}/>
         <input name="Content" value={newRev.Content} placeholder="Content" onChange={handleRev}/>
         <input name="Rating" value={newRev.Rating} type="number" placeholder="Rating" onChange={handleRev}/>
         <button onClick={addReview}>Add Review</button>
-      </div>
+      </div> */}
 
       {/* Reviews */}
       {/* uses getDocs  */}
@@ -82,6 +102,7 @@ function Reviews() {
             <p>Content: {rev.Content}</p>
             <p>Rating: {rev.Rating}</p>
             <p>Time: {date.toString()}</p>
+            {/* <button onClick={updateRev(rev)}>Edit</button> */}
           </div>);
         })}
       </div>

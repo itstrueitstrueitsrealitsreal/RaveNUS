@@ -17,7 +17,8 @@ import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
 import Recommendation from "../pages/Recommendation";
 import Start from '../pages/Start';
-
+import UpdateReview from '../pages/reviews/UpdateReview';
+import CreateReview from '../pages/reviews/CreateReview';
 
 
 function App() {
@@ -53,6 +54,8 @@ function App() {
             <Route path="/sync" element={<Sync />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/recommendation" element={<Recommendation />} />
+            <Route path="/updatereview" element={<UpdateReview />} />
+            <Route path="/createreview" element={<CreateReview />} />
           </Routes>
         </Router>
       </div>
