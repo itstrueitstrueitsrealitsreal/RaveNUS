@@ -8,17 +8,19 @@ import { Route, Routes } from 'react-router-dom';
 
 import Home from "../pages/Home";
 import Statistics from "../pages/Statistics";
-import Profile from "../pages/Profile";
+import Profile from "../pages/profile/Profile";
 import Settings from "../pages/Settings";
 import Reviews from "../pages/reviews/Reviews";
 import Sync from "../pages/Sync";
 import Leaderboard from "../pages/Leaderboard";
-import SignUp from "../pages/SignUp";
-import SignIn from "../pages/SignIn";
+import SignUp from "../pages/start/SignUp";
+import SignIn from "../pages/start/SignIn";
 import Recommendation from "../pages/Recommendation";
-import Start from '../pages/Start';
+import Start from '../pages/start/Start';
 import UpdateReview from '../pages/reviews/UpdateReview';
 import CreateReview from '../pages/reviews/CreateReview';
+import ChangePassword from '../pages/profile/ChangePassword';
+import ResetPassword from '../pages/start/ResetPassword';
 
 
 function App() {
@@ -56,6 +58,8 @@ function App() {
             <Route path="/recommendation" element={<Recommendation />} />
             <Route path="/updatereview/:id" element={<UpdateReview />} />
             <Route path="/createreview" element={<CreateReview />} />
+            <Route path="/changepassword" element={<ChangePassword />} />
+            <Route path="/resetpassword" element={<ResetPassword />} />
           </Routes>
         </Router>
       </div>

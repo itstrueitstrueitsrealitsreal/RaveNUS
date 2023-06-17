@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Form, Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../components/firebase';
-import Input from '../components/Input';
+import { auth } from '../../components/firebase';
+import Input from '../../components/Input';
 import { useNavigate } from 'react-router-dom';
 
 const SignIn = (props) => {
@@ -16,6 +16,9 @@ const SignIn = (props) => {
   }
   const navigateToSignUp = () => {
     navigate('/signup');
+  }
+  const navigateToResetPassword = () => {
+    navigate('/resetpassword');
   }
 
   const [email, setEmail] = useState('');
@@ -61,6 +64,10 @@ const SignIn = (props) => {
       <div></div>
       <Form.Text muted>
         Not registered? <a href="#!" name="Sign Up" onClick={navigateToSignUp}>Register here</a>
+      </Form.Text>
+      <br />
+      <Form.Text muted>
+        Forgotten password? <a href="#!" name="Sign Up" onClick={navigateToResetPassword}>Reset password</a>
       </Form.Text>
     </Form>
     )

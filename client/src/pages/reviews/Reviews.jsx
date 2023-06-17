@@ -4,6 +4,7 @@ import { db } from "../../components/firebase";
 import Navbar from "../../components/Navbar";
 import UserID from "../../components/auth/UserID";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 function Reviews() {
   console.log("Reviews Page called");
@@ -49,7 +50,7 @@ function Reviews() {
       <h1>REVIEWS PAGE</h1>
 
       {/* add new review  */}
-      <button onClick={navigateToCreateReview}>Create New Review</button>
+      <Button onClick={navigateToCreateReview}>Create New Review</Button>
 
       {/* Reviews */}
       {/* uses getDocs  */}
@@ -64,10 +65,10 @@ function Reviews() {
             <p>Time: {date.toString()}</p>
 
             {/* update the review  */}
-            <button><Link to={`/updatereview/${rev.id}`}>Edit</Link></button>
+            <Button className="btn btn-light"><Link to={`/updatereview/${rev.id}`}>Edit</Link></Button>
 
             {/* delete the review  */}
-            <button onClick={() => {deleteRev(rev.id, rev.Content, rev.Rating)}}>Delete</button>
+            <Button onClick={() => {deleteRev(rev.id, rev.Content, rev.Rating)}}>Delete</Button>
           </div>);
         })}
       </div>

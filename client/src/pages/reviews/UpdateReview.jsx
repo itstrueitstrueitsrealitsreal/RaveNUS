@@ -4,6 +4,7 @@ import UserID from "../../components/auth/UserID";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../components/firebase";
+import { Button } from "react-bootstrap";
 
 function UpdateReview(props) {
   console.log("Update Review..");
@@ -86,12 +87,13 @@ function UpdateReview(props) {
         <input name="Poster" value={rev.Poster} placeholder="Poster" onChange={handleRev}/><br />
         <input name="Content" value={rev.Content} placeholder="Content" onChange={handleRev}/><br />
         <input name="Rating" value={rev.Rating} type="number" placeholder="Rating" onChange={handleRev}/><br />
-        <button onClick={updateRev}>Update Review</button>
+        <br />
+        <button className="btn btn-primary btn-lg px-4 gap-3" onClick={updateRev}>Update Review</button>
       </div>
 
       <div>
         <br />
-        <button onClick={navigateToReviews}>Back</button>
+        <Button onClick={navigateToReviews}>Back</Button>
       </div>
     </div> )
 

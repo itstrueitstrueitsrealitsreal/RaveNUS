@@ -4,6 +4,7 @@ import UserID from "../../components/auth/UserID";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../components/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { Button } from "react-bootstrap";
 
 function CreateReview(props) {
   console.log("Create Review..");
@@ -77,7 +78,7 @@ function CreateReview(props) {
 
       <div>
         <br />
-        <button variant="primary" onClick={navigateToReviews}>Back</button>
+        <Button variant="primary" onClick={navigateToReviews}>Back</Button>
       </div>
     </div> )
 
