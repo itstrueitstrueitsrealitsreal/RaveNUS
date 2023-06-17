@@ -134,3 +134,9 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     font-size: 10vw;
   }
 }
+
+/* Reviews */
+.individualReview {
+  border: 1px solid black;
+  margin: 10px;
+}
