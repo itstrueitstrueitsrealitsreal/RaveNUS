@@ -21,9 +21,8 @@ function Recommendation(props) {
 
   const cont = (
     <div>
-
       <h1>The Deck</h1>
-      <Map location={location} zoomLevel={17} />
+      <Map className="Map" location={location} zoomLevel={18} />
       <Rec recPage={navigateToNewRec}/>
     </div> )
 

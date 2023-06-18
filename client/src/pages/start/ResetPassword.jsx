@@ -30,12 +30,17 @@ function ResetPassword() {
 
   // Page content
   return (
-    <div>
+    <Form className='AuthForm'>
       <h1>Reset Password</h1>
-
       <div>
-        <Input type="email" placeholder="Email" value={email} 
-            onChange={(e) => setEmail(e.target.value)} />
+        <Input        
+          className="mb-3"
+          controlId="formBasicEmail"
+          text="Email address" 
+          type="email" 
+          placeholder="Enter email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} />
         <br />
         <Button onClick={resetEmail}>Send Reset Password Email</Button>
       </div>
@@ -43,7 +48,7 @@ function ResetPassword() {
       <Form.Text muted>
         <a href="#!" name="Sign Up" onClick={navigateToSignIn}>Sign In</a>
       </Form.Text>
-    </div>
+    </Form>
   )
 }
 
