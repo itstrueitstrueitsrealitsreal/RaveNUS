@@ -1,9 +1,5 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Typography from '@mui/material/Typography';
+import {Button, Card, Form, Col, Row} from 'react-bootstrap';
 import Rating from '@mui/material/Rating';
 import { Link } from "react-router-dom";
 
@@ -24,7 +20,7 @@ function Review(props) {
                 {"Content: " + props.content}
               </Card.Text>
               {/* rating */}
-              <Typography component="legend">Rating:</Typography>
+              <Form.Label>Rating:</Form.Label> <br/>
               <Rating name="read-only" value={props.rating} max={5} readOnly />
 
               {/* date */}
