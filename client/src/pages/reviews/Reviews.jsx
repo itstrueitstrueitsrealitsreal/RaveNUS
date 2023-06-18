@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { db } from "../../components/firebase";
 import Navbar from "../../components/Navbar";
 import UserID from "../../components/auth/UserID";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import Review from "../../components/Review";
 
 function Reviews() {
   console.log("Reviews Page called");
@@ -55,20 +56,21 @@ function Reviews() {
       {/* Reviews */}
       {/* uses getDocs  */}
       <div>
+      
         {/* Filter by User's own reviews and map to display  */}
-        {revs.filter((r) => r.UserID === uid ? true : false).map((rev) => {
+        {revs.filter((r) => r.UserID === uid ? true : false).map((rev, idx) => {
           const date = new Date(rev.Time.seconds * 1000);
-          return (<div className="individualReview" key={rev.id}>
-            <p>Poster: {rev.Poster}</p>
-            <p>Content: {rev.Content}</p>
-            <p>Rating: {rev.Rating}</p>
-            <p>Time: {date.toString()}</p>
-
-            {/* update the review  */}
-            <Button className="btn btn-light"><Link to={`/updatereview/${rev.id}`}>Edit</Link></Button>
-
-            {/* delete the review  */}
-            <Button onClick={() => {deleteRev(rev.id, rev.Content, rev.Rating)}}>Delete</Button>
+          return (<div key={rev.id}>
+            <Review 
+              deleteRev={deleteRev}
+              updateRev={`/updatereview/${rev.id}`}
+              id={rev.id}
+              poster={rev.Poster}
+              content={rev.Content}
+              rating={rev.Rating}
+              time={date.toString()}
+              idx={idx}
+            />
           </div>);
         })}
       </div>
