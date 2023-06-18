@@ -38,7 +38,7 @@ function ChangePassword() {
 
         // update password
         await updatePassword(auth.currentUser, newPassword);
-        alert("Passwords change successful!");
+        alert("Password changed successfully.");
       } catch (err) {
         alert(err);
       }

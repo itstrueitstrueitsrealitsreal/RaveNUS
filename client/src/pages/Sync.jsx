@@ -1,10 +1,14 @@
 import React, {useState} from "react";
 import Navbar from "../components/Navbar";
 import {Button, Form} from "react-bootstrap";
-import Input from "../components/Input";
 
 function Sync() {
   console.log("Sync Page called");
+
+  const navigateToNUSMods = () => {
+    alert("Redirecting you to nusmods.com...");
+      window.open('https://nusmods.com', '_blank');
+  };
 
   const [url, setURL] = useState("");
 
@@ -18,13 +22,16 @@ function Sync() {
       <ol>
         <li>
           Go to the Timetable tab with your desired timetable on NUSMods using the button below.
-          <div></div>
-          <Button variant="primary">NUSMods</Button>{' '}
+          <br/>
+          <Button 
+            variant="primary"
+            onClick={navigateToNUSMods}>
+            NUSMods</Button>
         </li>
         <li>
           Click the Share/Sync button on the bottom right of the timetable as shown below.
           <br/>
-          <img src={require("../components/img/nusmods_screenshot.png")} />
+          <img src={require("../components/img/nusmods_screenshot.png")} alt="screenshot of sync button" />
         </li>
         <li>
           Copy and paste the URL into the box below!
@@ -39,7 +46,7 @@ function Sync() {
                 onChange={handleChange} 
               />
             </Form.Group>
-            <Button variant="primary">Sync</Button>{' '}
+            <Button variant="primary">Sync</Button>
           </Form>
         </li>
       </ol>
