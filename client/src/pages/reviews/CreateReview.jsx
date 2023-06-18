@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../../components/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { Button } from "react-bootstrap";
+import Typography from '@mui/material/Typography';
+import Rating from '@mui/material/Rating';
 
 function CreateReview(props) {
   console.log("Create Review..");
@@ -52,6 +54,7 @@ function CreateReview(props) {
         + "\n    Content: " + newRev.Content + "\n    Rating: " + newRev.Rating);
       if (confirmed) {
         console.log("adding review...");
+        delete(newRev.undefined);
         await addDoc(revsCollectionRef, newRev);
         setNewRev({
           Poster: "",
@@ -72,7 +75,14 @@ function CreateReview(props) {
         <h1>Create a new Review!</h1>
         <input name="Poster" value={newRev.Poster} placeholder="Poster" onChange={handleRev}/><br />
         <input name="Content" value={newRev.Content} placeholder="Content" onChange={handleRev}/><br />
-        <input name="Rating" value={newRev.Rating} type="number" placeholder="Rating" onChange={handleRev}/><br />
+        <Typography component="legend">Rating</Typography>
+        <Rating 
+          name="Rating"
+          type="number"
+          placeholder="Rating"
+          value={newRev.Rating}
+          onClick={handleRev}
+        />
         <br /><button className="btn btn-primary btn-lg px-4 gap-3" onClick={addReview}>Add Review</button>
       </div>
 
