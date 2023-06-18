@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 function Input(props) {
   console.log("Input Component called");
 
-  return(
+  return (
       <Form.Group className={props.className} controlId={props.controlId}>
         <Form.Label>{props.text}</Form.Label>
         <Form.Control 
