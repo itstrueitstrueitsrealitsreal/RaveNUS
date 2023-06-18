@@ -6,9 +6,13 @@ import UserID from "../../components/auth/UserID";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Review from "../../components/Review";
+import Spinner from 'react-bootstrap/Spinner';
 
 function Reviews() {
   console.log("Reviews Page called");
+
+  // loading state
+  const [loading, setLoading] = useState(true);
 
   // navigation 
   const navigate = useNavigate();
@@ -30,6 +34,7 @@ function Reviews() {
       const data = await getDocs(revsCollectionRef);
       const allRevs = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
       setRevs(allRevs);
+      setLoading(false);
     }
     getRevs()
   }, []);
@@ -56,7 +61,6 @@ function Reviews() {
       {/* Reviews */}
       {/* uses getDocs  */}
       <div>
-      
         {/* Filter by User's own reviews and map to display  */}
         {revs.filter((r) => r.UserID === uid ? true : false).map((rev, idx) => {
           const date = new Date(rev.Time.seconds * 1000);
@@ -77,7 +81,7 @@ function Reviews() {
       
     </div>)
   
-  return <Navbar content={cont} />
+  return (loading ? <Spinner /> : <Navbar content={cont} />)
 }
 
 export default Reviews;
