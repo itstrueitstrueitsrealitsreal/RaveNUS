@@ -8,8 +8,11 @@ function Sync() {
 
   const [url, setURL] = useState("");
 
+  function handleChange(event) {
+    setURL(event.target.value);
+  }
   const cont = (
-    <div className="syncPage">
+    <div id="syncPage">
       <h1>Timetable Sync</h1>
       <h2>Sync your timetable in 3 simple steps!</h2>
       <ol>
@@ -20,19 +23,22 @@ function Sync() {
         </li>
         <li>
           Click the Share/Sync button on the bottom right of the timetable as shown below.
+          <br/>
           <img src={require("../components/img/nusmods_screenshot.png")} />
         </li>
         <li>
           Copy and paste the URL into the box below!
-          <Form className='AuthForm'>
-            <Input 
-              className="mb-3"
-              controlId="formBasicURL"
-              type="url" 
-              placeholder="Enter URL" 
-              value={url} 
-              onChange={(e) => setURL(e.target.value)} 
-            />
+          <Form>
+            <Form.Group 
+              className="mb-3" >
+              <Form.Control 
+                type="url" 
+                placeholder="Paste URL here:"
+                name="URL" 
+                value={url}
+                onChange={handleChange} 
+              />
+            </Form.Group>
             <Button variant="primary">Sync</Button>{' '}
           </Form>
         </li>

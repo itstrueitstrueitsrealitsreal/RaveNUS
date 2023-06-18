@@ -61,7 +61,7 @@ const SignIn = (props) => {
       <Button className="mb-3" variant="primary" type="submit" onClick={signIn}>
         Sign In
       </Button>
-      <div></div>
+      <br />
       <Form.Text muted>
         Not registered? <a href="#!" name="Sign Up" onClick={navigateToSignUp}>Register here</a>
       </Form.Text>

@@ -4,7 +4,8 @@ import UserID from "../../components/auth/UserID";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../components/firebase";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
+import Rating from '@mui/material/Rating';
 
 function UpdateReview(props) {
   console.log("Update Review..");
@@ -84,11 +85,45 @@ function UpdateReview(props) {
     <div>
       <div>
       <h1>Edit Review</h1>
-        <input name="Poster" value={rev.Poster} placeholder="Poster" onChange={handleRev}/><br />
-        <input name="Content" value={rev.Content} placeholder="Content" onChange={handleRev}/><br />
-        <input name="Rating" value={rev.Rating} type="number" placeholder="Rating" onChange={handleRev}/><br />
-        <br />
-        <button className="btn btn-primary btn-lg px-4 gap-3" onClick={updateRev}>Update Review</button>
+        <Form>
+          <Form.Group 
+            className="mb-3" >
+            <Form.Label>Name:</Form.Label>
+            <Form.Control 
+              type="Poster" 
+              placeholder="Name"
+              name="Poster" 
+              value={rev.Poster}
+              onChange={handleRev} 
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+            <Form.Label>Type your review here:</Form.Label>
+            <Form.Control 
+              as="textarea" 
+              rows={3} 
+              name="Content" 
+              value={rev.Content} 
+              placeholder="Content" 
+              onChange={handleRev}/>
+          </Form.Group>
+          <Form.Label>Rating:</Form.Label> <br/>
+          <Rating 
+            name="Rating"
+            type="number"
+            placeholder="Rating"
+            value={rev.Rating}
+            onClick={handleRev}
+          />
+          <br />
+          <Button 
+            className="btn btn-primary btn-lg px-4 gap-2" 
+            variant="primary" 
+            onClick={updateRev}>
+            Update Review
+          </Button>
+        </Form>
       </div>
 
       <div>
