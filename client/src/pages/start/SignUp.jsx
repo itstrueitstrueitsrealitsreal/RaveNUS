@@ -79,7 +79,7 @@ const SignUp = (props) => {
       <Button className="mb-3" variant="primary" type="submit" onClick={signUp}>
         Create Account
       </Button>
-      <div></div>
+      <br />
       <Form.Text muted>
         Already have an account? <a href="#!" name="Sign In" onClick={navigateToSignIn}>Sign in</a>
       </Form.Text>
