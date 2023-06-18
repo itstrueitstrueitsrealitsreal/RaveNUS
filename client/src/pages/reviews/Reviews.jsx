@@ -81,7 +81,7 @@ function Reviews() {
       
     </div>)
   
-  return (loading ? <Spinner /> : <Navbar content={cont} />)
+  return (<Navbar content= {loading ? <Spinner /> : cont} />)
 }
 
 export default Reviews;
