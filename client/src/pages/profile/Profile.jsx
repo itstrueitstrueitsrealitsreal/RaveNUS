@@ -15,6 +15,12 @@ function Profile(props) {
   const navigateToChangePassword = () => {
     navigate('/changepassword');
   }
+  const navigateToCreateProfile = () => {
+    navigate('/createprofile');
+  }
+  const navigateToUpdateProfile = () => {
+    navigate('/updateprofile');
+  }
 
   // current userID
   const uid = UserID();
@@ -28,12 +34,12 @@ function Profile(props) {
   useEffect(() => {
     const checkProfile = async () => {
       const profiles = await getDocs(profileCollectionRef);
-      setProfs(profiles.docs.map((doc) => ({...doc.data()})));
+      setProfs(profiles.docs.map((doc) => ({key: doc.id, id: doc.id, ...doc.data()})));
     }
     checkProfile();
   }, [])
   
-  const profiles = profs.filter((p) => p.UserID === uid ? true : false).length;
+  const profiles = profs.filter((p) => p.UserID === uid ? true : false);
   
 
   // Page content
@@ -48,8 +54,24 @@ function Profile(props) {
       </div>
       <br />
 
-      { profiles === 1 ? <p>profile exists</p> : <p>profile doesnt exist</p> }
-      
+      { profiles.length === 1 ? <p>exists</p> : <p>doesnt exists</p>}
+      { profiles.length === 1 ? 
+      <div>  {profiles.map((p) => {
+          return (
+            <div key={p.id}>
+              <h2>Username: {p.Username}</h2>
+              <h3>Halal: {p.Halal.toString()}</h3>
+              <h3>Vegetarian: {p.Vegetarian.toString()}</h3>
+              <Button onClick={navigateToUpdateProfile}>Update Profile</Button>
+            </div>
+          )
+        })} 
+      </div> :
+      <div>
+        <Button onClick={navigateToCreateProfile}>Create Profile</Button>
+      </div> 
+      }
+
     </div>
   )
 

@@ -21,6 +21,8 @@ import UpdateReview from '../pages/reviews/UpdateReview';
 import CreateReview from '../pages/reviews/CreateReview';
 import ChangePassword from '../pages/profile/ChangePassword';
 import ResetPassword from '../pages/start/ResetPassword';
+import CreateProfile from '../pages/profile/CreateProfile';
+import UpdateProfile from '../pages/profile/UpdateProfile';
 
 
 function App() {
@@ -60,6 +62,8 @@ function App() {
             <Route path="/createreview" element={<CreateReview />} />
             <Route path="/changepassword" element={<ChangePassword />} />
             <Route path="/resetpassword" element={<ResetPassword />} />
+            <Route path="/createprofile" element={<CreateProfile />} />
+            <Route path="/updateprofile" element={<UpdateProfile />} />
           </Routes>
         </Router>
       </div>
