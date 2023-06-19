@@ -53,6 +53,7 @@ function CreateProfile() {
         UserID: uid
       }
     })
+    setCheckedH(!checkedH);
   }
   // vegetarian
   function handleVegetarian(event) {
@@ -66,6 +67,7 @@ function CreateProfile() {
         UserID: uid
       }
     })
+    setCheckedV(!checkedV);
   }
 
   // profile collection
@@ -93,6 +95,10 @@ function CreateProfile() {
     }
   }
 
+  // checkbox states
+  const [checkedH, setCheckedH] = useState(false)
+  const [checkedV, setCheckedV] = useState(false)
+
   // Page content
   const cont = (
     <div>
@@ -112,8 +118,8 @@ function CreateProfile() {
         </Form.Group>
 
         <FormGroup>
-          <FormControlLabel control={<Checkbox onChange={handleHalal}/>} label="Halal" />
-          <FormControlLabel control={<Checkbox onChange={handleVegetarian}/>} label="Vegetarian" />
+          <FormControlLabel control={<Checkbox checked={checkedH} onClick={handleHalal}/>} label="Halal" />
+          <FormControlLabel control={<Checkbox checked={checkedV} onClick={handleVegetarian}/>} label="Vegetarian" />
         </FormGroup>
 
         <br />
