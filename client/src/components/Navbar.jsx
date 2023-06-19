@@ -18,10 +18,6 @@ function Navbar(props) {
     navigate('/profile');
   }
 
-  const navigateToSettings = () => {
-    navigate('/settings');
-  }
-
   const navigateToReviews = () => {
     navigate('/reviews');
   }
@@ -43,7 +39,6 @@ function Navbar(props) {
                       <a onClick={navigateToHome} name="Home" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Home</a>
                       <a onClick={navigateToStatistics} name="Statistics" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Statistics</a>
                       <a onClick={navigateToProfile} name="Profile" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
-                      <a onClick={navigateToSettings} name="Settings" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Settings</a>
                       <a onClick={navigateToReviews} name="Reviews" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Reviews</a>
                       <a onClick={navigateToSync} name="Sync" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Sync</a>
                       <a onClick={navigateToLeaderboard} name="Leaderboard" className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Leaderboard</a>
