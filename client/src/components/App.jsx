@@ -9,7 +9,6 @@ import { Route, Routes } from 'react-router-dom';
 import Home from "../pages/Home";
 import Statistics from "../pages/Statistics";
 import Profile from "../pages/profile/Profile";
-import Settings from "../pages/Settings";
 import Reviews from "../pages/reviews/Reviews";
 import Sync from "../pages/Sync";
 import Leaderboard from "../pages/Leaderboard";
@@ -51,7 +50,6 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/statistics" element={<Statistics />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/sync" element={<Sync />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
