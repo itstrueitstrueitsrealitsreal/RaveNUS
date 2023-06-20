@@ -36,7 +36,7 @@ function Reviews() {
       setRevs(allRevs);
       setLoading(false);
     }
-    getRevs()
+    getRevs();
   }, []);
 
   // delete review
@@ -81,7 +81,7 @@ function Reviews() {
       
     </div>)
   
-  return (<Navbar content= {loading ? <Spinner /> : cont} />)
+  return (<Navbar content={loading ? <Spinner /> : cont} />)
 }
 
 export default Reviews;

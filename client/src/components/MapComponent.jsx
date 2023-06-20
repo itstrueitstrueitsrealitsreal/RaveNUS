@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 const MapComponent = ({ location }) => {
+  console.log("MapComponent called");
+  
   const [map, setMap] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [customLocation, setCustomLocation] = useState(null);
