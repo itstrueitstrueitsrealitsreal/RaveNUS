@@ -63,7 +63,7 @@ function App() {
             <Route path="/changepassword" element={<ChangePassword />} />
             <Route path="/resetpassword" element={<ResetPassword />} />
             <Route path="/createprofile" element={<CreateProfile />} />
-            <Route path="/updateprofile" element={<UpdateProfile />} />
+            <Route path="/updateprofile/:id" element={<UpdateProfile />} />
           </Routes>
         </Router>
       </div>

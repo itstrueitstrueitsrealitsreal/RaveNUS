@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Auth from "../../components/auth/Auth";
 import Navbar from "../../components/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import UserID from "../../components/auth/UserID";
 import { db, storage } from "../../components/firebase";
@@ -19,9 +19,6 @@ function Profile(props) {
   }
   const navigateToCreateProfile = () => {
     navigate('/createprofile');
-  }
-  const navigateToUpdateProfile = () => {
-    navigate('/updateprofile');
   }
 
   // current userID
@@ -77,7 +74,7 @@ function Profile(props) {
               <h2>Username: {p.Username}</h2>
               <h3>Halal: {p.Halal.toString()}</h3>
               <h3>Vegetarian: {p.Vegetarian.toString()}</h3>
-              <Button onClick={navigateToUpdateProfile}>Update Profile</Button>
+              <Button className="btn btn-light"><Link to={`/updateprofile/${p.id}`}>Update Profile</Link></Button>
             </div>
           )
         })} 
