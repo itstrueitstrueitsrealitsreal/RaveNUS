@@ -2,7 +2,7 @@ import React from "react";
 import Rec from "../components/rec/Rec";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
-import Map from "../components/Map";
+import MapComponent from "../components/MapComponent";
 
 function Recommendation(props) {
   console.log("Recommendation Page called");
@@ -22,7 +22,7 @@ function Recommendation(props) {
   const cont = (
     <div>
       <h1>The Deck</h1>
-      <Map className="Map" location={location} zoomLevel={18} />
+      <MapComponent location={location}/>
       <Rec recPage={navigateToNewRec}/>
     </div> )
 
