@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 const MapComponent = ({ location }) => {
-  console.log("MapComponent called");
-  
   const [map, setMap] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [customLocation, setCustomLocation] = useState(null);
@@ -44,7 +42,7 @@ const MapComponent = ({ location }) => {
         const customMarker = new window.google.maps.Marker({
           position: location,
           map: newMap,
-          title: '',
+          title: 'Reccomendation',
           label: '',
         });
         attachInfoWindow(customMarker, 'Custom Location');
