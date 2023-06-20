@@ -42,7 +42,7 @@ const MapComponent = ({ location }) => {
         const customMarker = new window.google.maps.Marker({
           position: location,
           map: newMap,
-          title: '',
+          title: 'Reccomendation',
           label: '',
         });
         attachInfoWindow(customMarker, 'Custom Location');
