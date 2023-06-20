@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import UserID from "../../components/auth/UserID";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../components/firebase";
+import { db, storage } from "../../components/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
 import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
+import Input from "../../components/Input";
+import { ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
 
 function CreateProfile() {
   console.log("Create Profile page");
@@ -24,7 +27,8 @@ function CreateProfile() {
     UserID: uid,
     Username: "",
     Halal: false,
-    Vegetarian: false
+    Vegetarian: false,
+    ProfPic: ""
   });
 
   // new info states
@@ -53,6 +57,7 @@ function CreateProfile() {
         UserID: uid
       }
     })
+    setCheckedH(!checkedH);
   }
   // vegetarian
   function handleVegetarian(event) {
@@ -66,13 +71,43 @@ function CreateProfile() {
         UserID: uid
       }
     })
+    setCheckedV(!checkedV);
+  }
+
+  // image
+  const [image, setImage] = useState(null);
+  const [uploadLoc, setUploadLoc] = useState("");
+  
+  // handle image
+  function handleImage(event) {
+    setImage(event.target.files[0]);
+    const a = `ProfilePhotos/${v4()}`
+    setUploadLoc(a)
+    setNewProf(prevProf => {
+      return {
+        ...prevProf,
+        ProfPic: a,
+        UserID: uid
+      }
+    });
+  }
+  
+  // upload image
+  const uploadImage = () => {
+    if (image === null) {
+      return;
+    } 
+    const uploadRef = ref(storage, uploadLoc);
+    uploadBytes(uploadRef, image).then(() => {
+      console.log("image uploaded " + uploadLoc);
+    })
   }
 
   // profile collection
   const profileCollectionRef = collection(db, "profile");
 
   // add new profile to db
-  const addProf = async () => {
+  const addProfInfo = async () => {
     if (newProf.Username === "") {
       alert("Username field is mandatory");
     } else {
@@ -92,6 +127,17 @@ function CreateProfile() {
         }
     }
   }
+  
+  // submit handle function
+  function addProf() {
+    uploadImage();
+    addProfInfo();
+  }
+
+
+  // checkbox states
+  const [checkedH, setCheckedH] = useState(false)
+  const [checkedV, setCheckedV] = useState(false)
 
   // Page content
   const cont = (
@@ -112,9 +158,11 @@ function CreateProfile() {
         </Form.Group>
 
         <FormGroup>
-          <FormControlLabel control={<Checkbox onChange={handleHalal}/>} label="Halal" />
-          <FormControlLabel control={<Checkbox onChange={handleVegetarian}/>} label="Vegetarian" />
+          <FormControlLabel control={<Checkbox checked={checkedH} onClick={handleHalal}/>} label="Halal" />
+          <FormControlLabel control={<Checkbox checked={checkedV} onClick={handleVegetarian}/>} label="Vegetarian" />
         </FormGroup>
+
+        <Input type="file" onChange={handleImage}>here</Input>
 
         <br />
         <Button 
