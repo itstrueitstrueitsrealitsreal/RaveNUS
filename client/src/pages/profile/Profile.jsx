@@ -4,8 +4,10 @@ import Navbar from "../../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import UserID from "../../components/auth/UserID";
-import { db } from "../../components/firebase";
+import { db, storage } from "../../components/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
+import { Avatar } from "@mui/material";
 
 function Profile(props) {
   console.log("Profile Page called");
@@ -39,8 +41,20 @@ function Profile(props) {
     checkProfile();
   }, [])
   
+  // filtering out the user's profile
   const profiles = profs.filter((p) => p.UserID === uid ? true : false);
-  
+
+  // retrieve profile pic url
+  const [profPicURL, setProfPicURL] = useState("");
+  const profileURL = async (name) => {
+    const urlRef = ref(storage, name)
+    const url = await getDownloadURL(urlRef)
+    setProfPicURL(url.toString());
+  }
+
+  if (profiles.length === 1) {
+    profileURL(profiles[0].ProfPic);
+  }
 
   // Page content
   const cont = (
@@ -59,6 +73,7 @@ function Profile(props) {
       <div>  {profiles.map((p) => {
           return (
             <div key={p.id}>
+              <Avatar className="Avatar" alt={p.Username} src={profPicURL}/>
               <h2>Username: {p.Username}</h2>
               <h3>Halal: {p.Halal.toString()}</h3>
               <h3>Vegetarian: {p.Vegetarian.toString()}</h3>
