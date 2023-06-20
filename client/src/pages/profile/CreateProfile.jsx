@@ -162,7 +162,10 @@ function CreateProfile() {
           <FormControlLabel control={<Checkbox checked={checkedV} onClick={handleVegetarian}/>} label="Vegetarian" />
         </FormGroup>
 
-        <Input type="file" onChange={handleImage}>here</Input>
+        <Form.Group>
+          <Form.Label>Profile Picture:</Form.Label>
+          <Input type="file" onChange={handleImage}>here</Input>
+        </Form.Group>
 
         <br />
         <Button 
