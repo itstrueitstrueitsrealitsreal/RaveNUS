@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "../../components/firebase";
 import { Button, Form } from "react-bootstrap";
-import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { Avatar } from "@mui/material";
 import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
 import { v4 } from "uuid";
@@ -158,20 +158,29 @@ function UpdateProfile() {
 
   function editAll() {
     uploadImage();
+    removeImageFirebase()
     editProfile();
-    console.log(newProf);
   }
 
   // remove profile picture
-  const removeImage = async () => {
+  const removeImageRef = async () => {
     const confirmed = window.confirm("Are you sure you want to Remove your Profile Picture?");
     if (confirmed) {
       const newFields = {
         ProfPic: ""
       };
       await updateDoc(profRef, newFields);
-      navigateToProfile();
     }
+  }
+  const removeImageFirebase = async () => {
+    const delRef = ref(storage, oldProf.ProfPic);
+    await deleteObject(delRef);
+  }
+
+  function removeImage() {
+    removeImageRef();
+    removeImageFirebase();
+    navigateToProfile();
   }
 
   // Page content
@@ -199,7 +208,11 @@ function UpdateProfile() {
             <FormControlLabel control={<Checkbox checked={checkedV} onClick={handleVegetarian}/>} label="Vegetarian" />
           </FormGroup>
 
-          <Input type="file" onChange={handleImage}>here</Input>
+          <Form.Group>
+            <Form.Label>Change Profile Picture:</Form.Label>
+            <Input type="file" onChange={handleImage}>here</Input>
+          </Form.Group>
+          
           <br />
           <Button onClick={editAll}>Update Profile</Button>
         </Form>
