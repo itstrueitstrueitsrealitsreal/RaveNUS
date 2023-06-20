@@ -200,7 +200,7 @@ function UpdateProfile() {
           </FormGroup>
 
           <Input type="file" onChange={handleImage}>here</Input>
-
+          <br />
           <Button onClick={editAll}>Update Profile</Button>
         </Form>
       </div>

@@ -65,7 +65,6 @@ function Profile(props) {
       </div>
       <br />
 
-      { profiles.length === 1 ? <p>exists</p> : <p>doesnt exists</p>}
       { profiles.length === 1 ? 
       <div>  {profiles.map((p) => {
           return (

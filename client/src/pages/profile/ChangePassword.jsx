@@ -28,19 +28,22 @@ function ChangePassword() {
     } else if (newPassword !== confirmPassword) {
       alert("Passwords do not match!");
     } else {
-      try {
-        // reauthenticate
-        const credential = EmailAuthProvider.credential(
-          auth.currentUser.email,
-          currentPassword
-        );
-        await reauthenticateWithCredential(auth.currentUser, credential);
-
-        // update password
-        await updatePassword(auth.currentUser, newPassword);
-        alert("Password changed successfully.");
-      } catch (err) {
-        alert(err);
+      const confirmed = window.confirm("Are you sure you want to change your password?");
+      if (confirmed) {
+        try {
+          // reauthenticate
+          const credential = EmailAuthProvider.credential(
+            auth.currentUser.email,
+            currentPassword
+          );
+          await reauthenticateWithCredential(auth.currentUser, credential);
+  
+          // update password
+          await updatePassword(auth.currentUser, newPassword);
+          alert("Password changed successfully.");
+        } catch (err) {
+          alert(err);
+        }
       }
     }
     setCurrentPassword('');
