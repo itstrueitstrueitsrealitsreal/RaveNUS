@@ -1,28 +1,35 @@
 import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
-import UserID from "../../components/auth/UserID";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { db } from "../../components/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
 import Rating from '@mui/material/Rating';
+import { v4 } from "uuid";
 
 function CreateReview(props) {
   console.log("Create Review..");
 
+  // page navigation
   const navigate = useNavigate();
-
   const navigateToReviews = () => {
     navigate('/reviews');
   }
 
-  const revsCollectionRef = collection(db, "reviews");
-
   // current userID
-  const uid = UserID();
+  const location = useLocation();
+  const uid = location.pathname.split("/")[2];
+  // locID
+  const locID = location.pathname.split("/")[3];
+  // stallID
+  const stallID = location.pathname.split("/")[4];
 
+  // paths
+  const stallPath = "eateries/" + locID + "/Stalls/" + stallID + "/reviews";
+  const userPath = "profile/" + uid + "/reviews";
+  
+  // new review
   const [newRev, setNewRev] = useState({
-    Poster: "",
     Content: "",
     Rating: 0,
     Time: new Date(Date.now()),
@@ -38,7 +45,6 @@ function CreateReview(props) {
       return {
         ...prevRev,
         [name]: value,
-        UserID: uid,
         Time: new Date(Date.now())
       };
     });
@@ -52,11 +58,14 @@ function CreateReview(props) {
       const confirmed = window.confirm("Are you sure you want to Create this Review?\n"
         + "\n    Content: " + newRev.Content + "\n    Rating: " + newRev.Rating);
       if (confirmed) {
+        const id = v4();
         console.log("adding review...");
         delete(newRev.undefined);
-        await addDoc(revsCollectionRef, newRev);
+        // add review to stall
+        await setDoc(doc(db, stallPath, id), newRev);
+        // add review to user
+        await setDoc(doc(db, userPath, id), newRev);
         setNewRev({
-          Poster: "",
           Content: "",
           Rating: 0,
           Time: new Date(Date.now()),
@@ -72,20 +81,8 @@ function CreateReview(props) {
     <div>
       <div>
         <h1>Create a new review!</h1>
+        <h2>Step 3: Write your Review!</h2>
         <Form>
-          <Form.Group 
-            className="mb-3" 
-            controlId="exampleForm.ControlInput1">
-            <Form.Label>Name:</Form.Label>
-            <Form.Control 
-              type="Poster" 
-              placeholder="Name"
-              name="Poster" 
-              value={newRev.Poster}
-              onChange={handleRev} 
-            />
-          </Form.Group>
-
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Type your review here:</Form.Label>
             <Form.Control 
@@ -115,8 +112,12 @@ function CreateReview(props) {
         <br />
       </div>
 
+      <Button className="btn btn-light">
+        <Link to={`/cr/${uid}/${locID}`}>Back</Link>
+      </Button>
+
       <div>
-        <Button variant="primary" onClick={navigateToReviews}>Back</Button>
+        <Button variant="primary" onClick={navigateToReviews}>Cancel</Button>
       </div>
     </div> )
 
