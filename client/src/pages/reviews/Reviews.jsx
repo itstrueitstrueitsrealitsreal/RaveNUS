@@ -77,6 +77,8 @@ function Reviews(props) {
               rating={rev.Rating}
               time={date.toString()}
               idx={idx}
+              eatery={rev.Eatery}
+              stall={rev.Stall}
             />
           </div>);
         })}

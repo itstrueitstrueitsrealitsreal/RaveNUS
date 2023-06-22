@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { db } from "../../components/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
 import Rating from '@mui/material/Rating';
 import { v4 } from "uuid";
@@ -27,6 +27,23 @@ function CreateReview(props) {
   // paths
   const stallPath = "eateries/" + locID + "/Stalls/" + stallID + "/reviews";
   const userPath = "profile/" + uid + "/reviews";
+
+  const [loc, setLoc] = useState({});
+  const [stall, setStall] = useState({});
+  const [user, setUser] = useState({});
+  // loc and stall and user
+  useEffect(() => {
+    const getItems = async () => {
+      const locDoc = await getDoc(doc(db, "eateries", locID));
+      // console.log(locDoc)
+      setLoc(locDoc.data());
+      const stallDoc = await getDoc(doc(db, "eateries/" + locID + "/Stalls/", stallID));
+      setStall(stallDoc.data());
+      const userDoc = await getDoc(doc(db, "profile", uid));
+      setUser(userDoc.data());
+    }
+    getItems();
+  }, []);
   
   // new review
   const [newRev, setNewRev] = useState({
@@ -76,15 +93,23 @@ function CreateReview(props) {
         const id = v4();
         console.log("adding review...");
         delete(newRev.undefined);
+        const revToUpload = {
+          Content: newRev.Content,
+          Rating: newRev.Rating,
+          Time: new Date(Date.now()),
+          UserID: uid,
+          Eatery: loc.name,
+          Stall: stall.name,
+          Poster: user.Username
+        }
         // add review to stall
-        await setDoc(doc(db, stallPath, id), newRev);
+        await setDoc(doc(db, stallPath, id), revToUpload);
         // add review to user
-        await setDoc(doc(db, userPath, id), newRev);
+        await setDoc(doc(db, userPath, id), revToUpload);
         setNewRev({
           Content: "",
           Rating: 0,
-          Time: new Date(Date.now()),
-          UserID: uid
+          Time: new Date(Date.now())
         });
         navigateToReviews(); 
       }

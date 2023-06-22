@@ -15,6 +15,14 @@ function Review(props) {
             <Card.Body>
               {/* poster */}
               <Card.Title>{"Poster: " + props.poster}</Card.Title>
+              {/* eatery */}
+              <Card.Text>
+                {"Eatery: " + props.eatery}
+              </Card.Text>
+              {/* stall */}
+              <Card.Text>
+                {"Stall: " + props.stall}
+              </Card.Text>
               {/* content */}
               <Card.Text>
                 {"Content: " + props.content}
