@@ -1,6 +1,6 @@
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
-import { db, auth, authForFirebaseUI } from "../../components/firebase";
+import { db, auth, authForFirebaseUI, storage } from "../../components/firebase";
 import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
@@ -79,6 +79,7 @@ function Reviews(props) {
               idx={idx}
               eatery={rev.Eatery}
               stall={rev.Stall}
+              revpic={rev.RevPic}
             />
           </div>);
         })}

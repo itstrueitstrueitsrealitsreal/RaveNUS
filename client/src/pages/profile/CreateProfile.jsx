@@ -81,12 +81,12 @@ function CreateProfile() {
   // handle image
   function handleImage(event) {
     setImage(event.target.files[0]);
-    const a = `ProfilePhotos/${v4()}`
-    setUploadLoc(a)
+    const loc = `ProfilePhotos/${v4()}`;
+    setUploadLoc(loc)
     setNewProf(prevProf => {
       return {
         ...prevProf,
-        ProfPic: a,
+        ProfPic: loc,
         UserID: uid
       }
     });
