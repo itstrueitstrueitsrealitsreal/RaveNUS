@@ -40,11 +40,26 @@ function CreateReview(props) {
   function handleRev(event) {
     const { name, value } = event.target;
     console.log("handling rev...");
+    console.log(typeof(value));
 
     setNewRev(prevRev => {
       return {
         ...prevRev,
         [name]: value,
+        Time: new Date(Date.now())
+      };
+    });
+  }
+
+  function handleRating(event) {
+    const { name, value } = event.target;
+    const rate = Number(value);
+    console.log("handling rev...");
+
+    setNewRev(prevRev => {
+      return {
+        ...prevRev,
+        [name]: rate,
         Time: new Date(Date.now())
       };
     });
@@ -99,7 +114,7 @@ function CreateReview(props) {
             type="number"
             placeholder="Rating"
             value={newRev.Rating}
-            onClick={handleRev}
+            onClick={handleRating}
           />
           <br />
           <Button 

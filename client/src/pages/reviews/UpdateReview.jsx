@@ -59,6 +59,20 @@ function UpdateReview(props) {
     });
   }
 
+  function handleRating(event) {
+    const { name, value } = event.target;
+    const rate = Number(value);
+    console.log("handling rev...");
+
+    setRev(prevRev => {
+      return {
+        ...prevRev,
+        [name]: rate,
+        Time: new Date(Date.now())
+      };
+    });
+  }
+
   // edit review
   const updateRev = async () => {
     const confirmed = window.confirm("Are you sure you want to Update this Review?\n"
@@ -114,7 +128,7 @@ function UpdateReview(props) {
             type="number"
             placeholder="Rating"
             value={rev.Rating}
-            onClick={handleRev}
+            onClick={handleRating}
           />
           <br />
           <Button 
