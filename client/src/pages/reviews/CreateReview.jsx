@@ -117,6 +117,7 @@ function CreateReview(props) {
       alert("All fields are mandatory.")
     } else { 
       const confirmed = window.confirm("Are you sure you want to Create this Review?\n"
+        + "\n    Eatery: " + loc.name + "\n    Stall: " + stall.name
         + "\n    Content: " + newRev.Content + "\n    Rating: " + newRev.Rating);
       if (confirmed) {
         const id = v4();
