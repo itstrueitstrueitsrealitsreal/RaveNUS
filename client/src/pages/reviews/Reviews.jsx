@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Review from "../../components/Review";
 import Spinner from 'react-bootstrap/Spinner';
+import { deleteObject, ref } from "firebase/storage";
 
 function Reviews(props) {
   console.log("Reviews Page called");
@@ -41,12 +42,17 @@ function Reviews(props) {
   
 
   // delete review
-  const deleteRev = async (id, content, rating) => {
+  const deleteRev = async (revID, content, rating, uid, eateryID, stallID, eatery, stall, revpic) => {
     const confirmed = window.confirm("Are you sure you want to Delete this Review?\n"
+        + "\n    Eatery: " + eatery + "\n    Stall: " + stall
         + "\n    Content: " + content + "\n    Rating: " + rating);
     if (confirmed) {
-      const revDoc = doc(db, "reviews", id);
-      await deleteDoc(revDoc);
+      const userRevRef = doc(db, "profile/" + uid + "/reviews", revID);
+      const stallRevRef = doc(db, "eateries/" + eateryID + "/Stalls/" + stallID + "/reviews", revID);
+      const delRef = ref(storage, revpic);
+      await deleteObject(delRef);
+      await deleteDoc(userRevRef);
+      await deleteDoc(stallRevRef);
       window.location.reload();
     }
   }
@@ -70,7 +76,7 @@ function Reviews(props) {
           return (<div key={rev.id}>
             <Review 
               deleteRev={deleteRev}
-              updateRev={`/updatereview/${rev.id}`}
+              updateRev={`/updatereview/${rev.id}/${rev.EateryID}/${rev.StallID}/${rev.UserID}`}
               id={rev.id}
               poster={rev.Poster}
               content={rev.Content}
@@ -80,6 +86,9 @@ function Reviews(props) {
               eatery={rev.Eatery}
               stall={rev.Stall}
               revpic={rev.RevPic}
+              eateryID={rev.EateryID}
+              stallID={rev.StallID}
+              uid={rev.UserID}
             />
           </div>);
         })}

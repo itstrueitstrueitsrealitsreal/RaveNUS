@@ -50,7 +50,8 @@ function Review(props) {
                 <Link to={props.updateRev}>Edit</Link>
               </Button>
               {/* delete the review  */}
-              <Button onClick={() => props.deleteRev(props.id, props.content, props.rating)}>
+              <Button onClick={() => props.deleteRev(props.id, props.content, 
+                  props.rating, props.uid, props.eateryID, props.stallID, props.eatery, props.stall, props.revpic)}>
                 Delete
               </Button>
             </Card.Body>

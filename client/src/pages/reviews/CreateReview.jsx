@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { db, storage } from "../../components/firebase";
-import { doc, setDoc, getDoc, collection } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
 import Rating from '@mui/material/Rating';
 import { v4 } from "uuid";
@@ -130,7 +130,9 @@ function CreateReview(props) {
           Eatery: loc.name,
           Stall: stall.name,
           Poster: user.Username,
-          RevPic: newRev.RevPic
+          RevPic: newRev.RevPic,
+          EateryID: locID,
+          StallID: stallID
         }
         // add review to stall
         await setDoc(doc(db, stallPath, id), revToUpload);

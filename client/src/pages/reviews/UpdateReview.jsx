@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
-import UserID from "../../components/auth/UserID";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../components/firebase";
-import { Button, Form } from "react-bootstrap";
+import { db, storage } from "../../components/firebase";
+import { Button, Form, Card } from "react-bootstrap";
 import Rating from '@mui/material/Rating';
+import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
+import { v4 } from "uuid";
+import Input from "../../components/Input";
 
 function UpdateReview(props) {
   console.log("Update Review..");
@@ -17,12 +19,18 @@ function UpdateReview(props) {
   }
 
   // current userID
-  const uid = UserID();
-
-  // review id
   const location = useLocation();
+  const uid = location.pathname.split("/")[5];
+  // review id
   const revID = location.pathname.split("/")[2];
-  const revRef = doc(db, "reviews", revID);
+  // eatery id
+  const eateryID = location.pathname.split("/")[3];
+  // stall id
+  const stallID = location.pathname.split("/")[4];
+
+  // review references
+  const userRevRef = doc(db, "profile/" + uid + "/reviews", revID);
+  const stallRevRef = doc(db, "eateries/" + eateryID + "/Stalls/" + stallID + "/reviews", revID);
 
   // review states
   const [rev, setRev] = useState({
@@ -32,17 +40,32 @@ function UpdateReview(props) {
     Time: new Date(Date.now()),
     UserID: uid
   });
-  const [oldRev, setOldRev] = useState({});
+  const [oldRev, setOldRev] = useState({
+    UserID: "not retrieved"
+  });
 
   // retrive old review
   useEffect(() => {
     const getRev = async () => {
-      const doc = await getDoc(revRef);
+      const doc = await getDoc(userRevRef);
       setRev(doc.data());
       setOldRev(doc.data());
     }
     getRev();
   }, []);
+
+  // retrieve old review pic
+  const [revPicURL, setRevPicURL] = useState("");
+  const revURL = async (name) => {
+    const urlRef = ref(storage, name)
+    const url = await getDownloadURL(urlRef)
+    setRevPicURL(url.toString());
+  }
+  if (oldRev.UserID !== "not retrieved") {
+    console.log("old review retrieved")
+    console.log(oldRev)
+    revURL(oldRev.RevPic);
+  }
 
   // new review state
   function handleRev(event) {
@@ -77,9 +100,11 @@ function UpdateReview(props) {
   const updateRev = async () => {
     const confirmed = window.confirm("Are you sure you want to Update this Review?\n"
         + "\n  OLD:"
+        + "\n    Eatery: " + oldRev.Eatery + "\n    Stall: " + oldRev.Stall
         + "\n    Content: " + oldRev.Content + "\n    Rating: " + oldRev.Rating
         + "\n"
         + "\n  NEW:"
+        + "\n    Eatery: " + oldRev.Eatery + "\n    Stall: " + oldRev.Stall
         + "\n    Content: " + rev.Content + "\n    Rating: " + rev.Rating);
     if (confirmed) {
       const newFields = {
@@ -87,11 +112,79 @@ function UpdateReview(props) {
         Content: rev.Content,
         Rating: rev.Rating,
         UserID: uid,
-        Time: new Date(Date.now())
+        Time: new Date(Date.now()),
+        Eatery: oldRev.Eatery,
+        Stall: oldRev.Stall,
+        StallID: oldRev.StallID,
+        EateryID: oldRev.EateryID,
+        RevPic: rev.RevPic
       };
-      await updateDoc(revRef, newFields);
+      await updateDoc(userRevRef, newFields);
+      await updateDoc(stallRevRef, newFields);
       navigateToReviews();
     }
+  };
+
+  // new image
+  const [newImage, setNewImage] = useState(null);
+  const [newUploadLoc, setNewUploadLoc] = useState("");
+  function handleImage(event) {
+    setNewImage(event.target.files[0]);
+    const a = `ReviewPictures/${v4()}`
+    setNewUploadLoc(a)
+    setRev(prevRev => {
+      return {
+        ...prevRev,
+        RevPic: a
+      }
+    });
+  }
+  const uploadImage = () => {
+    if (newImage === null) {
+      setRev(prevRev => {
+        return {
+          ...prevRev,
+          RevPic: oldRev.RevPic
+        }
+      });
+    } else {
+      const uploadRef = ref(storage, newUploadLoc);
+      uploadBytes(uploadRef, newImage).then(() => {
+        console.log("image uploaded " + newUploadLoc);
+      })
+    }
+  }
+
+  // remove image from firestore
+  const removeFirestoreImage = async () => {
+    const delRef = ref(storage, oldRev.RevPic);
+    await deleteObject(delRef);
+  }
+
+  // update function
+  function editAll() {
+    if (newImage !== null) {
+      uploadImage();
+      removeFirestoreImage();
+    }
+    updateRev();
+  }
+
+  // remove review picture
+  const removeImageRef = async () => {
+    const confirmed = window.confirm("Are you sure you want to Remove your Review's Picture?");
+    if (confirmed) {
+      const newFields = {
+        RevPic: ""
+      };
+      await updateDoc(userRevRef, newFields);
+      await updateDoc(stallRevRef, newFields);
+    }
+  }
+  function removeImage() {
+    removeImageRef();
+    removeFirestoreImage();
+    navigateToReviews();
   }
 
   // Page content
@@ -99,19 +192,23 @@ function UpdateReview(props) {
     <div>
       <div>
       <h1>Edit Review</h1>
+        <Card className="my-2">
+          <Card.Body>
+            {/* eatery */}
+            <Card.Text>
+              {"Eatery: " + oldRev.Eatery}
+            </Card.Text>
+            {/* stall */}
+            <Card.Text>
+              {"Stall: " + oldRev.Stall}
+            </Card.Text>
+            {/* image */}
+            <Card.Img variant="top" src={revPicURL} alt="" />
+          </Card.Body>
+        </Card>
+        <Button onClick={removeImage}>Remove Review Picture</Button>
         <Form>
-          <Form.Group 
-            className="mb-3" >
-            <Form.Label>Name:</Form.Label>
-            <Form.Control 
-              type="Poster" 
-              placeholder="Name"
-              name="Poster" 
-              value={rev.Poster}
-              onChange={handleRev} 
-            />
-          </Form.Group>
-
+          {/* content */}
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Type your review here:</Form.Label>
             <Form.Control 
@@ -122,7 +219,7 @@ function UpdateReview(props) {
               placeholder="Content" 
               onChange={handleRev}/>
           </Form.Group>
-          <Form.Label>Rating:</Form.Label> <br/>
+          {/* rating */}
           <Rating 
             name="Rating"
             type="number"
@@ -130,11 +227,16 @@ function UpdateReview(props) {
             value={rev.Rating}
             onClick={handleRating}
           />
+          {/* new image */}
+          <Form.Group>
+            <Form.Label>Change Review Picture:</Form.Label>
+            <Input type="file" onChange={handleImage}>here</Input>
+          </Form.Group>
           <br />
           <Button 
             className="btn btn-primary btn-lg px-4 gap-2" 
             variant="primary" 
-            onClick={updateRev}>
+            onClick={editAll}>
             Update Review
           </Button>
         </Form>
