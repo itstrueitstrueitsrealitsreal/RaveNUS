@@ -1,4 +1,4 @@
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, getDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db, auth, authForFirebaseUI, storage } from "../../components/firebase";
 import Navbar from "../../components/Navbar";
@@ -24,22 +24,42 @@ function Reviews(props) {
     }
   })
 
+  // check if user has created a profile
+  const [callAlert, setCallAlert] = useState(false);
+  const checkUser = async (userid) => {
+    try {
+      console.log("userid trying: " +uids)
+      const documentRef = doc(db, "profile", userid);
+      const documentSnapshot = await getDoc(documentRef);
+      if (documentSnapshot.exists()) {
+        console.log("document exists");
+      } else {
+        console.log("document doesnt exist");
+        setCallAlert(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  if (uids !== null) {
+    checkUser(uids);
+  }
+
   // Read db 
   const [revs, setRevs] = useState([]);
   const path = "profile/" + uids + "/reviews";
   
   useEffect(() => {
     const getRevs = async () => {
-      console.log("Reviews getRev called");
-      const data = await getDocs(collection(db, path));
-      const allRevs = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
-      setRevs(allRevs);
-      setLoading(false);
+        // getting reviews
+        console.log("Reviews getRev called");
+        const data = await getDocs(collection(db, path));
+        const allRevs = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
+        setRevs(allRevs);
+        setLoading(false);
     }
     getRevs();
   }, [uids]);
-  
-  
 
   // delete review
   const deleteRev = async (revID, content, rating, uid, eateryID, stallID, eatery, stall, revpic) => {
@@ -63,10 +83,15 @@ function Reviews(props) {
       <h1>REVIEWS PAGE</h1>
 
       {/* add new review  */}
-      <Button className="btn btn-light">
+      {callAlert ? 
+      <div>
+        <h2>Oops! You have yet to Create a Profile!</h2>
+        <p>Create a Profile from the Profile Page to start creating reviews!</p>
+      </div> 
+      : <Button className="btn btn-light">
         <Link to={`/cr/${uids}`}>Create New Review</Link>
-      </Button>
-
+      </Button>}
+      
       {/* Reviews */}
       {/* uses getDocs  */}
       <div>
