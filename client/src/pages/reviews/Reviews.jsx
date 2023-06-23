@@ -81,6 +81,7 @@ function Reviews(props) {
   const cont = (
     <div>
       <h1>REVIEWS PAGE</h1>
+      <br />
 
       {/* add new review  */}
       {callAlert ? 
@@ -91,6 +92,8 @@ function Reviews(props) {
       : <Button className="btn btn-light">
         <Link to={`/cr/${uids}`}>Create New Review</Link>
       </Button>}
+      <br />
+      <br />
       
       {/* Reviews */}
       {/* uses getDocs  */}

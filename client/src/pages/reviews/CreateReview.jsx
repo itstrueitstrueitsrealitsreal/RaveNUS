@@ -161,7 +161,13 @@ function CreateReview(props) {
     <div>
       <div>
         <h1>Create a new review!</h1>
+        <br />
         <h2>Step 3: Write your Review!</h2>
+        <br />
+        <h3>Eatery: {loc.name}</h3>
+        <br />
+        <h3>Stall: {stall.name}</h3>
+        <br />
         <Form>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Type your review here:</Form.Label>
@@ -200,6 +206,8 @@ function CreateReview(props) {
         <Link to={`/cr/${uid}/${locID}`}>Back</Link>
       </Button>
 
+      <br />
+      <br />
       <div>
         <Button variant="primary" onClick={navigateToReviews}>Cancel</Button>
       </div>

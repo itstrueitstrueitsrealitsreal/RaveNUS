@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { db } from "../../components/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
 import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 
@@ -21,6 +21,8 @@ export default function CRStall() {
   // locID
   const locID = location.pathname.split("/")[3];
 
+  // location
+  const [eatery, setEatery] = useState({});
   // stalls
   const [stalls, setStalls] = useState([]);
   const stallsCollectionRef = collection(db, "eateries/" + locID + "/Stalls");
@@ -34,6 +36,10 @@ export default function CRStall() {
         id: doc.id
       }));
       setStalls(allStalls);
+      console.log("retrieving location");
+      const locRef = doc(db, "eateries/" + locID);
+      const loc = await getDoc(locRef);
+      setEatery(loc.data());
     }
     getStalls();
   }, []);
@@ -45,7 +51,11 @@ export default function CRStall() {
   const cont = (
     <div>
       <h1>Create a New Review!</h1>
+      <br />
       <h2>Step 2: Select an Stall!</h2>
+      <br />
+      <h3>Eatery: {eatery.name}</h3>
+      <br />
       <Form>
         <Form.Group>
         <Form.Label>Stall</Form.Label>
@@ -57,21 +67,23 @@ export default function CRStall() {
             onChange={(event) => {setStallID(event.target.value)}}
           >
           {stalls.map((stall) => {
-            return <MenuItem value={stall.id}>{stall.name}</MenuItem>
+            return <MenuItem key={stall.id} value={stall.id}>{stall.name}</MenuItem>
           })}
           </Select>
         </FormControl>
         </Form.Group>
 
+        <br />
+        <Button className="btn btn-light">
+          <Link to={`/cr/${uid}`}>Back</Link>
+        </Button>
         <Button className="btn btn-light">
           <Link to={`/cr/${uid}/${locID}/${stallID}`}>Next</Link>
         </Button>
       </Form>    
 
-      <Button className="btn btn-light">
-        <Link to={`/cr/${uid}`}>Back</Link>
-      </Button>
-
+      <br />
+      <br />
       <div>
         <Button variant="primary" onClick={navigateToReviews}>Cancel</Button>
       </div>

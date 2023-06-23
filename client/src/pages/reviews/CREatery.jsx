@@ -43,7 +43,9 @@ export default function CREatery() {
   const cont = (
     <div>
       <h1>Create a New Review!</h1>
+      <br />
       <h2>Step 1: Select an Eatery!</h2>
+      <br />
       <Form>
         <Form.Group>
         <Form.Label>Eatery</Form.Label>
@@ -61,10 +63,13 @@ export default function CREatery() {
         </FormControl>
         </Form.Group>
 
+        <br />
         <Button className="btn btn-light">
           <Link to={`/cr/${uid}/${locID}`}>Next</Link>
         </Button>
-      </Form>    
+      </Form>
+
+      <br />  
 
       <div>
         <Button variant="primary" onClick={navigateToReviews}>Cancel</Button>
