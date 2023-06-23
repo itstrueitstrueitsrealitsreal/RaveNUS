@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { db, storage } from "../../components/firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, getDocs, collection, updateDoc } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
 import Rating from '@mui/material/Rating';
 import { v4 } from "uuid";
@@ -37,12 +37,12 @@ function CreateReview(props) {
   useEffect(() => {
     const getItems = async () => {
       const locDoc = await getDoc(doc(db, "eateries", locID));
-      // console.log(locDoc)
       setLoc(locDoc.data());
       const stallDoc = await getDoc(doc(db, "eateries/" + locID + "/Stalls/", stallID));
       setStall(stallDoc.data());
       const userDoc = await getDoc(doc(db, "profile", uid));
       setUser(userDoc.data());
+      
     }
     getItems();
   }, []);
@@ -60,7 +60,6 @@ function CreateReview(props) {
   function handleRev(event) {
     const { name, value } = event.target;
     console.log("handling rev...");
-    console.log(typeof(value));
 
     setNewRev(prevRev => {
       return {
@@ -145,6 +144,23 @@ function CreateReview(props) {
           Time: new Date(Date.now()),
           RevPic: ""
         });
+        // get stall reviews
+        const stallData = await getDocs(collection(db, stallPath));
+        const allRevs = stallData.docs.map((doc) => ({
+          key: doc.id, ...doc.data(), id: doc.id
+        }));
+        // if stall has at least 1 review, update rating
+        if (allRevs.length > 0) {
+          console.log("updating stall rating")
+          const sum = allRevs.reduce((acc, item) => {
+            return acc + item.Rating;
+          }, 0);
+          const avgRating = sum / allRevs.length;
+          const newFields = {
+            rating: avgRating
+          };
+          await updateDoc(doc(db, "eateries/" + locID + "/Stalls/", stallID), newFields);
+        }
         navigateToReviews(); 
       }
     }

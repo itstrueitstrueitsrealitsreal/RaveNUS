@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { getDoc, doc, updateDoc, collection, getDocs } from "firebase/firestore";
 import { db, storage } from "../../components/firebase";
 import { Button, Form, Card } from "react-bootstrap";
 import Rating from '@mui/material/Rating';
@@ -31,6 +31,9 @@ function UpdateReview(props) {
   // review references
   const userRevRef = doc(db, "profile/" + uid + "/reviews", revID);
   const stallRevRef = doc(db, "eateries/" + eateryID + "/Stalls/" + stallID + "/reviews", revID);
+  // paths
+  const stallRevsPath = "eateries/" + eateryID + "/Stalls/" + stallID + "/reviews";
+  const stallPath = "eateries/" + eateryID + "/Stalls/";
 
   // review states
   const [rev, setRev] = useState({
@@ -121,6 +124,23 @@ function UpdateReview(props) {
       };
       await updateDoc(userRevRef, newFields);
       await updateDoc(stallRevRef, newFields);
+      // get stall reviews
+      const stallData = await getDocs(collection(db, stallRevsPath));
+      const allRevs = stallData.docs.map((doc) => ({
+        key: doc.id, ...doc.data(), id: doc.id
+      }));
+      // update stall rating
+      if (allRevs.length > 0) {
+        console.log("updating stall rating")
+        const sum = allRevs.reduce((acc, item) => {
+          return acc + item.Rating;
+        }, 0);
+        const avgRating = sum / allRevs.length;
+        const newFields = {
+          rating: avgRating
+        };
+        await updateDoc(doc(db, stallPath, stallID), newFields);
+      }
       navigateToReviews();
     }
   };
