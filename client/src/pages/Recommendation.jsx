@@ -14,20 +14,10 @@ import Spinner from 'react-bootstrap/Spinner';
 function Recommendation(props) {
   console.log("Recommendation Page called");
 
+  // page navigation
   const navigate = useNavigate();
-
-  const eateryCollection = "eateries"
-
   const navigateToNewRec = () => {
       navigate('/recommendation');
-  }
-
-  const findEatery = async (id) => {
-    if (id) {
-      const d = await getDoc(doc(db, eateryCollection, id));
-      console.log(d.data());
-      return d.data();
-    }
   }
 
   // Create a Firestore reference
@@ -38,7 +28,7 @@ function Recommendation(props) {
 
   // Create a GeoCollection reference
   const geocollection = GeoFirestore.collection('eateries');
-
+  
   const [userLocation, setUserLocation] = useState({ latitude: null, longitude: null });
 
   const [location, setLocation] = useState(null);
@@ -74,43 +64,76 @@ function Recommendation(props) {
 //   coordinates: new firebase.firestore.GeoPoint(Number(1.29455), Number(103.774223))
 // })
 
-    // Create a GeoQuery based on a location
-    const query = geocollection.near({ 
-      center: new firebase.firestore.GeoPoint(Number(userLocation.latitude), Number(userLocation.longitude)), radius: 600 
-    });
-    // Get query (as Promise)
-    query.get().then((value) => {
-      // All GeoDocument returned by GeoQuery, like the GeoDocument added above
-      console.log(value.docs);
-      return value.docs;
-    }).then((x) => {
-      return x.sort(
-        (e1, e2) => {
-          return e1.distance - e2.distance;
-        }
-      );
-    }).then((x) => {
-      if (x[0]) {
-        // obtain eatery id
-        console.log(x[0].id)
-        return x[0].id;
+  // get Eatery
+  const findEatery = async (id) => {
+    if (id) {
+      const d = await getDoc(doc(db, "eateries", id));
+      return {...d.data(), id: d.id};
+    }
+  }
+
+  // Stall recommendation
+  const [recStalls, setRecStalls] = useState(null);
+  const findStalls = async (id) => {
+    if (id) {
+      const stallsPath = "eateries/" + id + "/Stalls/";
+      const stallsData = await getDocs(collection(db, stallsPath));
+      const allStalls = stallsData.docs.map((doc) => ({
+        key: doc.id, ...doc.data(), id: doc.id
+      }));
+      // filter out the stalls with either no rating or rating >= 3
+      const stallsWithoutRating = allStalls.filter((s) => s.rating === null);
+      const stallsWithRating = allStalls.filter((s) => s.rating !== null)
+          .filter((s) => s.rating >= 3);
+      const recStalls = [...stallsWithoutRating, ...stallsWithRating];
+      return recStalls;
+    }
+  }
+
+  // Create a GeoQuery based on a location
+  const query = geocollection.near({ 
+    center: new firebase.firestore.GeoPoint(Number(userLocation.latitude), Number(userLocation.longitude)), radius: 600 
+  });
+  // Get query (as Promise)
+  query.get().then((value) => {
+    // All GeoDocument returned by GeoQuery, like the GeoDocument added above
+    console.log(value.docs);
+    return value.docs;
+  }).then((x) => {
+    return x.sort(
+      (e1, e2) => {
+        return e1.distance - e2.distance;
       }
-    }).then(findEatery)
-    .then((x) => {
-      if (x) {
-        if (isLoading) {
-          setLoading(false);
-          console.log(x);
-          setLocation( {
-            name: x.name,
-            coords: {
-              lat: Number(x.coordinates._lat),
-              lng: Number(x.coordinates._long)
-            }
-          });
-        }
+    );
+  }).then((x) => {
+    if (x[0]) {
+      // obtain eatery id
+      console.log(x[0].id)
+      return x[0].id;
+    }
+  }).then(findEatery)
+  .then((eatery) => {
+    if (eatery) {
+      if (isLoading) {
+        setLocation( {
+          name: eatery.name,
+          coords: {
+            lat: Number(eatery.coordinates._lat),
+            lng: Number(eatery.coordinates._long)
+          }
+        });
       }
-    });
+      console.log("eatery id:  " + eatery.id)
+      return eatery.id
+    }
+  }).then(findStalls).then((stalls) => {
+    if (stalls) {
+      if (isLoading) {
+        setRecStalls(stalls);
+        setLoading(false);
+      }
+    }
+  });
 
   const ln = {
     name: 'Computing Drive',
@@ -122,7 +145,8 @@ function Recommendation(props) {
     <div>
       <h1>{location.name}</h1>
       <MapComponent location={location.coords}/>
-      <Rec recPage={navigateToNewRec}/>
+      <br />
+      <Rec stalls={recStalls} recPage={navigateToNewRec}/>
     </div> )
 
   return <Navbar content={cont} />
