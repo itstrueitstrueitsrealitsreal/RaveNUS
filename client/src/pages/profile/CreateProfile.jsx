@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import UserID from "../../components/auth/UserID";
 import { useNavigate } from "react-router-dom";
 import { db, storage } from "../../components/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
 import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
 import Input from "../../components/Input";
@@ -81,12 +81,12 @@ function CreateProfile() {
   // handle image
   function handleImage(event) {
     setImage(event.target.files[0]);
-    const a = `ProfilePhotos/${v4()}`
-    setUploadLoc(a)
+    const loc = `ProfilePhotos/${v4()}`;
+    setUploadLoc(loc)
     setNewProf(prevProf => {
       return {
         ...prevProf,
-        ProfPic: a,
+        ProfPic: loc,
         UserID: uid
       }
     });
@@ -103,9 +103,6 @@ function CreateProfile() {
     })
   }
 
-  // profile collection
-  const profileCollectionRef = collection(db, "profile");
-
   // add new profile to db
   const addProfInfo = async () => {
     if (newProf.Username === "") {
@@ -116,7 +113,7 @@ function CreateProfile() {
         if (confirmed) {
           console.log("adding profile...");
           delete(newProf.undefined);
-          await addDoc(profileCollectionRef, newProf);
+          await setDoc(doc(db, "profile", uid), newProf);
           setNewProf({
             UserID: uid,
             Username: "",

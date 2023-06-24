@@ -1,22 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 // import HeroImage from "../components/HeroImage";
 import CenteredHero from "../components/CenteredHero";
 import Navbar from "../components/Navbar";
-import { useNavigate } from "react-router-dom";
+import { auth, authForFirebaseUI } from "../components/firebase";
 
 function Home(props) {
   console.log("Home Page called");
 
-  const navigate = useNavigate();
+  // current userID
+  const [uid, setUid] = useState(null);
+  auth.onAuthStateChanged(function(user) {
+    if (user) {
+      setUid(authForFirebaseUI.currentUser.uid);
+    } else {
+      window.location.reload();
+    }
+  })
 
-  const navigateToNewRec = () => {
-      navigate('/recommendation');
-  }
-
+  // Page content
   const cont = 
       <div>
         {/* <HeroImage /> */}
-        <CenteredHero recPage={navigateToNewRec} />
+        <CenteredHero recPage={`/recommendation/${uid}`} />
       </div>;
 
   return <Navbar content={cont} />

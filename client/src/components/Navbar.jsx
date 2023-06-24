@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 function Navbar(props) {
   console.log("Navbar called");
 
+  // page navigation
   const navigate = useNavigate();
 
   const navigateToHome = () => {

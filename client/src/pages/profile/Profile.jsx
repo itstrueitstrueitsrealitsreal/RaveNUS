@@ -44,8 +44,8 @@ function Profile(props) {
   // retrieve profile pic url
   const [profPicURL, setProfPicURL] = useState("");
   const profileURL = async (name) => {
-    const urlRef = ref(storage, name)
-    const url = await getDownloadURL(urlRef)
+    const urlRef = ref(storage, name);
+    const url = await getDownloadURL(urlRef);
     setProfPicURL(url.toString());
   }
 

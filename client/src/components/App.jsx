@@ -18,6 +18,8 @@ import Recommendation from "../pages/Recommendation";
 import Start from '../pages/start/Start';
 import UpdateReview from '../pages/reviews/UpdateReview';
 import CreateReview from '../pages/reviews/CreateReview';
+import CREatery from '../pages/reviews/CREatery';
+import CRStall from '../pages/reviews/CRStall';
 import ChangePassword from '../pages/profile/ChangePassword';
 import ResetPassword from '../pages/start/ResetPassword';
 import CreateProfile from '../pages/profile/CreateProfile';
@@ -55,9 +57,11 @@ function App() {
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/sync" element={<Sync />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/recommendation" element={<Recommendation />} />
-            <Route path="/updatereview/:id" element={<UpdateReview />} />
-            <Route path="/createreview" element={<CreateReview />} />
+            <Route path="/recommendation/:uid" element={<Recommendation />} />
+            <Route path="/updatereview/:revid/:eatid/:stallid/:uid" element={<UpdateReview />} />
+            <Route path="/cr/:id" element={<CREatery />} />
+            <Route path="/cr/:uid/:locid" element={<CRStall />} />
+            <Route path="/cr/:uid/:locid/:stallid" element={<CreateReview />} />
             <Route path="/changepassword" element={<ChangePassword />} />
             <Route path="/resetpassword" element={<ResetPassword />} />
             <Route path="/createprofile" element={<CreateProfile />} />

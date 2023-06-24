@@ -29,13 +29,13 @@ const Auth = (props) => {
             }
     }, []);
 
-        const userSignOut = () => {
-            signOut(auth).then(() => {
-                console.log('signed out');
-                alert("Successfully signed out. Redirecting you to start page...");
-                navigateToStart();
-            }).catch(error => console.log(error));
-        };
+    const userSignOut = async () => {
+        signOut(auth).then(() => {
+            console.log('signed out');
+            alert("Successfully signed out. Redirecting you to start page...");
+        }).catch(error => console.log(error));
+        navigateToStart();
+    };
 
   return (
     <div>

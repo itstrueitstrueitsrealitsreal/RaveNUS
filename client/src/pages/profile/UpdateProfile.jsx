@@ -157,8 +157,10 @@ function UpdateProfile() {
   }
 
   function editAll() {
-    uploadImage();
-    removeImageFirebase()
+    if (newImage !== null) {
+      uploadImage();
+      removeImageFirebase();
+    }
     editProfile();
   }
 
