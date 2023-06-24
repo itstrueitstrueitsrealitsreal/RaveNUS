@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Review from "../Review";
 import Rating from '@mui/material/Rating';
 

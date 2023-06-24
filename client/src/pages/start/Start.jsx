@@ -15,8 +15,7 @@ function Start() {
   }
 
   return (
-  <div>
-    <h1>START PAGE</h1>
+  <div className="startDiv">
     <h1>Welcome to RaveNUS!</h1>
     <Button className="mx-4" onClick={navigateToSignIn}>Sign In</Button>
     <Button onClick={navigateToSignUp}>Register</Button>
