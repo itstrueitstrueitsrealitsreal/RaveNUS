@@ -7,25 +7,10 @@ import { db, auth, authForFirebaseUI, storage } from "../../components/firebase"
 function Rec(props) {
   console.log("Rec Component called");
 
-  // const stalls = props.stalls;
-  // const randomIndex = Math.floor(Math.random() * stalls.length);
-  // const recStall = stalls[randomIndex];
-  const recStall = props.stalls;
-
-  // const [revs, setRevs] = useState([]);
-  // const path = "eateries/" + recStall.eateryID + "/Stalls/" + recStall.id + "/reviews";
-  
-  // useEffect(() => {
-  //   const getRevs = async () => {
-  //       // getting reviews
-  //       console.log("Reviews getRev called");
-  //       const data = await getDocs(collection(db, path));
-  //       const allRevs = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
-  //       setRevs(allRevs);
-  //       // setLoading(false);
-  //   }
-  //   getRevs();
-  // }, []);
+  // Stall
+  const recStall = props.stall;
+  // Reviews to show
+  const revs = props.revs.slice(0, props.limit);
 
   return <div>
     <h1>Recommendation: {recStall.name}</h1>
@@ -43,7 +28,8 @@ function Rec(props) {
     <br />
 
     <h2>Stall Reviews</h2>
-    {props.revs.map((rev, idx) => {
+    <p>limit: {props.limit}</p>
+    {revs.map((rev, idx) => {
         const date = new Date(rev.Time.seconds * 1000);
         return (<div key={rev.id}>
           <Review 

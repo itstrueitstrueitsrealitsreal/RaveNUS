@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 export default function CenteredHero(props) {
   console.log("CenteredHero Component called");
@@ -18,7 +20,7 @@ export default function CenteredHero(props) {
         <div className="col-lg-6 mx-auto">
           <p className="lead mb-4">-Aristophenes</p>
           <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <button onClick={props.recPage} type="button" className="btn btn-primary btn-lg px-4 gap-3">Generate Recommendation</button>
+            <Button className="btn btn-light"><Link to={props.recPage}>Generate Recommendation</Link></Button>
           </div>
         </div>
       </div>

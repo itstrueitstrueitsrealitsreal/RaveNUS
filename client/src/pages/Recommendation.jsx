@@ -10,6 +10,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import * as geofirestore from 'geofirestore';
 import Spinner from 'react-bootstrap/Spinner';
+import { Button } from "react-bootstrap";
 
 function Recommendation(props) {
   console.log("Recommendation Page called");
@@ -99,7 +100,6 @@ function Recommendation(props) {
     const data = await getDocs(collection(db, path));
     const allRevs = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
     return allRevs;
-    // setLoading(false);
   }
 
   // Create a GeoQuery based on a location
@@ -142,7 +142,6 @@ function Recommendation(props) {
     if (stalls) {
       if (isLoading) {
         setRecStalls(stalls);
-        // setLoading(false);
         const randomIndex = Math.floor(Math.random() * stalls.length);
         const recStall = stalls[randomIndex];
         setRecStall(recStall);
@@ -165,18 +164,18 @@ function Recommendation(props) {
     lng: 103.77255175825597
   }
 
-  // function getRecStall() {
-  //   const randomIndex = Math.floor(Math.random() * recStalls.length);
-  //   const recStall = recStalls[randomIndex];
-  //   return recStall;
-  // }
+  // number of reviews limit, default 10
+  const [limit, setLimit] = useState(10);
 
+  // Page content
   const cont = isLoading ? <Spinner /> : (
     <div>
       <h1>{location.name}</h1>
       <MapComponent location={location.coords}/>
       <br />
-      <Rec stalls={recStall} recPage={navigateToNewRec} revs={revs} />
+      {/* Increase number of reviews by 10 */}
+      <Button onClick={() => {setLimit(limit + 10)}}>load more reviews</Button>
+      <Rec stall={recStall} recPage={navigateToNewRec} revs={revs} limit={limit}  />
     </div> )
 
   return <Navbar content={cont} />

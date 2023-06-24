@@ -57,7 +57,7 @@ function App() {
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/sync" element={<Sync />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/recommendation" element={<Recommendation />} />
+            <Route path="/recommendation/:uid" element={<Recommendation />} />
             <Route path="/updatereview/:revid/:eatid/:stallid/:uid" element={<UpdateReview />} />
             <Route path="/cr/:id" element={<CREatery />} />
             <Route path="/cr/:uid/:locid" element={<CRStall />} />
