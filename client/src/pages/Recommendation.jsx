@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Rec from "../components/rec/Rec";
 import Navbar from "../components/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
 import { db } from "../components/firebase";
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
@@ -19,8 +19,13 @@ function Recommendation(props) {
   const navigate = useNavigate();
   const navigateToNewRec = () => {
       setLoading(true);
-      navigate('/recommendation');
+      const nav = "/recommendation/" + uid;
+      navigate(nav);
   }
+
+  // current userID
+  const url = useLocation();
+  const uid = url.pathname.split("/")[2];
 
   // Create a Firestore reference
   const firestore = firebase.firestore();
@@ -175,7 +180,7 @@ function Recommendation(props) {
       <br />
       {/* Increase number of reviews by 10 */}
       <Button onClick={() => {setLimit(limit + 10)}}>load more reviews</Button>
-      <Rec stall={recStall} recPage={navigateToNewRec} revs={revs} limit={limit}  />
+      <Rec stall={recStall} recPage={navigateToNewRec} revs={revs} limit={limit} viewerUID={uid}/>
     </div> )
 
   return <Navbar content={cont} />

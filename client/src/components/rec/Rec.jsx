@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Review from "../Review";
 import Rating from '@mui/material/Rating';
-import { collection, getDocs, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
-import { db, auth, authForFirebaseUI, storage } from "../../components/firebase";
 
 function Rec(props) {
   console.log("Rec Component called");
@@ -28,13 +26,12 @@ function Rec(props) {
     <br />
 
     <h2>Stall Reviews</h2>
-    <p>limit: {props.limit}</p>
     {revs.map((rev, idx) => {
         const date = new Date(rev.Time.seconds * 1000);
         return (<div key={rev.id}>
           <Review 
-            // deleteRev={deleteRev}
-            // updateRev={`/updatereview/${rev.id}/${rev.EateryID}/${rev.StallID}/${rev.UserID}`}
+            recPage={true}
+            updateRev={`/reviews`}
             id={rev.id}
             poster={rev.Poster}
             content={rev.Content}
@@ -47,6 +44,7 @@ function Rec(props) {
             eateryID={rev.EateryID}
             stallID={rev.StallID}
             uid={rev.UserID}
+            viewerUID={props.viewerUID}
           />
         </div>);
       })}

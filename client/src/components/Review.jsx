@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import Rating from '@mui/material/Rating';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from './firebase';
 
 function Review(props) {
+
+  // page navigation
+  const navigate = useNavigate();
+
   // retrieve review pic url
   const [picURL, setPicURL] = useState(null);
   const getURL = async () => {
@@ -45,15 +49,26 @@ function Review(props) {
               <Card.Subtitle className="mb-2 text-muted text-black-50">
                 {props.time}
               </Card.Subtitle>
-              {/* update the review  */}
-              <Button className="btn btn-light">
-                <Link to={props.updateRev}>Edit</Link>
-              </Button>
-              {/* delete the review  */}
-              <Button onClick={() => props.deleteRev(props.id, props.content, 
-                  props.rating, props.uid, props.eateryID, props.stallID, props.eatery, props.stall, props.revpic)}>
-                Delete
-              </Button>
+              {/* user can only update or delete the review if user created it */}
+              { props.viewerUID === props.uid ? (props.recPage === true ?
+                <Button onClick={() => {
+                  const confirmed = window.confirm("Update this Review?\nYou will be redirected to your Reviews Page");
+                  if (confirmed) {
+                    navigate(props.updateRev)
+                  }}}>Edit/Update
+                </Button> :
+                <div>
+                {/* update the review  */}
+                <Button className="btn btn-light">
+                  <Link to={props.updateRev}>Edit</Link>
+                </Button>
+                {/* delete the review  */}
+                <Button onClick={() => props.deleteRev(props.id, props.content, 
+                    props.rating, props.uid, props.eateryID, props.stallID, props.eatery, props.stall, props.revpic)}>
+                  Delete
+                </Button></div>) :
+                <></>
+              } 
             </Card.Body>
           </Card>
         </Col>

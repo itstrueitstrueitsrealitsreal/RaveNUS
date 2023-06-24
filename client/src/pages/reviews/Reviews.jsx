@@ -101,6 +101,7 @@ function Reviews(props) {
   const cont = (
     <div>
       <h1>REVIEWS PAGE</h1>
+      <h2>Your Reviews</h2>
       <br />
 
       {/* add new review  */}
@@ -123,6 +124,7 @@ function Reviews(props) {
           const date = new Date(rev.Time.seconds * 1000);
           return (<div key={rev.id}>
             <Review 
+              recPage={false}
               deleteRev={deleteRev}
               updateRev={`/updatereview/${rev.id}/${rev.EateryID}/${rev.StallID}/${rev.UserID}`}
               id={rev.id}
@@ -137,6 +139,7 @@ function Reviews(props) {
               eateryID={rev.EateryID}
               stallID={rev.StallID}
               uid={rev.UserID}
+              viewerUID={uids}
             />
           </div>);
         })}
