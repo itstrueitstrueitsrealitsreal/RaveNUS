@@ -17,6 +17,7 @@ function Recommendation(props) {
   // page navigation
   const navigate = useNavigate();
   const navigateToNewRec = () => {
+      setLoading(true);
       navigate('/recommendation');
   }
 
@@ -74,12 +75,13 @@ function Recommendation(props) {
 
   // Stall recommendation
   const [recStalls, setRecStalls] = useState(null);
+  const [recStall, setRecStall] = useState(null);
   const findStalls = async (id) => {
     if (id) {
       const stallsPath = "eateries/" + id + "/Stalls/";
       const stallsData = await getDocs(collection(db, stallsPath));
       const allStalls = stallsData.docs.map((doc) => ({
-        key: doc.id, ...doc.data(), id: doc.id
+        key: doc.id, ...doc.data(), id: doc.id, eateryID: id
       }));
       // filter out the stalls with either no rating or rating >= 3
       const stallsWithoutRating = allStalls.filter((s) => s.rating === null);
@@ -88,6 +90,16 @@ function Recommendation(props) {
       const recStalls = [...stallsWithoutRating, ...stallsWithRating];
       return recStalls;
     }
+  }
+  // get recStall reviews
+  const [revs, setRevs] = useState(null);
+  const getRevs = async (path) => {
+    // getting reviews
+    console.log("Reviews getRev called");
+    const data = await getDocs(collection(db, path));
+    const allRevs = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
+    return allRevs;
+    // setLoading(false);
   }
 
   // Create a GeoQuery based on a location
@@ -130,9 +142,21 @@ function Recommendation(props) {
     if (stalls) {
       if (isLoading) {
         setRecStalls(stalls);
+        // setLoading(false);
+        const randomIndex = Math.floor(Math.random() * stalls.length);
+        const recStall = stalls[randomIndex];
+        setRecStall(recStall);
+        return "eateries/" + recStall.eateryID + "/Stalls/" + recStall.id + "/reviews";
+      }
+    }
+  }).then(getRevs).then((revs) => {
+    if (revs) {
+      if (isLoading) {
+        setRevs(revs);
         setLoading(false);
       }
     }
+    setLoading(false);
   });
 
   const ln = {
@@ -141,12 +165,18 @@ function Recommendation(props) {
     lng: 103.77255175825597
   }
 
+  // function getRecStall() {
+  //   const randomIndex = Math.floor(Math.random() * recStalls.length);
+  //   const recStall = recStalls[randomIndex];
+  //   return recStall;
+  // }
+
   const cont = isLoading ? <Spinner /> : (
     <div>
       <h1>{location.name}</h1>
       <MapComponent location={location.coords}/>
       <br />
-      <Rec stalls={recStalls} recPage={navigateToNewRec}/>
+      <Rec stalls={recStall} recPage={navigateToNewRec} revs={revs} />
     </div> )
 
   return <Navbar content={cont} />
