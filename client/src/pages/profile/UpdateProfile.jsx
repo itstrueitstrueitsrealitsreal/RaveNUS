@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "../../components/firebase";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Card } from "react-bootstrap";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { Avatar } from "@mui/material";
 import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
@@ -190,7 +190,8 @@ function UpdateProfile() {
     <div>
       <div>
         <h1>Update Profile</h1>
-        <Avatar className="Avatar" alt={oldProf.Username} src={profPicURL}/>
+        {/* <Avatar className="Avatar" alt={oldProf.Username} src={profPicURL}/> */}
+        <Card.Img variant="top" src={profPicURL} alt={oldProf.Username} />
         <Button onClick={removeImage}>Remove Profile Picture</Button>
         <Form>
           <Form.Group 

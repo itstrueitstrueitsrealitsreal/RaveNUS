@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Auth from "../../components/auth/Auth";
 import Navbar from "../../components/Navbar";
 import { useNavigate, Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import UserID from "../../components/auth/UserID";
 import { db, storage } from "../../components/firebase";
 import { collection, getDocs } from "firebase/firestore";
@@ -69,7 +69,8 @@ function Profile(props) {
       <div>  {profiles.map((p) => {
           return (
             <div key={p.id}>
-              <Avatar className="Avatar" alt={p.Username} src={profPicURL}/>
+              {/* <Avatar className="Avatar" alt={p.Username} src={profPicURL}/> */}
+              <Card.Img variant="top" src={profPicURL} alt={p.Username} />
               <h2>Username: {p.Username}</h2>
               <h3>Halal: {p.Halal.toString()}</h3>
               <h3>Vegetarian: {p.Vegetarian.toString()}</h3>
