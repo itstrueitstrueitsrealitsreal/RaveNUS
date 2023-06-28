@@ -2,13 +2,16 @@
 A web application designed for students from the National University of Singapore (NUS) to provide meal recommendations on campus based on the user's timetable, which will be synced with [NUSMods](https://github.com/nusmodifications/nusmods), real-time data, and dietary preferences. It also indexes user reviews and uses them for further recommendations.
 
 ## Poster & Video
-- [Poster](https://drive.google.com/file/d/1iyXjW-vgu9QGRsBrjlbMNfMrBichI53U/view?usp=share_link)
-- [Video](https://drive.google.com/file/d/1QlU860tASkk8f7lwZbSN9x2e8DXlrKrV/view?usp=sharing) 
+- [Poster](https://drive.google.com/file/d/1y3zdpsc3U7sYwClRl1seiW_0rBFUI8nU/view?usp=sharing)
+- [Video](https://drive.google.com/file/d/1w5jOZK99BT8o4K9kTMXlCWADtkiZN99I/view?usp=drivesdk)
 ## Tech Stack
 This application is developed using React, Node, Bootstrap, Firebase, and Python.
 
 ## Documentation
-A more detailed documentation of our project can be found [here](https://docs.google.com/document/d/19NkIt3C7WZdKLojUQWhlJf7AswuNIgGGnAyUwSRe0hw/edit?usp=share_link).
+A more detailed documentation of our project can be found [here](https://docs.google.com/document/d/1SInExETdJZ6-ByH5sBxiKbVK95CZAfT1HESbNkwSk0M/edit?usp=sharing).
+
+## Deployed App
+You can try the deployed app for yourself, live [here](https://ravenus.vercel.app/)
 
 ## Running the application locally
 ### 1. Cloning the repository
