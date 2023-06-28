@@ -4,8 +4,9 @@ A web application designed for students from the National University of Singapor
 ## Poster & Video
 - [Poster](https://drive.google.com/file/d/1y3zdpsc3U7sYwClRl1seiW_0rBFUI8nU/view?usp=sharing)
 - [Video](https://drive.google.com/file/d/1w5jOZK99BT8o4K9kTMXlCWADtkiZN99I/view?usp=drivesdk)
+
 ## Tech Stack
-This application is developed using React, Node, Bootstrap, Firebase, and Python.
+This application is developed using React, Node, Bootstrap, Firebase, and Python.`
 
 ## Documentation
 A more detailed documentation of our project can be found [here](https://docs.google.com/document/d/1SInExETdJZ6-ByH5sBxiKbVK95CZAfT1HESbNkwSk0M/edit?usp=sharing).
