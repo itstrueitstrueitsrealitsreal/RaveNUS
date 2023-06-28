@@ -108,6 +108,10 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   margin-right: auto;
 }
 
+#syncPage img {
+  max-width: 200px;
+}
+
 .Avatar {
   margin-left: 30vw;
   min-width: 25vw;
