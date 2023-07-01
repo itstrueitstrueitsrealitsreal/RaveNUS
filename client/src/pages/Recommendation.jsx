@@ -79,6 +79,55 @@ function Recommendation(props) {
     }
   }
 
+  // get Eateries and User
+  const getEateriesAndUser = async (ids) => {
+    if (ids) {
+      const eateries = await ids.map(async (x) => {
+        const eatery = await findEatery(x.id);
+        return eatery;
+      });
+      const user = await getUser(uid);
+      return {eateries: eateries, user: user};
+    }
+  }
+
+  // get Halal and Veg
+  const getHalalAndVeg = async (info) => {
+    if (info) {
+      const halal = info.user.Halal;
+      const veg = info.user.Vegetarian;
+      console.log(halal)
+      console.log(veg)
+      const a = [...info.eateries]
+      console.log(a)
+      console.log(info.eateries.filter((e) => e.halal === halal))
+      const eateries = info.eateries.filter((e) => e.halal === halal).filter((e) => e.vegetarian === veg);
+      return {eateries: info.eateries, user:info.user};
+    }
+  }
+
+  // get User
+  const getUser = async (id) => {
+    if (id) {
+      const d = await getDoc(doc(db, "profile", id)); 
+      return {...d.data(), id: d.id};
+    }
+  }
+
+  // get Stalls
+  const getStalls = async (info) => {
+    if (info) {
+      console.log(info.user)
+      console.log(info.eateries)
+      const eateries = info.eateries;
+      const stalls = await eateries.map(async (x) => {
+        const s = await findStalls(x.id);
+        return s;
+      });
+      return {eateries: eateries, stalls: stalls, user: info.user};
+    }
+  }
+
   // Stall recommendation
   const [recStalls, setRecStalls] = useState(null);
   const [recStall, setRecStall] = useState(null);
@@ -116,21 +165,34 @@ function Recommendation(props) {
     // All GeoDocument returned by GeoQuery, like the GeoDocument added above
     console.log(value.docs);
     return value.docs;
-  }).then((x) => {
+  })
+  // sort eateries by distance from user
+  .then((x) => {
     return x.sort(
       (e1, e2) => {
         return e1.distance - e2.distance;
       }
     );
-  }).then((x) => {
-    if (x[0]) {
-      // obtain eatery id
-      console.log(x[0].id)
-      return x[0].id;
+  })
+  // obtain eateries and user
+  .then(getEateriesAndUser)
+  // check halal / veg
+  .then(getHalalAndVeg)
+  // obtain stalls
+  .then(getStalls)
+  
+
+  // })
+  .then((x) => {
+    if (x.eateries) {
+      console.log(x)
+      return x.eateries[0];
     }
-  }).then(findEatery)
+  })
+  // chosen closest eatery
   .then((eatery) => {
     if (eatery) {
+      console.log(eatery)
       if (isLoading) {
         setLocation( {
           name: eatery.name,
