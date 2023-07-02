@@ -269,6 +269,9 @@ function Recommendation(props) {
       <p>Either there are no stalls open currently, 
           or there are none open that fit your dietary requirements, 
           or the stalls available are not rated highly enough for us to consider recommending them to you!</p>
+      <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button onClick={navigateToNewRec} type="button" className="btn btn-primary btn-lg px-4 gap-3">Generate ANOTHER Recommendation</button>
+      </div>
     </div> :
     <div>
       <h1>{location.name}</h1>
