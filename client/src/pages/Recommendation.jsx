@@ -82,10 +82,11 @@ function Recommendation(props) {
   // get Eateries and User
   const getEateriesAndUser = async (ids) => {
     if (ids) {
-      const eateries = await ids.map(async (x) => {
-        const eatery = await findEatery(x.id);
-        return eatery;
-      });
+      const eateries = []
+      for (let i = 0; i < ids.length; i++) {
+        const eatery = await findEatery(ids[i].id);
+        eateries.push(eatery);
+      }
       const user = await getUser(uid);
       return {eateries: eateries, user: user};
     }
@@ -96,13 +97,18 @@ function Recommendation(props) {
     if (info) {
       const halal = info.user.Halal;
       const veg = info.user.Vegetarian;
-      console.log(halal)
-      console.log(veg)
-      const a = [...info.eateries]
-      console.log(a)
-      console.log(info.eateries.filter((e) => e.halal === halal))
-      const eateries = info.eateries.filter((e) => e.halal === halal).filter((e) => e.vegetarian === veg);
-      return {eateries: info.eateries, user:info.user};
+      var eateries = info.eateries;
+      if (halal) {
+        eateries = eateries.filter((e) => e.halal === halal);
+      }
+      if (veg) {
+        eateries = eateries.filter((e) => e.vegetarian === veg);
+      }
+      console.log(eateries)
+      // if (eateries[0]) {
+      //   throw new Error("No available eateries");
+      // }
+      return {eateries: eateries, user: info.user};
     }
   }
 
@@ -117,13 +123,12 @@ function Recommendation(props) {
   // get Stalls
   const getStalls = async (info) => {
     if (info) {
-      console.log(info.user)
-      console.log(info.eateries)
       const eateries = info.eateries;
-      const stalls = await eateries.map(async (x) => {
-        const s = await findStalls(x.id);
-        return s;
-      });
+      const stalls = [];
+      for (let i = 0; i < eateries.length; i++) {
+        const s = await findStalls(eateries[i].id);
+        stalls.push(s);
+      }
       return {eateries: eateries, stalls: stalls, user: info.user};
     }
   }
@@ -177,18 +182,37 @@ function Recommendation(props) {
   // obtain eateries and user
   .then(getEateriesAndUser)
   // check halal / veg
-  .then(getHalalAndVeg)
+  .then(getHalalAndVeg).catch((error) => {
+    console.log("No eateries available");
+    setLoading(false);
+  })
   // obtain stalls
   .then(getStalls)
   
 
   // })
-  .then((x) => {
-    if (x.eateries) {
-      console.log(x)
-      return x.eateries[0];
+  .then((info) => {
+    if (info.eateries.length !== 0) {
+      console.log(info)
+      var index = null;
+      for (let i = 0; i < info.eateries.length; i++) {
+        if (info.stalls[i].length !== 0) {
+          index = i;
+          break;
+        }
+      }
+      if (index !== null) {
+        return info.eateries[index];
+      } else {
+        setLoading(false)
+        return null;
+      }
     }
   })
+  // .catch((error) => {
+  //   console.log(error);
+  //   setLoading(false);
+  // })
   // chosen closest eatery
   .then((eatery) => {
     if (eatery) {
@@ -236,6 +260,10 @@ function Recommendation(props) {
 
   // Page content
   const cont = isLoading ? <Spinner /> : (
+    recStall === null ? 
+    <div>
+      <h1>No Recommendation</h1>
+    </div> :
     <div>
       <h1>{location.name}</h1>
       <MapComponent location={location.coords}/>
