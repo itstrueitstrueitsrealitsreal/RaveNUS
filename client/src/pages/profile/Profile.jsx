@@ -7,7 +7,6 @@ import UserID from "../../components/auth/UserID";
 import { db, storage } from "../../components/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
-import { Avatar } from "@mui/material";
 
 function Profile(props) {
   console.log("Profile Page called");

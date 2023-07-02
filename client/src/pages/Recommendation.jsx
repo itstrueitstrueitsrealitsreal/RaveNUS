@@ -104,10 +104,6 @@ function Recommendation(props) {
       if (veg) {
         eateries = eateries.filter((e) => e.vegetarian === veg);
       }
-      console.log(eateries)
-      // if (eateries[0]) {
-      //   throw new Error("No available eateries");
-      // }
       return {eateries: eateries, user: info.user};
     }
   }
@@ -124,10 +120,30 @@ function Recommendation(props) {
   const getStalls = async (info) => {
     if (info) {
       const eateries = info.eateries;
-      const stalls = [];
+      const halal = info.user.Halal;
+      const veg = info.user.Vegetarian;
+      var stalls = [];
       for (let i = 0; i < eateries.length; i++) {
         const s = await findStalls(eateries[i].id);
         stalls.push(s);
+      }
+      // current time
+      const d = new Date();
+      const day = d.getDay();
+      const hr = d.getHours();
+      const min = d.getMinutes();
+      const t = hr * 60 + min;
+      for (let i = 0; i < stalls.length; i++) {
+        // filter by Halal
+        if (halal) {
+          stalls[i] = stalls[i].filter((s) => s.halal === halal);
+        }
+        // filter by Vegetarian
+        if (veg) {
+          stalls[i] = stalls[i].filter((s) => s.vegetarian === veg);
+        }
+        // filter by Opening Hours
+        stalls[i] = stalls[i].filter((s) => t >= s.ophrs[day]).filter((s) => t <= s.ophrs[day + 7]);
       }
       return {eateries: eateries, stalls: stalls, user: info.user};
     }
@@ -147,7 +163,7 @@ function Recommendation(props) {
       const stallsWithoutRating = allStalls.filter((s) => s.rating === null);
       const stallsWithRating = allStalls.filter((s) => s.rating !== null)
           .filter((s) => s.rating >= 3);
-      const recStalls = [...stallsWithoutRating, ...stallsWithRating];
+      var recStalls = [...stallsWithoutRating, ...stallsWithRating];
       return recStalls;
     }
   }
@@ -182,64 +198,50 @@ function Recommendation(props) {
   // obtain eateries and user
   .then(getEateriesAndUser)
   // check halal / veg
-  .then(getHalalAndVeg).catch((error) => {
-    console.log("No eateries available");
-    setLoading(false);
-  })
+  .then(getHalalAndVeg)
   // obtain stalls
   .then(getStalls)
-  
-
-  // })
+  // choosing eatery and stall
   .then((info) => {
-    if (info.eateries.length !== 0) {
-      console.log(info)
-      var index = null;
-      for (let i = 0; i < info.eateries.length; i++) {
-        if (info.stalls[i].length !== 0) {
-          index = i;
-          break;
+    if (isLoading) {
+      if (info.eateries.length !== 0) {
+        console.log(info)
+        // choosing eatery, based on location and then whether there are stalls available
+        var index = null;
+        for (let i = 0; i < info.eateries.length; i++) {
+          if (info.stalls[i].length !== 0) {
+            index = i;
+            break;
+          }
         }
-      }
-      if (index !== null) {
-        return info.eateries[index];
-      } else {
-        setLoading(false)
-        return null;
+        if (index !== null) {
+          const eatery = info.eateries[index];
+          const stalls = info.stalls[index];
+          // set chosen eatery
+          setLocation( {
+            name: eatery.name,
+            coords: {
+              lat: Number(eatery.coordinates._lat),
+              lng: Number(eatery.coordinates._long)
+            }
+          });
+          // set stalls from chosen eatery
+          setRecStalls(stalls);
+          const randomIndex = Math.floor(Math.random() * stalls.length);
+          const recStall = stalls[randomIndex];
+          // set chosen stall
+          setRecStall(recStall);
+          return "eateries/" + recStall.eateryID + "/Stalls/" + recStall.id + "/reviews";
+        } else {
+          // No Stalls are available
+          setLoading(false)
+          return null;
+        }
       }
     }
   })
-  // .catch((error) => {
-  //   console.log(error);
-  //   setLoading(false);
-  // })
-  // chosen closest eatery
-  .then((eatery) => {
-    if (eatery) {
-      console.log(eatery)
-      if (isLoading) {
-        setLocation( {
-          name: eatery.name,
-          coords: {
-            lat: Number(eatery.coordinates._lat),
-            lng: Number(eatery.coordinates._long)
-          }
-        });
-      }
-      console.log("eatery id:  " + eatery.id)
-      return eatery.id
-    }
-  }).then(findStalls).then((stalls) => {
-    if (stalls) {
-      if (isLoading) {
-        setRecStalls(stalls);
-        const randomIndex = Math.floor(Math.random() * stalls.length);
-        const recStall = stalls[randomIndex];
-        setRecStall(recStall);
-        return "eateries/" + recStall.eateryID + "/Stalls/" + recStall.id + "/reviews";
-      }
-    }
-  }).then(getRevs).then((revs) => {
+  // get reviews of the Recommended Stall
+  .then(getRevs).then((revs) => {
     if (revs) {
       if (isLoading) {
         setRevs(revs);
@@ -262,7 +264,11 @@ function Recommendation(props) {
   const cont = isLoading ? <Spinner /> : (
     recStall === null ? 
     <div>
-      <h1>No Recommendation</h1>
+      <h1>Oops!</h1>
+      <h2>We can't seem to find a Stall to recommend you!</h2>
+      <p>Either there are no stalls open currently, 
+          or there are none open that fit your dietary requirements, 
+          or the stalls available are not rated highly enough for us to consider recommending them to you!</p>
     </div> :
     <div>
       <h1>{location.name}</h1>
