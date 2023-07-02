@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const MapComponent = ({ location }) => {
+function MapComponent({ location }) {
   const [map, setMap] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [customLocation, setCustomLocation] = useState(null);
@@ -33,7 +33,7 @@ const MapComponent = ({ location }) => {
           },
           (error) => {
             console.error('Error getting user location:', error);
-          }
+          },
         );
       }
 
@@ -91,6 +91,6 @@ const MapComponent = ({ location }) => {
   }, [customLocation, location]);
 
   return <div id="map" style={{ width: '100%', height: '400px' }} />;
-};
+}
 
 export default MapComponent;

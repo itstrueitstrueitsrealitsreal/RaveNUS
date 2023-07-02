@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export default function CenteredHero(props) {
-  console.log("CenteredHero Component called");
+  console.log('CenteredHero Component called');
 
   const now = new Date().toLocaleTimeString();
   const [time, setTime] = useState(now);

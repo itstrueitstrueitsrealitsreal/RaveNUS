@@ -25,7 +25,7 @@ const UserID = () => {
     user ? (
       user.uid
     ) : (
-      "User is signed out."
+      'User is signed out.'
     )
   );
 };

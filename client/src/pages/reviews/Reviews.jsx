@@ -28,13 +28,13 @@ function Reviews(props) {
   const [callAlert, setCallAlert] = useState(false);
   const checkUser = async (userid) => {
     try {
-      console.log("userid trying: " +uids)
+      console.log("userid trying: " + uids)
       const documentRef = doc(db, "profile", userid);
       const documentSnapshot = await getDoc(documentRef);
       if (documentSnapshot.exists()) {
         console.log("document exists");
       } else {
-        console.log("document doesnt exist");
+        console.log("document doesn't exist");
         setCallAlert(true);
       }
     } catch (error) {
@@ -107,7 +107,7 @@ function Reviews(props) {
       {/* add new review  */}
       {callAlert ? 
       <div>
-        <h2>Oops! You have yet to Create a Profile!</h2>
+        <h2>Oops! You have yet to create a profile!</h2>
         <p>Create a Profile from the Profile Page to start creating reviews!</p>
       </div> 
       : <Button className="btn btn-light">
