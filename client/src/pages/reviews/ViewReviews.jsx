@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db } from "../../components/firebase";
 import Navbar from "../../components/Navbar";
@@ -26,15 +26,28 @@ function ViewReviews(props) {
   // stall id
   const stallID = location.pathname.split("/")[3];
 
-  // path
+  // paths
   const stallRevsPath = "eateries/" + eateryID + "/Stalls/" + stallID + "/reviews";
-  // get Reviews
+  // Reviews
   const [revs, setRevs] = useState([]);
+  // location
+  const [eatery, setEatery] = useState({});
+  // stalls
+  const [stall, setStall] = useState({});
   useEffect(() => {
     const getRevs = async () => {
+        // get reviews
         const data = await getDocs(collection(db, stallRevsPath));
         const allRevs = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
         setRevs(allRevs);
+        // get eatery
+        const locRef = doc(db, "eateries/" + eateryID);
+        const loc = await getDoc(locRef);
+        setEatery(loc.data());
+        // get stall
+        const sRef = doc(db, "eateries/" + eateryID + "/Stalls/", stallID);
+        const s = await getDoc(sRef);
+        setStall(s.data());
         setLoading(false);
     }
     getRevs();
@@ -45,6 +58,12 @@ function ViewReviews(props) {
     <div>
       <Button variant="primary" onClick={navigateToReviews}>Back</Button>
       <h2>Stall Reviews</h2>
+      {/* SELECTED EATERY  */}
+      <h3>Eatery: {eatery.name}</h3>
+      <br />
+      {/* SELECTED Stall  */}
+      <h3>Stall: {stall.name}</h3>
+      <br />
       {revs.map((rev, idx) => {
           const date = new Date(rev.Time.seconds * 1000);
           return (<div key={rev.id}>
