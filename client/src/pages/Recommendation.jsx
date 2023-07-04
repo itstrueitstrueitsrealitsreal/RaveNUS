@@ -223,7 +223,8 @@ function Recommendation(props) {
             coords: {
               lat: Number(eatery.coordinates._lat),
               lng: Number(eatery.coordinates._long)
-            }
+            },
+            id: eatery.id
           });
           // set stalls from chosen eatery
           setRecStalls(stalls);
@@ -263,6 +264,7 @@ function Recommendation(props) {
   // Page content
   const cont = isLoading ? <Spinner /> : (
     recStall === null ? 
+    // if there are no stalls to recommend
     <div>
       <h1>Oops!</h1>
       <h2>We can't seem to find a Stall to recommend you!</h2>
@@ -273,10 +275,13 @@ function Recommendation(props) {
         <button onClick={navigateToNewRec} type="button" className="btn btn-primary btn-lg px-4 gap-3">Generate ANOTHER Recommendation</button>
       </div>
     </div> :
+    // recommend stall
     <div>
       <h1>{location.name}</h1>
       <MapComponent location={location.coords}/>
       <br />
+      {/* Add Review */}
+      <Button onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a Review!</Button>
       {/* Increase number of reviews by 10 */}
       <Button onClick={() => {setLimit(limit + 10)}}>load more reviews</Button>
       <Rec stall={recStall} recPage={navigateToNewRec} revs={revs} limit={limit} viewerUID={uid}/>
