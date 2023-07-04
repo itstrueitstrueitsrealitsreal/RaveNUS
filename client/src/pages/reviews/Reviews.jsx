@@ -21,6 +21,7 @@ function Reviews(props) {
   const eateriesCollectionRef = collection(db, "eateries");
   useEffect(() => {
     const getEateriesAndStalls = async () => {
+      // get Eateries
       console.log("retrieving eateries");
       const eatData = await getDocs(eateriesCollectionRef);
       var allEateries = eatData.docs.map((doc) => ({
@@ -32,6 +33,7 @@ function Reviews(props) {
         object.index = index;
       });
       setEateries(allEateries);
+      // get Stalls
       console.log("retrieving stalls");
       var allStalls = [];
       for (let i = 0; i < allEateries.length; i++) {
@@ -59,7 +61,6 @@ function Reviews(props) {
   // location of eatery
   const [eatID, setEatID] = useState(null);
   const [eatIndex, setEatIndex] = useState(0);
-  const [eatName, setEatName] = useState("");
   // location of stall
   const [stallID, setStallID] = useState(null);
 
@@ -82,8 +83,7 @@ function Reviews(props) {
               var i = event.target.value;
               var e = eateries[i]
               setEatIndex(i);
-              setEatID(e.id); 
-              setEatName(e.name);
+              setEatID(e.id);
             }}
           >
           {eateries.map((eat) => {
@@ -108,6 +108,9 @@ function Reviews(props) {
           </Select>
         </FormControl>
         </Form.Group>
+
+        {/* review query */}
+        <Button onClick={() => {navigate(`/vr/${eatID}/${stallID}`)}}>View Reviews</Button>
       </Form>
     </div> :
     <div></div>

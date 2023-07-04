@@ -2,7 +2,6 @@ import { collection, getDocs, deleteDoc, doc, getDoc, updateDoc } from "firebase
 import React, { useState, useEffect } from "react";
 import { db, auth, authForFirebaseUI, storage } from "../../components/firebase";
 import Navbar from "../../components/Navbar";
-import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Review from "../../components/Review";
 import Spinner from 'react-bootstrap/Spinner';
@@ -118,9 +117,7 @@ function ProfileReviews(props) {
         <h2>Oops! You have yet to Create a Profile!</h2>
         <p>Create a Profile from the Profile Page to start creating reviews!</p>
       </div> 
-      : <Button className="btn btn-light">
-        <Link to={`/cr/${uids}`}>Create New Review</Link>
-      </Button>}
+      : <Button className="btn btn-light" onClick={() => {navigate(`/cr/${uids}`)}}>Create New Review</Button>}
       <br />
       <br />
       

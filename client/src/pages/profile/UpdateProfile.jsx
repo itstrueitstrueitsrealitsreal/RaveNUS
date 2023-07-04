@@ -191,6 +191,7 @@ function UpdateProfile() {
         <h1>Update Profile</h1>
         {/* <Avatar className="Avatar" alt={oldProf.Username} src={profPicURL}/> */}
         <Card.Img variant="top" src={profPicURL} alt={oldProf.Username} />
+        <br />
         <Button onClick={removeImage}>Remove Profile Picture</Button>
         <Form>
           <Form.Group 
