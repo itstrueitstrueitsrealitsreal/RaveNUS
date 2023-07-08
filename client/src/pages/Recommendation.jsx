@@ -166,12 +166,6 @@ function Recommendation(props) {
       setLoading(false);
     });
 
-  const ln = {
-    name: 'Computing Drive',
-    lat: 1.2944816303761464,
-    lng: 103.77255175825597,
-  };
-
   // number of reviews limit, default 10
   const [limit, setLimit] = useState(10);
 

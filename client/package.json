@@ -22,6 +22,7 @@
     "geofirestore": "^5.2.0",
     "google-map-react": "^2.2.1",
     "jquery": "^3.7.0",
+    "latlon-geohash": "^2.0.0",
     "mdb-react-ui-kit": "^6.1.0",
     "mysql": "^2.18.1",
     "nusmoderator": "^3.0.0",

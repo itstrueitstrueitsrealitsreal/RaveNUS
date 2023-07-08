@@ -5,8 +5,9 @@ import Navbar from '../../components/Navbar';
 import { ref, uploadBytes } from "firebase/storage";
 import { auth, authForFirebaseUI } from "../../components/firebase";
 import { db, storage,  } from "../../components/firebase";
-import { doc, setDoc, getDoc, getDocs, collection, updateDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, getDocs, collection, updateDoc, deleteDoc, deleteField } from "firebase/firestore";
 import Spinner from 'react-bootstrap/Spinner';
+import { v4 } from 'uuid';
 
 function Sync() {
   console.log('Sync Page called');
@@ -61,87 +62,112 @@ function Sync() {
     checkUser(uid);
   }
 
-  const [timetableData, setTimetableData] = useState({
-    Sem1: {
-      Timetable: {
-        Monday: {
-          BT2102: "08"
-        },
-        Tuesday: {
+  const [timetableData, setTimetableData] = useState(
+      [{
+        day: 'Monday',
+        timetable: {}
+      },
+      {
+        day: 'Tuesday',
+        timetable: {}
+      },
+      {
+        day: 'Wednesday',
+        timetable: {}
+      },
+      {
+        day: 'Thursday',
+        timetable: {}
+      },
+      {
+        day: 'Friday',
+        timetable: {}
+      }]
+  );
 
-        },
-        Wednesday: {
-
-        },
-        Thursday: {
-
-        },
-        Friday: {
-
-        }
+  function getDayType(date, weekInfo) {
+    switch (weekInfo) {
+      case 'Reading':
+        return 'reading';
+      case 'Examination':
+        return 'examination';
+      case 'Orientation':
+        return 'orientation';
+      case 'Recess':
+        return 'recess';
+      case 'Vacation': {
+        const month = date.getMonth();
+        return month > 8 || month < 3 ? 'winter' : 'summer';
       }
-    },
-    Sem2: {
-      Timetable: {
-        Monday: {
-
-        },
-        Tuesday: {
-
-        },
-        Wednesday: {
-
-        },
-        Thursday: {
-
-        },
-        Friday: {
-
-        }
-      }
-    },
-    Sem3: {
-      Timetable: {
-        Monday: {
-
-        },
-        Tuesday: {
-
-        },
-        Wednesday: {
-
-        },
-        Thursday: {
-
-        },
-        Friday: {
-
-        }
-      }
-    },
-    Sem4: {
-      Timetable: {
-        Monday: {
-
-        },
-        Tuesday: {
-
-        },
-        Wednesday: {
-
-        },
-        Thursday: {
-
-        },
-        Friday: {
-
-        }
-      }
+      default:
+        if (isWeekend(date)) return 'weekend';
+        return 'holiday';
     }
-  });
+  }
+
+  function getLessonTypeAndSlot(lessons) {
+    var lessonsArray = [];
+    lessonsArray = lessons.split(",");
+    return lessonsArray;
+  }
+
+  function getLessonType(lesson) {
+    console.log(lesson.substring(0,3));
+    switch(lesson.split(':')[0]) {
+      case 'LEC':
+        return ['Lecture', lesson.split(':')[1]];
+      case 'SEC':
+        return ['Sectional Teaching', lesson.split(':')[1]];
+      case 'REC':
+        return ['Recitation', lesson.split(':')[1]];
+      case 'TUT':
+        return ['Tutorial', lesson.split(':')[1]];
+      case 'LAB':
+        return ['Laboratory', lesson.split(':')[1]];
+      case 'DLEC':
+        return ['Design Lecture', lesson.split(':')[1]];
+      case 'PLEC':
+        return ['Packaged Lecture', lesson.split(':')[1]];
+      case 'PTUT':
+        return ['Packaged Tutorial', lesson.split(':')[1]];
+      case 'SEM':
+        return ['Seminar-Style Module Class', lesson.split(':')[1]];
+      case 'TUT2':
+        return ['Tutorial Type 2', lesson.split(':')[1]];
+      case 'TUT3':
+        return ['Tutorial Type 3', lesson.split(':')[1]];
+      case 'WS':
+        return ['Workshop', lesson.split(':')[1]];
+      default:
+        return;
+    }
+  }
+
+  const updateTimetable = (arr) => {
+    var newState;
+    for (var i = 0; i < arr.length; i++) {
+      newState = timetableData.map((timetable) => {
+        if (arr[i].day == timetable.day) {
+          // need to add new object with id of the number of lessons 
+          // in the day to the timetable array
+          const newEventId = Object.keys(timetable.timetable).length;
+          timetable.timetable[newEventId] = arr[i];
+          return timetable;
+        }
+        return timetable;
+      });
+    }
+    // for (var i = 0; i < newState.length; i++) {
+    //   newState[i].timetable = Object.assign({}, newState[i].timetable);
+    // }
+    console.log('newState');
+    console.log(newState);
+    setTimetableData(newState);
+  }
+
 
   // function for syncing timetable
-  const syncTimetable = () => {
+  const syncTimetable = async () => {
     if (uid) {
       const semester = url.includes('sem-1') ? '1' : '2';
       const stripped = url.replace(/^https:\/\/nusmods\.com\/timetable\/.*\/share\?/gm, '').trim();
@@ -151,16 +177,78 @@ function Sync() {
       acadYear = `20${acadYear}`;
       const acadYearEnd = `20${acadYear.substring(5, 8)}`;
       acadYear = acadYear.substring(0, 5) + acadYearEnd;
-      for (const [modCode, lessons] of params) {
-        console.log(modCode);
-        console.log(lessons);
-        console.log(`https://api.nusmods.com/v2/${acadYear}/modules/${modCode}.json`);
-        fetch(`https://api.nusmods.com/v2/${acadYear}/modules/${modCode}.json`)
-          .then((response) => response.json())
-          .then((json) => console.log(json));
-      }
-      updateDb().then(setURL("")).catch((err) => console.log(err));
 
+      const getSemesterIdx = (data) => {
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].semester == semester) {
+            return i;
+          }
+        }
+        return null;
+      }
+
+      const getInfo = (timetable, lessonType) => {
+        var [lesson, slot] = lessonType;
+        var data = [];
+        for (var i = 0; i < timetable.length; i++) {
+          if (timetable[i].classNo == slot && timetable[i].lessonType === lesson) {
+            data.push({
+              day: timetable[i].day, 
+              weeks: timetable[i].weeks, 
+              venue: timetable[i].venue, 
+              startTime: timetable[i].startTime, 
+              endTime: timetable[i].endTime
+            })
+            data.push([timetable[i].day, timetable[i].weeks, timetable[i].venue, timetable[i].startTime, timetable[i].endTime])
+            for (var j = i + 1; j < timetable.length; j++) {
+              if (timetable[j].classNo == slot && timetable[j].lessonType === lesson) {
+                data.push({
+                  day: timetable[j].day, 
+                  weeks: timetable[j].weeks, 
+                  venue: timetable[j].venue, 
+                  startTime: timetable[j].startTime, 
+                  endTime: timetable[j].endTime
+                });
+              }
+            }
+            return data;
+          }
+        }
+      }
+
+      var lessonsArray;
+      var lessonType;
+      var semesterData;
+      var semesterDataIdx;
+
+      for (const [modCode, lessons] of params) {
+        console.log(`https://api.nusmods.com/v2/${acadYear}/modules/${modCode}.json`);
+        fetch(`https://api.nusmods.com/v2/2023-2024/modules/${modCode}.json`)
+          .then((response) => response.json())
+          .then((json) => {
+            console.log(json);
+            lessonsArray = getLessonTypeAndSlot(lessons);
+            console.log(lessonsArray);
+            console.log(modCode);
+            // getting key-value pairs of timings of lessons to locations
+            var objArray = lessonsArray.map((lesson) => {
+              // pair of lesson type and number
+              lessonType = getLessonType(lesson);
+              // returns semester data index corresponding to the current semester
+              semesterDataIdx = getSemesterIdx(json.semesterData);
+              // obtains correct semester data
+              semesterData = json.semesterData[semesterDataIdx];
+              // obtains venue, day, weeks, start and end time of lesson in an array
+              return getInfo(semesterData.timetable, lessonType);
+            });
+            // objArray is an array of arrays 
+            // have to reduce it into one big array
+            objArray = objArray.flat();
+            updateTimetable(objArray);
+          });
+      }
+
+      updateDb().then(setURL("")).catch((err) => console.log(err));
     }
   };
 
@@ -170,88 +258,43 @@ function Sync() {
     if (url === '' || !url.includes('https://nusmods.com/timetable/')) {
       alert('Please enter a valid URL.')
     } else {
-      await setDoc(docRef, timetableData, {merge: true})
+      const data = {Timetable: timetableData}
+      console.log('data');
+      console.log(data);
+      await updateDoc(docRef, {
+        Timetable: deleteField()
+        })
+        .then(await updateDoc(docRef, data, {merge:true}))
         .then((docRef) => {
           alert('Timetable updated successfully.');
-          setTimetableData({
-            Sem1: {
-              Timetable: {
-                Monday: {
-
-                },
-                Tuesday: {
-
-                },
-                Wednesday: {
-
-                },
-                Thursday: {
-
-                },
-                Friday: {
-
-                }
-              }
-            },
-            Sem2: {
-              Timetable: {
-                Monday: {
-
-                },
-                Tuesday: {
-
-                },
-                Wednesday: {
-
-                },
-                Thursday: {
-
-                },
-                Friday: {
-
-                }
-              }
-            },
-            Sem3: {
-              Timetable: {
-                Monday: {
-
-                },
-                Tuesday: {
-
-                },
-                Wednesday: {
-
-                },
-                Thursday: {
-
-                },
-                Friday: {
-
-                }
-              }
-            },
-            Sem4: {
-              Timetable: {
-                Monday: {
-
-                },
-                Tuesday: {
-
-                },
-                Wednesday: {
-
-                },
-                Thursday: {
-
-                },
-                Friday: {
-
-                }
-              }
-            }
-          });
+          // setTimetableData(
+          //   [{
+          //     day: 'Monday',
+          //     timetable: {}
+          //   },
+          //   {
+          //     day: 'Tuesday',
+          //     timetable: {}
+          //   },
+          //   {
+          //     day: 'Wednesday',
+          //     timetable: {}
+          //   },
+          //   {
+          //     day: 'Thursday',
+          //     timetable: {}
+          //   },
+          //   {
+          //     day: 'Friday',
+          //     timetable: {}
+          //   }]
+          // );
         }).catch((err) => console.log(err));
+
+      // await updateDoc(docRef, data, {merge:true})
+      //   .then((docRef) => {
+      //     alert('Timetable updated successfully.');
+      //   }).catch((err) => console.log(err));
     }
   }
 
