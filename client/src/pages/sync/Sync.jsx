@@ -7,7 +7,6 @@ import { auth, authForFirebaseUI } from "../../components/firebase";
 import { db, storage,  } from "../../components/firebase";
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc, deleteDoc, deleteField } from "firebase/firestore";
 import Spinner from 'react-bootstrap/Spinner';
-import { v4 } from 'uuid';
 
 function Sync() {
   console.log('Sync Page called');
@@ -267,34 +266,8 @@ function Sync() {
         .then(await updateDoc(docRef, data, {merge:true}))
         .then((docRef) => {
           alert('Timetable updated successfully.');
-          // setTimetableData(
-          //   [{
-          //     day: 'Monday',
-          //     timetable: {}
-          //   },
-          //   {
-          //     day: 'Tuesday',
-          //     timetable: {}
-          //   },
-          //   {
-          //     day: 'Wednesday',
-          //     timetable: {}
-          //   },
-          //   {
-          //     day: 'Thursday',
-          //     timetable: {}
-          //   },
-          //   {
-          //     day: 'Friday',
-          //     timetable: {}
-          //   }]
-          // );
-        }).catch((err) => console.log(err));
 
-      // await updateDoc(docRef, data, {merge:true})
-      //   .then((docRef) => {
-      //     alert('Timetable updated successfully.');
-      //   }).catch((err) => console.log(err));
+        }).catch((err) => console.log(err));
     }
   }
 

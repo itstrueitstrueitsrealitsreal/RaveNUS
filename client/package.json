@@ -30,6 +30,7 @@
     "react-bootstrap": "^2.7.4",
     "react-bootstrap-star-rating": "^3.5.5-alpha.0.3",
     "react-dom": "^18.2.0",
+    "react-firebase-hooks": "^5.1.1",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.12.1",
     "react-scripts": "^5.0.1",

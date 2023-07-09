@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-function MapComponent({ location }) {
+function MapComponent(props) {
   const [map, setMap] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [customLocation, setCustomLocation] = useState(null);
+  console.log(props.location);
+  console.log(props.userLocation);
 
   useEffect(() => {
     const loadMap = () => {
@@ -15,32 +17,21 @@ function MapComponent({ location }) {
       setMap(newMap);
 
       // Get the user's current location
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            const userLocation = { lat: latitude, lng: longitude };
-            setUserLocation(userLocation);
-
-            // Add a marker for the user's location
-            const userMarker = new window.google.maps.Marker({
-              position: userLocation,
-              map: newMap,
-              title: 'Your Location',
-              label: 'You',
-            });
-            attachInfoWindow(userMarker, 'Your Location');
-          },
-          (error) => {
-            console.error('Error getting user location:', error);
-          },
-        );
+      if (props.userLocation) {
+        // Add a marker for the user's location
+        const userMarker = new window.google.maps.Marker({
+          position: props.userLocation,
+          map: newMap,
+          title: 'Your Location',
+          label: 'You',
+        });
+        attachInfoWindow(userMarker, 'Your Location');
       }
 
-      if (location) {
+      if (props.location) {
         // Add a marker for the custom location
         const customMarker = new window.google.maps.Marker({
-          position: location,
+          position: props.location,
           map: newMap,
           title: 'Reccomendation',
           label: '',
@@ -74,21 +65,21 @@ function MapComponent({ location }) {
       document.body.removeChild(script);
       setMap(null);
     };
-  }, [location]);
+  }, [props.location]);
 
   useEffect(() => {
     // Update the map center when userLocation changes
-    if (map && userLocation) {
-      map.setCenter(userLocation);
+    if (map && props.userLocation) {
+      map.setCenter(props.userLocation);
     }
-  }, [map, userLocation]);
+  }, [map, props.userLocation]);
 
   useEffect(() => {
     // Update the custom marker position when location changes
-    if (customLocation && location) {
-      customLocation.setPosition(location);
+    if (customLocation && props.location) {
+      customLocation.setPosition(props.location);
     }
-  }, [customLocation, location]);
+  }, [customLocation, props.location]);
 
   return <div id="map" style={{ width: '100%', height: '400px' }} />;
 }
