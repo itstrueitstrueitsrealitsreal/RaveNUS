@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { db } from "../../components/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
@@ -11,8 +11,8 @@ export default function CREatery() {
 
   // page navigation
   const navigate = useNavigate();
-  const navigateToReviews = () => {
-    navigate('/reviews');
+  const navigateToProfileReviews = () => {
+    navigate('/reviews/profile');
   }
 
   // current userID
@@ -46,6 +46,7 @@ export default function CREatery() {
       <br />
       <h2>Step 1: Select an Eatery!</h2>
       <br />
+      {/* EATERY SELECTION  */}
       <Form>
         <Form.Group>
         <Form.Label>Eatery</Form.Label>
@@ -64,15 +65,17 @@ export default function CREatery() {
         </Form.Group>
 
         <br />
-        <Button className="btn btn-light">
-          <Link to={`/cr/${uid}/${locID}`}>Next</Link>
-        </Button>
+        {/* NEXT BUTTON  */}
+        <Button className="btn btn-light" onClick={() => {
+          locID !== null ? navigate(`/cr/${uid}/${locID}`) : 
+          alert("Please select an Eatery before proceeding")}}>Next</Button>
       </Form>
 
       <br />  
 
+      {/* CANCEL BUTTON  */}
       <div>
-        <Button variant="primary" onClick={navigateToReviews}>Cancel</Button>
+        <Button variant="primary" onClick={navigateToProfileReviews}>Cancel</Button>
       </div>
     </div>
   )

@@ -31,7 +31,7 @@ function Rec(props) {
         return (<div key={rev.id}>
           <Review 
             recPage={true}
-            updateRev={`/reviews`}
+            updateRev={`/reviews/profile`}
             id={rev.id}
             poster={rev.Poster}
             content={rev.Content}

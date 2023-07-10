@@ -79,6 +79,76 @@ function Recommendation(props) {
     }
   }
 
+  // get Eateries and User
+  const getEateriesAndUser = async (ids) => {
+    if (ids) {
+      const eateries = []
+      for (let i = 0; i < ids.length; i++) {
+        const eatery = await findEatery(ids[i].id);
+        eateries.push(eatery);
+      }
+      const user = await getUser(uid);
+      return {eateries: eateries, user: user};
+    }
+  }
+
+  // get Halal and Veg
+  const getHalalAndVeg = async (info) => {
+    if (info) {
+      const halal = info.user.Halal;
+      const veg = info.user.Vegetarian;
+      var eateries = info.eateries;
+      if (halal) {
+        eateries = eateries.filter((e) => e.halal === halal);
+      }
+      if (veg) {
+        eateries = eateries.filter((e) => e.vegetarian === veg);
+      }
+      return {eateries: eateries, user: info.user};
+    }
+  }
+
+  // get User
+  const getUser = async (id) => {
+    if (id) {
+      const d = await getDoc(doc(db, "profile", id)); 
+      return {...d.data(), id: d.id};
+    }
+  }
+
+  // get Stalls
+  const getStalls = async (info) => {
+    if (info) {
+      const eateries = info.eateries;
+      const halal = info.user.Halal;
+      const veg = info.user.Vegetarian;
+      var stalls = [];
+      for (let i = 0; i < eateries.length; i++) {
+        const s = await findStalls(eateries[i].id);
+        stalls.push(s);
+      }
+      // current time
+      const d = new Date();
+      const day = d.getDay();
+      const hr = d.getHours();
+      const min = d.getMinutes();
+      const t = hr * 60 + min;
+      for (let i = 0; i < stalls.length; i++) {
+        // filter by Halal
+        if (halal) {
+          stalls[i] = stalls[i].filter((s) => s.halal === halal);
+        }
+        // filter by Vegetarian
+        if (veg) {
+          stalls[i] = stalls[i].filter((s) => s.vegetarian === veg);
+        }
+        // filter by Opening Hours
+        stalls[i] = stalls[i].filter((s) => t >= s.ophrs[day]).filter((s) => t <= s.ophrs[day + 7]);
+      }
+      return {eateries: eateries, stalls: stalls, user: info.user};
+    }
+  }
+
   // Stall recommendation
   const [recStalls, setRecStalls] = useState(null);
   const [recStall, setRecStall] = useState(null);
@@ -93,7 +163,7 @@ function Recommendation(props) {
       const stallsWithoutRating = allStalls.filter((s) => s.rating === null);
       const stallsWithRating = allStalls.filter((s) => s.rating !== null)
           .filter((s) => s.rating >= 3);
-      const recStalls = [...stallsWithoutRating, ...stallsWithRating];
+      var recStalls = [...stallsWithoutRating, ...stallsWithRating];
       return recStalls;
     }
   }
@@ -116,44 +186,63 @@ function Recommendation(props) {
     // All GeoDocument returned by GeoQuery, like the GeoDocument added above
     console.log(value.docs);
     return value.docs;
-  }).then((x) => {
+  })
+  // sort eateries by distance from user
+  .then((x) => {
     return x.sort(
       (e1, e2) => {
         return e1.distance - e2.distance;
       }
     );
-  }).then((x) => {
-    if (x[0]) {
-      // obtain eatery id
-      console.log(x[0].id)
-      return x[0].id;
-    }
-  }).then(findEatery)
-  .then((eatery) => {
-    if (eatery) {
-      if (isLoading) {
-        setLocation( {
-          name: eatery.name,
-          coords: {
-            lat: Number(eatery.coordinates._lat),
-            lng: Number(eatery.coordinates._long)
+  })
+  // obtain eateries and user
+  .then(getEateriesAndUser)
+  // check halal / veg
+  .then(getHalalAndVeg)
+  // obtain stalls
+  .then(getStalls)
+  // choosing eatery and stall
+  .then((info) => {
+    if (isLoading) {
+      if (info.eateries.length !== 0) {
+        console.log(info)
+        // choosing eatery, based on location and then whether there are stalls available
+        var index = null;
+        for (let i = 0; i < info.eateries.length; i++) {
+          if (info.stalls[i].length !== 0) {
+            index = i;
+            break;
           }
-        });
+        }
+        if (index !== null) {
+          const eatery = info.eateries[index];
+          const stalls = info.stalls[index];
+          // set chosen eatery
+          setLocation( {
+            name: eatery.name,
+            coords: {
+              lat: Number(eatery.coordinates._lat),
+              lng: Number(eatery.coordinates._long)
+            },
+            id: eatery.id
+          });
+          // set stalls from chosen eatery
+          setRecStalls(stalls);
+          const randomIndex = Math.floor(Math.random() * stalls.length);
+          const recStall = stalls[randomIndex];
+          // set chosen stall
+          setRecStall(recStall);
+          return "eateries/" + recStall.eateryID + "/Stalls/" + recStall.id + "/reviews";
+        } else {
+          // No Stalls are available
+          setLoading(false)
+          return null;
+        }
       }
-      console.log("eatery id:  " + eatery.id)
-      return eatery.id
     }
-  }).then(findStalls).then((stalls) => {
-    if (stalls) {
-      if (isLoading) {
-        setRecStalls(stalls);
-        const randomIndex = Math.floor(Math.random() * stalls.length);
-        const recStall = stalls[randomIndex];
-        setRecStall(recStall);
-        return "eateries/" + recStall.eateryID + "/Stalls/" + recStall.id + "/reviews";
-      }
-    }
-  }).then(getRevs).then((revs) => {
+  })
+  // get reviews of the Recommended Stall
+  .then(getRevs).then((revs) => {
     if (revs) {
       if (isLoading) {
         setRevs(revs);
@@ -174,10 +263,25 @@ function Recommendation(props) {
 
   // Page content
   const cont = isLoading ? <Spinner /> : (
+    recStall === null ? 
+    // if there are no stalls to recommend
+    <div>
+      <h1>Oops!</h1>
+      <h2>We can't seem to find a Stall to recommend you!</h2>
+      <p>Either there are no stalls open currently, 
+          or there are none open that fit your dietary requirements, 
+          or the stalls available are not rated highly enough for us to consider recommending them to you!</p>
+      <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button onClick={navigateToNewRec} type="button" className="btn btn-primary btn-lg px-4 gap-3">Generate ANOTHER Recommendation</button>
+      </div>
+    </div> :
+    // recommend stall
     <div>
       <h1>{location.name}</h1>
       <MapComponent location={location.coords}/>
       <br />
+      {/* Add Review */}
+      <Button onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a Review!</Button>
       {/* Increase number of reviews by 10 */}
       <Button onClick={() => {setLimit(limit + 10)}}>load more reviews</Button>
       <Rec stall={recStall} recPage={navigateToNewRec} revs={revs} limit={limit} viewerUID={uid}/>
