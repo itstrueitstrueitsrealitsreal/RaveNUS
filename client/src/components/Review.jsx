@@ -58,7 +58,7 @@ function Review(props) {
                   if (confirmed) {
                     navigate(props.updateRev)
                   }}}>Edit/Update
-                </Button> :
+                </Button> ):
                 <div>
                 {/* update the review  */}
                 <Button className="btn btn-light" onClick={() => {navigate(props.updateRev)}}>Edit</Button>

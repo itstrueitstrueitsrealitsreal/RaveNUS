@@ -12,7 +12,7 @@ import Profile from "../pages/profile/Profile";
 import Reviews from '../pages/reviews/Reviews';
 import ProfileReviews from "../pages/reviews/ProfileReviews";
 import ViewReviews from '../pages/reviews/ViewReviews';
-import Sync from "../pages/Sync";
+import Sync from "../pages/sync/Sync";
 import Leaderboard from "../pages/Leaderboard";
 import SignUp from "../pages/start/SignUp";
 import SignIn from "../pages/start/SignIn";
@@ -27,8 +27,9 @@ import ResetPassword from '../pages/start/ResetPassword';
 import CreateProfile from '../pages/profile/CreateProfile';
 import UpdateProfile from '../pages/profile/UpdateProfile';
 
+
 function App() {
-  console.log('App called');
+  console.log("App called");
 
   // const [data, setData] = useState();
 
@@ -73,6 +74,7 @@ function App() {
         </Router>
       </div>
   );
+
 }
 
 export default App;
