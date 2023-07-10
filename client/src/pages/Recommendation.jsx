@@ -345,6 +345,7 @@ function Recommendation(props) {
         setLoading(false);
       }
       setLoading(false);
+    }
     });
 
   // number of reviews limit, default 10
