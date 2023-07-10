@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import Navbar from "../../components/Navbar";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../../components/firebase";
-import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "firebase/auth";
-import { Button } from "react-bootstrap";
-import Input from "../../components/Input";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth';
+import { Button } from 'react-bootstrap';
+import { auth } from '../../components/firebase';
+import Navbar from '../../components/Navbar';
+import Input from '../../components/Input';
 
 function ChangePassword() {
-  console.log("Change password page");
+  console.log('Change password page');
 
   // page navigation
   const navigate = useNavigate();
   const navigateToProfile = () => {
     navigate('/profile');
-  }
+  };
 
   // inputs
   const [currentPassword, setCurrentPassword] = useState('');
@@ -22,25 +22,25 @@ function ChangePassword() {
 
   // change password
   const handleChangePassword = async () => {
-    console.log("password change attempted");
-    if (newPassword === "" || confirmPassword === "" || currentPassword === "") {
-      alert("All fields are mandatory.");
+    console.log('password change attempted');
+    if (newPassword === '' || confirmPassword === '' || currentPassword === '') {
+      alert('All fields are mandatory.');
     } else if (newPassword !== confirmPassword) {
-      alert("Passwords do not match!");
+      alert('Passwords do not match!');
     } else {
-      const confirmed = window.confirm("Are you sure you want to change your password?");
+      const confirmed = window.confirm('Are you sure you want to change your password?');
       if (confirmed) {
         try {
           // reauthenticate
           const credential = EmailAuthProvider.credential(
             auth.currentUser.email,
-            currentPassword
+            currentPassword,
           );
           await reauthenticateWithCredential(auth.currentUser, credential);
-  
+
           // update password
           await updatePassword(auth.currentUser, newPassword);
-          alert("Password changed successfully.");
+          alert('Password changed successfully.');
         } catch (err) {
           alert(err);
         }
@@ -50,7 +50,6 @@ function ChangePassword() {
     setNewPassword('');
     setConfirmPassword('');
   };
-
 
   // Page content
   const cont = (
@@ -69,9 +68,9 @@ function ChangePassword() {
       <br />
       <Button onClick={navigateToProfile}>Back</Button>
     </div>
-  )
+  );
 
-  return <Navbar content={cont} />
+  return <Navbar content={cont} />;
 }
 
 export default ChangePassword;

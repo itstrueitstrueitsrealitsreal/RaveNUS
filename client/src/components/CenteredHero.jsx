@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 export default function CenteredHero(props) {
-  console.log("CenteredHero Component called");
+  console.log('CenteredHero Component called');
 
   // page navigation
   const navigate = useNavigate();

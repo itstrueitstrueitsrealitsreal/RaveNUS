@@ -9,22 +9,22 @@ import { collection, getDocs } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
 
 function Profile(props) {
-  console.log("Profile Page called");
+  console.log('Profile Page called');
 
   // page navigation
   const navigate = useNavigate();
   const navigateToChangePassword = () => {
     navigate('/changepassword');
-  }
+  };
   const navigateToCreateProfile = () => {
     navigate('/createprofile');
-  }
+  };
 
   // current userID
   const uid = UserID();
 
   // profile collection
-  const profileCollectionRef = collection(db, "profile");
+  const profileCollectionRef = collection(db, 'profile');
 
   // check if user profile exists
   const [profs, setProfs] = useState([]);
@@ -32,21 +32,21 @@ function Profile(props) {
   useEffect(() => {
     const checkProfile = async () => {
       const profiles = await getDocs(profileCollectionRef);
-      setProfs(profiles.docs.map((doc) => ({key: doc.id, id: doc.id, ...doc.data()})));
-    }
+      setProfs(profiles.docs.map((doc) => ({ key: doc.id, id: doc.id, ...doc.data() })));
+    };
     checkProfile();
-  }, [])
-  
+  }, []);
+
   // filtering out the user's profile
-  const profiles = profs.filter((p) => p.UserID === uid ? true : false);
+  const profiles = profs.filter((p) => (p.UserID === uid));
 
   // retrieve profile pic url
-  const [profPicURL, setProfPicURL] = useState("");
+  const [profPicURL, setProfPicURL] = useState('');
   const profileURL = async (name) => {
     const urlRef = ref(storage, name);
     const url = await getDownloadURL(urlRef);
     setProfPicURL(url.toString());
-  }
+  };
 
   if (profiles.length === 1) {
     profileURL(profiles[0].ProfPic);
@@ -84,9 +84,9 @@ function Profile(props) {
       }
 
     </div>
-  )
+  );
 
-  return <Navbar content={cont} />
+  return <Navbar content={cont} />;
 }
 
 export default Profile;

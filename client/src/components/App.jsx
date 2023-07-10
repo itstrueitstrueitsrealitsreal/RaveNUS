@@ -27,9 +27,8 @@ import ResetPassword from '../pages/start/ResetPassword';
 import CreateProfile from '../pages/profile/CreateProfile';
 import UpdateProfile from '../pages/profile/UpdateProfile';
 
-
 function App() {
-  console.log("App called");
+  console.log('App called');
 
   // const [data, setData] = useState();
 
@@ -74,7 +73,6 @@ function App() {
         </Router>
       </div>
   );
-
 }
 
 export default App;
