@@ -9,7 +9,9 @@ import { Route, Routes } from 'react-router-dom';
 import Home from "../pages/Home";
 import Statistics from "../pages/Statistics";
 import Profile from "../pages/profile/Profile";
-import Reviews from "../pages/reviews/Reviews";
+import Reviews from '../pages/reviews/Reviews';
+import ProfileReviews from "../pages/reviews/ProfileReviews";
+import ViewReviews from '../pages/reviews/ViewReviews';
 import Sync from "../pages/Sync";
 import Leaderboard from "../pages/Leaderboard";
 import SignUp from "../pages/start/SignUp";
@@ -55,6 +57,8 @@ function App() {
             <Route path="/statistics" element={<Statistics />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/reviews" element={<Reviews />} />
+            <Route path="/reviews/profile" element={<ProfileReviews />} />
+            <Route path="/vr/:eatid/:stallid" element={<ViewReviews />} />
             <Route path="/sync" element={<Sync />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/recommendation/:uid" element={<Recommendation />} />

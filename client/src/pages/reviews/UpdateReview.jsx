@@ -14,8 +14,8 @@ function UpdateReview(props) {
 
   // page navigation
   const navigate = useNavigate();
-  const navigateToReviews = () => {
-    navigate('/reviews');
+  const navigateToProfileReviews = () => {
+    navigate('/reviews/profile');
   }
 
   // current userID
@@ -141,7 +141,7 @@ function UpdateReview(props) {
         };
         await updateDoc(doc(db, stallPath, stallID), newFields);
       }
-      navigateToReviews();
+      navigateToProfileReviews();
     }
   };
 
@@ -204,7 +204,7 @@ function UpdateReview(props) {
   function removeImage() {
     removeImageRef();
     removeFirestoreImage();
-    navigateToReviews();
+    navigateToProfileReviews();
   }
 
   // Page content
@@ -264,7 +264,7 @@ function UpdateReview(props) {
 
       <div>
         <br />
-        <Button onClick={navigateToReviews}>Back</Button>
+        <Button onClick={navigateToProfileReviews}>Back</Button>
       </div>
     </div> )
 

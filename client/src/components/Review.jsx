@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import Rating from '@mui/material/Rating';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from './firebase';
 
@@ -59,9 +59,7 @@ function Review(props) {
                 </Button> :
                 <div>
                 {/* update the review  */}
-                <Button className="btn btn-light">
-                  <Link to={props.updateRev}>Edit</Link>
-                </Button>
+                <Button className="btn btn-light" onClick={() => {navigate(props.updateRev)}}>Edit</Button>
                 {/* delete the review  */}
                 <Button onClick={() => props.deleteRev(props.id, props.content, 
                     props.rating, props.uid, props.eateryID, props.stallID, props.eatery, props.stall, props.revpic)}>

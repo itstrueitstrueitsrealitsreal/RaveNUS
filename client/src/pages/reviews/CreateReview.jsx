@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { db, storage } from "../../components/firebase";
 import { doc, setDoc, getDoc, getDocs, collection, updateDoc } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
@@ -14,8 +14,8 @@ function CreateReview(props) {
 
   // page navigation
   const navigate = useNavigate();
-  const navigateToReviews = () => {
-    navigate('/reviews');
+  const navigateToProfileReviews = () => {
+    navigate('/reviews/profile');
   }
 
   // current userID
@@ -161,7 +161,7 @@ function CreateReview(props) {
           };
           await updateDoc(doc(db, "eateries/" + locID + "/Stalls/", stallID), newFields);
         }
-        navigateToReviews(); 
+        navigateToProfileReviews(); 
       }
     }
   };
@@ -180,10 +180,13 @@ function CreateReview(props) {
         <br />
         <h2>Step 3: Write your Review!</h2>
         <br />
+        {/* SELECTED EATERY  */}
         <h3>Eatery: {loc.name}</h3>
         <br />
+        {/* SELECTED STALL  */}
         <h3>Stall: {stall.name}</h3>
         <br />
+        {/* REVIEW WRITING  */}
         <Form>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Type your review here:</Form.Label>
@@ -218,14 +221,14 @@ function CreateReview(props) {
         <br />
       </div>
 
-      <Button className="btn btn-light">
-        <Link to={`/cr/${uid}/${locID}`}>Back</Link>
-      </Button>
+      {/* BACK BUTTON  */}
+      <Button className="btn btn-light" onClick={() => {navigate(`/cr/${uid}/${locID}`)}}>Back</Button>
 
       <br />
       <br />
+      {/* CANCEL BUTTON  */}
       <div>
-        <Button variant="primary" onClick={navigateToReviews}>Cancel</Button>
+        <Button variant="primary" onClick={navigateToProfileReviews}>Cancel</Button>
       </div>
     </div> )
 

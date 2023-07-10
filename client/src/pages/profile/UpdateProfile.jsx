@@ -5,7 +5,6 @@ import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "../../components/firebase";
 import { Button, Form, Card } from "react-bootstrap";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
-import { Avatar } from "@mui/material";
 import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
 import { v4 } from "uuid";
 import Input from "../../components/Input";
@@ -192,6 +191,7 @@ function UpdateProfile() {
         <h1>Update Profile</h1>
         {/* <Avatar className="Avatar" alt={oldProf.Username} src={profPicURL}/> */}
         <Card.Img variant="top" src={profPicURL} alt={oldProf.Username} />
+        <br />
         <Button onClick={removeImage}>Remove Profile Picture</Button>
         <Form>
           <Form.Group 

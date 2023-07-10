@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Auth from "../../components/auth/Auth";
 import Navbar from "../../components/Navbar";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Card } from "react-bootstrap";
 import UserID from "../../components/auth/UserID";
 import { db, storage } from "../../components/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
-import { Avatar } from "@mui/material";
 
 function Profile(props) {
   console.log("Profile Page called");
@@ -74,7 +73,7 @@ function Profile(props) {
               <h2>Username: {p.Username}</h2>
               <h3>Halal: {p.Halal.toString()}</h3>
               <h3>Vegetarian: {p.Vegetarian.toString()}</h3>
-              <Button className="btn btn-light"><Link to={`/updateprofile/${p.id}`}>Update Profile</Link></Button>
+              <Button className="btn btn-light" onClick={() => {navigate(`/updateprofile/${p.id}`)}}>Update Profile</Button>
             </div>
           )
         })} 
