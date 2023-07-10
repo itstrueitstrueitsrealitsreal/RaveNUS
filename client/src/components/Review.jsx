@@ -3,8 +3,8 @@ import {
   Button, Card, Col, Row,
 } from 'react-bootstrap';
 import Rating from '@mui/material/Rating';
-import { Link, useNavigate } from 'react-router-dom';
-import { ref, getDownloadURL } from 'firebase/storage';
+import { useNavigate } from "react-router-dom";
+import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from './firebase';
 
 function Review(props) {
@@ -56,41 +56,22 @@ function Review(props) {
                 <Button onClick={() => {
                   const confirmed = window.confirm('Update this Review?\nYou will be redirected to your Reviews Page');
                   if (confirmed) {
-                    navigate(props.updateRev);
-                  }
-                }}
-                >
-                  Edit/Update
-                </Button>
-              )
-              : (
+                    navigate(props.updateRev)
+                  }}}>Edit/Update
+                </Button> :
                 <div>
-                  {/* update the review  */}
-                  <Button className="btn btn-light">
-                    <Link to={props.updateRev}>Edit</Link>
-                  </Button>
-                  {/* delete the review  */}
-                  <Button onClick={() => props.deleteRev(
-                    props.id,
-                    props.content,
-                    props.rating,
-                    props.uid,
-                    props.eateryID,
-                    props.stallID,
-                    props.eatery,
-                    props.stall,
-                    props.revpic,
-                  )}
-                  >
-                    Delete
-                  </Button>
-
-                </div>
-              ))
-              : <></>}
-          </Card.Body>
-        </Card>
-      </Col>
+                {/* update the review  */}
+                <Button className="btn btn-light" onClick={() => {navigate(props.updateRev)}}>Edit</Button>
+                {/* delete the review  */}
+                <Button onClick={() => props.deleteRev(props.id, props.content, 
+                    props.rating, props.uid, props.eateryID, props.stallID, props.eatery, props.stall, props.revpic)}>
+                  Delete
+                </Button></div>) :
+                <></>
+              } 
+            </Card.Body>
+          </Card>
+        </Col>
     </Row>
   );
 }

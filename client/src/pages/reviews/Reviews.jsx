@@ -1,153 +1,122 @@
-import { collection, getDocs, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
-import { db, auth, authForFirebaseUI, storage } from "../../components/firebase";
 import Navbar from "../../components/Navbar";
-import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import Review from "../../components/Review";
-import Spinner from 'react-bootstrap/Spinner';
-import { deleteObject, ref } from "firebase/storage";
+import { useNavigate } from 'react-router-dom';
+import { Button, Form } from "react-bootstrap";
+import { db } from "../../components/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 
 function Reviews(props) {
   console.log("Reviews Page called");
 
-  // loading state
-  const [loading, setLoading] = useState(true);
-
-  // current userID
-  const [uids, setUids] = useState(null);
-  auth.onAuthStateChanged(function(user) {
-    if (user) {
-      setUids(authForFirebaseUI.currentUser.uid);
-    } else {
-      window.location.reload();
-    }
-  })
-
-  // check if user has created a profile
-  const [callAlert, setCallAlert] = useState(false);
-  const checkUser = async (userid) => {
-    try {
-      console.log("userid trying: " + uids)
-      const documentRef = doc(db, "profile", userid);
-      const documentSnapshot = await getDoc(documentRef);
-      if (documentSnapshot.exists()) {
-        console.log("document exists");
-      } else {
-        console.log("document doesn't exist");
-        setCallAlert(true);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  if (uids !== null) {
-    checkUser(uids);
+  // page navigation
+  const navigate = useNavigate();
+  const navigateToProfileReviews = () => {
+    navigate('/reviews/profile');
   }
 
-  // Read db 
-  const [revs, setRevs] = useState([]);
-  const path = "profile/" + uids + "/reviews";
-  
+  // Get Eateries and Stalls
+  const [eateries, setEateries] = useState([]);
+  const [stalls, setStalls] = useState([]);
+  const eateriesCollectionRef = collection(db, "eateries");
   useEffect(() => {
-    const getRevs = async () => {
-        // getting reviews
-        console.log("Reviews getRev called");
-        const data = await getDocs(collection(db, path));
-        const allRevs = data.docs.map((doc) => ({key: doc.id, ...doc.data(), id: doc.id}));
-        setRevs(allRevs);
-        setLoading(false);
-    }
-    getRevs();
-  }, [uids]);
-
-  // delete review
-  const deleteRev = async (revID, content, rating, uid, eateryID, stallID, eatery, stall, revpic) => {
-    const confirmed = window.confirm("Are you sure you want to Delete this Review?\n"
-        + "\n    Eatery: " + eatery + "\n    Stall: " + stall
-        + "\n    Content: " + content + "\n    Rating: " + rating);
-    if (confirmed) {
-      const userRevRef = doc(db, "profile/" + uid + "/reviews", revID);
-      const stallRevRef = doc(db, "eateries/" + eateryID + "/Stalls/" + stallID + "/reviews", revID);
-      const delRef = ref(storage, revpic);
-      await deleteObject(delRef);
-      await deleteDoc(userRevRef);
-      await deleteDoc(stallRevRef);
-      // paths
-      const stallRevsPath = "eateries/" + eateryID + "/Stalls/" + stallID + "/reviews";
-      const stallPath = "eateries/" + eateryID + "/Stalls/";
-      // get stall reviews
-      const stallData = await getDocs(collection(db, stallRevsPath));
-      const allRevs = stallData.docs.map((doc) => ({
-        key: doc.id, ...doc.data(), id: doc.id
+    const getEateriesAndStalls = async () => {
+      // get Eateries
+      console.log("retrieving eateries");
+      const eatData = await getDocs(eateriesCollectionRef);
+      var allEateries = eatData.docs.map((doc) => ({
+        key: doc.id,
+        ...doc.data(),
+        id: doc.id,
       }));
-      // update stall rating
-      if (allRevs.length > 0) {
-        console.log("updating stall rating")
-        const sum = allRevs.reduce((acc, item) => {
-          return acc + item.Rating;
-        }, 0);
-        const avgRating = sum / allRevs.length;
-        const newFields = {
-          rating: avgRating
-        };
-        await updateDoc(doc(db, stallPath, stallID), newFields);
+      allEateries.forEach((object, index) => {
+        object.index = index;
+      });
+      setEateries(allEateries);
+      // get Stalls
+      console.log("retrieving stalls");
+      var allStalls = [];
+      for (let i = 0; i < allEateries.length; i++) {
+        const eateryID = allEateries[i].id;
+        const s = await findStalls(eateryID);
+        allStalls.push(s);
       }
-      window.location.reload();
+      setStalls(allStalls);
+    }
+    getEateriesAndStalls();
+  }, []);
+
+  // Get Stalls of Eatery
+  const findStalls = async (id) => {
+    if (id) {
+      const stallsPath = "eateries/" + id + "/Stalls/";
+      const stallsData = await getDocs(collection(db, stallsPath));
+      const allStalls = stallsData.docs.map((doc) => ({
+        key: doc.id, ...doc.data(), id: doc.id, eateryID: id
+      }));
+      return allStalls;
     }
   }
+
+  // location of eatery
+  const [eatID, setEatID] = useState(null);
+  const [eatIndex, setEatIndex] = useState(0);
+  // location of stall
+  const [stallID, setStallID] = useState(null);
 
   // Page content
   const cont = (
+    stalls.length !== 0 ?
     <div>
       <h1>REVIEWS PAGE</h1>
-      <h2>Your Reviews</h2>
-      <br />
+      <Button variant="primary" onClick={navigateToProfileReviews}>Your Reviews</Button>
 
-      {/* add new review  */}
-      {callAlert ? 
-      <div>
-        <h2>Oops! You have yet to create a profile!</h2>
-        <p>Create a Profile from the Profile Page to start creating reviews!</p>
-      </div> 
-      : <Button className="btn btn-light">
-        <Link to={`/cr/${uids}`}>Create New Review</Link>
-      </Button>}
-      <br />
-      <br />
-      
-      {/* Reviews */}
-      {/* uses getDocs  */}
-      <div>
-        {/* Filter by User's own reviews and map to display  */}
-        {revs.map((rev, idx) => {
-          const date = new Date(rev.Time.seconds * 1000);
-          return (<div key={rev.id}>
-            <Review 
-              recPage={false}
-              deleteRev={deleteRev}
-              updateRev={`/updatereview/${rev.id}/${rev.EateryID}/${rev.StallID}/${rev.UserID}`}
-              id={rev.id}
-              poster={rev.Poster}
-              content={rev.Content}
-              rating={rev.Rating}
-              time={date.toString()}
-              idx={idx}
-              eatery={rev.Eatery}
-              stall={rev.Stall}
-              revpic={rev.RevPic}
-              eateryID={rev.EateryID}
-              stallID={rev.StallID}
-              uid={rev.UserID}
-              viewerUID={uids}
-            />
-          </div>);
-        })}
-      </div>
-      
-    </div>)
-  
-  return (<Navbar content={loading ? <Spinner /> : cont} />)
+      <Form>
+        <Form.Group>
+        <Form.Label>Eatery</Form.Label>
+        <FormControl fullWidth>
+          <InputLabel>Eatery</InputLabel>
+          <Select
+            value={eatIndex}
+            label="Eatery"
+            onChange={(event) => {
+              var i = event.target.value;
+              var e = eateries[i]
+              setEatIndex(i);
+              setEatID(e.id);
+            }}
+          >
+          {eateries.map((eat) => {
+            return <MenuItem value={eat.index}>{eat.name}</MenuItem>
+          })}
+          </Select>
+        </FormControl>
+        </Form.Group>
+
+        <Form.Group>
+        <Form.Label>Stall</Form.Label>
+        <FormControl fullWidth>
+          <InputLabel>Stall</InputLabel>
+          <Select
+            value={stallID}
+            label="Eatery"
+            onChange={(event) => {setStallID(event.target.value)}}
+          >
+          {stalls[eatIndex].map((s) => {
+            return <MenuItem value={s.id}>{s.name}</MenuItem>
+          })}
+          </Select>
+        </FormControl>
+        </Form.Group>
+
+        {/* review query */}
+        <Button onClick={() => {navigate(`/vr/${eatID}/${stallID}`)}}>View Reviews</Button>
+      </Form>
+    </div> :
+    <div></div>
+  )
+
+  return <Navbar content={cont}/>
 }
 
 export default Reviews;

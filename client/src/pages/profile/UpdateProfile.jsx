@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
-import { Button, Form, Card } from 'react-bootstrap';
-import {
-  ref, getDownloadURL, uploadBytes, deleteObject,
-} from 'firebase/storage';
-import {
-  Avatar, Checkbox, FormGroup, FormControlLabel,
-} from '@mui/material';
-import { v4 } from 'uuid';
-import { db, storage } from '../../components/firebase';
-import Navbar from '../../components/Navbar';
-import Input from '../../components/Input';
+import React, { useState, useEffect } from "react";
+import Navbar from "../../components/Navbar";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { db, storage } from "../../components/firebase";
+import { Button, Form, Card } from "react-bootstrap";
+import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
+import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
+import { v4 } from "uuid";
+import Input from "../../components/Input";
 
 function UpdateProfile() {
   console.log('Update Profile Page');
@@ -185,6 +181,7 @@ function UpdateProfile() {
         <h1>Update Profile</h1>
         {/* <Avatar className="Avatar" alt={oldProf.Username} src={profPicURL}/> */}
         <Card.Img variant="top" src={profPicURL} alt={oldProf.Username} />
+        <br />
         <Button onClick={removeImage}>Remove Profile Picture</Button>
         <Form>
           <Form.Group

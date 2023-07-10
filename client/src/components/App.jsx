@@ -6,15 +6,17 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
 // import Axios from 'axios';
 
-import Home from '../pages/Home';
-import Statistics from '../pages/Statistics';
-import Profile from '../pages/profile/Profile';
+import Home from "../pages/Home";
+import Statistics from "../pages/Statistics";
+import Profile from "../pages/profile/Profile";
 import Reviews from '../pages/reviews/Reviews';
-import Sync from '../pages/sync/Sync';
-import Leaderboard from '../pages/Leaderboard';
-import SignUp from '../pages/start/SignUp';
-import SignIn from '../pages/start/SignIn';
-import Recommendation from '../pages/Recommendation';
+import ProfileReviews from "../pages/reviews/ProfileReviews";
+import ViewReviews from '../pages/reviews/ViewReviews';
+import Sync from "../pages/Sync";
+import Leaderboard from "../pages/Leaderboard";
+import SignUp from "../pages/start/SignUp";
+import SignIn from "../pages/start/SignIn";
+import Recommendation from "../pages/Recommendation";
 import Start from '../pages/start/Start';
 import UpdateReview from '../pages/reviews/UpdateReview';
 import CreateReview from '../pages/reviews/CreateReview';
@@ -44,30 +46,32 @@ function App() {
   // }, []);
 
   return (
-    <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/" element={<Start />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/statistics" element={<Statistics />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/reviews" element={<Reviews />} />
-          <Route path="/sync" element={<Sync />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/recommendation/:uid" element={<Recommendation />} />
-          <Route path="/updatereview/:revid/:eatid/:stallid/:uid" element={<UpdateReview />} />
-          <Route path="/cr/:id" element={<CREatery />} />
-          <Route path="/cr/:uid/:locid" element={<CRStall />} />
-          <Route path="/cr/:uid/:locid/:stallid" element={<CreateReview />} />
-          <Route path="/changepassword" element={<ChangePassword />} />
-          <Route path="/resetpassword" element={<ResetPassword />} />
-          <Route path="/createprofile" element={<CreateProfile />} />
-          <Route path="/updateprofile/:id" element={<UpdateProfile />} />
-        </Routes>
-      </Router>
-    </div>
+      <div className="App">
+        <Router>
+          <Routes>
+            <Route path="/" element={<Start />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/statistics" element={<Statistics />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/reviews" element={<Reviews />} />
+            <Route path="/reviews/profile" element={<ProfileReviews />} />
+            <Route path="/vr/:eatid/:stallid" element={<ViewReviews />} />
+            <Route path="/sync" element={<Sync />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/recommendation/:uid" element={<Recommendation />} />
+            <Route path="/updatereview/:revid/:eatid/:stallid/:uid" element={<UpdateReview />} />
+            <Route path="/cr/:id" element={<CREatery />} />
+            <Route path="/cr/:uid/:locid" element={<CRStall />} />
+            <Route path="/cr/:uid/:locid/:stallid" element={<CreateReview />} />
+            <Route path="/changepassword" element={<ChangePassword />} />
+            <Route path="/resetpassword" element={<ResetPassword />} />
+            <Route path="/createprofile" element={<CreateProfile />} />
+            <Route path="/updateprofile/:id" element={<UpdateProfile />} />
+          </Routes>
+        </Router>
+      </div>
   );
 }
 

@@ -32,14 +32,25 @@ const SignUp = (props) => {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           console.log(userCredential);
+          return true;
           }).catch((error) => {
             console.log(error);
+            alert(error);
+            return false;
+          }).then((check) => {
+            if (check) {
+              alert('Successfully registered. Redirecting to login page...');
+              setEmail('');
+              setPassword('');
+              setConfirmPassword('');
+              navigateToSignIn();
+            } else {
+              setEmail('');
+              setPassword('');
+              setConfirmPassword('');
+            }
           });
-        alert('Successfully registered. Redirecting to login page...');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        navigateToSignIn();
+        
       }
   };
 

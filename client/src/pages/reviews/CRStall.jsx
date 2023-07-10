@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { db } from "../../components/firebase";
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import { Button, Form } from "react-bootstrap";
@@ -11,8 +11,8 @@ export default function CRStall() {
 
   // page navigation
   const navigate = useNavigate();
-  const navigateToReviews = () => {
-    navigate('/reviews');
+  const navigateToProfileReviews = () => {
+    navigate('/reviews/profile');
   }
 
   // current userID
@@ -54,8 +54,10 @@ export default function CRStall() {
       <br />
       <h2>Step 2: Select an Stall!</h2>
       <br />
+      {/* SELECTED EATERY  */}
       <h3>Eatery: {eatery.name}</h3>
       <br />
+      {/* STALL SELECTION  */}
       <Form>
         <Form.Group>
         <Form.Label>Stall</Form.Label>
@@ -74,18 +76,19 @@ export default function CRStall() {
         </Form.Group>
 
         <br />
-        <Button className="btn btn-light">
-          <Link to={`/cr/${uid}`}>Back</Link>
-        </Button>
-        <Button className="btn btn-light">
-          <Link to={`/cr/${uid}/${locID}/${stallID}`}>Next</Link>
-        </Button>
+        {/* BACK BUTTON  */}
+        <Button className="btn btn-light" onClick={() => {navigate(`/cr/${uid}`)}}>Back</Button>
+        {/* NEXT BUTTON  */}
+        <Button className="btn btn-light" onClick={() => {
+          stallID !== null ? navigate(`/cr/${uid}/${locID}/${stallID}`) :
+          alert("Please select a Stall before proceeding")}}>Next</Button>
       </Form>    
 
       <br />
       <br />
+      {/* CANCEL BUTTON  */}
       <div>
-        <Button variant="primary" onClick={navigateToReviews}>Cancel</Button>
+        <Button variant="primary" onClick={navigateToProfileReviews}>Cancel</Button>
       </div>
     </div>
   )

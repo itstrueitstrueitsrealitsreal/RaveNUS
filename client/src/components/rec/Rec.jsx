@@ -36,27 +36,25 @@ function Rec(props) {
       <h2>Stall Reviews</h2>
       {revs.map((rev, idx) => {
         const date = new Date(rev.Time.seconds * 1000);
-        return (
-          <div key={rev.id}>
-            <Review
-              recPage
-              updateRev="/reviews"
-              id={rev.id}
-              poster={rev.Poster}
-              content={rev.Content}
-              rating={rev.Rating}
-              time={date.toString()}
-              idx={idx}
-              eatery={rev.Eatery}
-              stall={rev.Stall}
-              revpic={rev.RevPic}
-              eateryID={rev.EateryID}
-              stallID={rev.StallID}
-              uid={rev.UserID}
-              viewerUID={props.viewerUID}
-            />
-          </div>
-        );
+        return (<div key={rev.id}>
+          <Review 
+            recPage={true}
+            updateRev={`/reviews/profile`}
+            id={rev.id}
+            poster={rev.Poster}
+            content={rev.Content}
+            rating={rev.Rating}
+            time={date.toString()}
+            idx={idx}
+            eatery={rev.Eatery}
+            stall={rev.Stall}
+            revpic={rev.RevPic}
+            eateryID={rev.EateryID}
+            stallID={rev.StallID}
+            uid={rev.UserID}
+            viewerUID={props.viewerUID}
+          />
+        </div>);
       })}
 
       <br />

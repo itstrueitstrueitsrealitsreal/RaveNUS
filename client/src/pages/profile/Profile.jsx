@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Button, Card } from 'react-bootstrap';
-import { collection, getDocs } from 'firebase/firestore';
-import { ref, getDownloadURL } from 'firebase/storage';
-import { Avatar } from '@mui/material';
-import { db, storage } from '../../components/firebase';
-import UserID from '../../components/auth/UserID';
-import Navbar from '../../components/Navbar';
-import Auth from '../../components/auth/Auth';
+import React, { useState, useEffect } from "react";
+import Auth from "../../components/auth/Auth";
+import Navbar from "../../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import { Button, Card } from "react-bootstrap";
+import UserID from "../../components/auth/UserID";
+import { db, storage } from "../../components/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
 
 function Profile(props) {
   console.log('Profile Page called');
@@ -65,36 +64,24 @@ function Profile(props) {
       </div>
       <br />
 
-      { profiles.length === 1
-        ? (
-          <div>
-            {' '}
-            {profiles.map((p) => (
-              <div key={p.id}>
-                {/* <Avatar className="Avatar" alt={p.Username} src={profPicURL}/> */}
-                <Card.Img variant="top" src={profPicURL} alt={p.Username} />
-                <h2>
-                  Username:
-                  {p.Username}
-                </h2>
-                <h3>
-                  Halal:
-                  {p.Halal.toString()}
-                </h3>
-                <h3>
-                  Vegetarian:
-                  {p.Vegetarian.toString()}
-                </h3>
-                <Button className="btn btn-light"><Link to={`/updateprofile/${p.id}`}>Update Profile</Link></Button>
-              </div>
-            ))}
-          </div>
-        )
-        : (
-          <div>
-            <Button onClick={navigateToCreateProfile}>Create Profile</Button>
-          </div>
-        )}
+      { profiles.length === 1 ? 
+      <div>  {profiles.map((p) => {
+          return (
+            <div key={p.id}>
+              {/* <Avatar className="Avatar" alt={p.Username} src={profPicURL}/> */}
+              <Card.Img variant="top" src={profPicURL} alt={p.Username} />
+              <h2>Username: {p.Username}</h2>
+              <h3>Halal: {p.Halal.toString()}</h3>
+              <h3>Vegetarian: {p.Vegetarian.toString()}</h3>
+              <Button className="btn btn-light" onClick={() => {navigate(`/updateprofile/${p.id}`)}}>Update Profile</Button>
+            </div>
+          )
+        })} 
+      </div> :
+      <div>
+        <Button onClick={navigateToCreateProfile}>Create Profile</Button>
+      </div> 
+      }
 
     </div>
   );
