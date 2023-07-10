@@ -13,16 +13,13 @@ function Rec(props) {
   return (
     <div>
       <h1>
-        Recommendation:
-        {recStall.name}
+        Recommendation: {recStall.name}
       </h1>
       <h2>
-        Average Rating:
-        {recStall.rating}
-        /5
+        Average Rating: {recStall.rating ? (recStall.rating + '/5') : 'No reviews yet'}
       </h2>
       {/* rating */}
-      <Rating name="read-only" value={recStall.rating} max={5} readOnly />
+      {recStall.rating ? <Rating name="read-only" value={recStall.rating} max={5} readOnly /> : ''}
 
       <br />
       <br />
