@@ -68,9 +68,11 @@ function Recommendation(props) {
   if (uid !== null) {
     checkProfile(uid);
   }
+  // use this for testing
+  const today = new Date('2023-08-31T15:24:00');
+
   // function to check if lesson is ongoing, returns it with lesson data if it is
   const getLessonData = async (data) => {
-    const today = new Date('2023-08-31T15:24:00');
     const day = today.getDay() == 0 ? 6 : today.getDay() - 1;
     const week = NUSModerator.academicCalendar.getAcadWeekInfo(today).num;
     var time = today.toLocaleString([], {
@@ -156,7 +158,7 @@ function Recommendation(props) {
       }
     };
     getLocation();
-    console.log('location:dhqoiewhdihdiuqhdiqudhqidhqihdwi');
+    console.log('location:');
     console.log(userLocation);
   }, []);
 
@@ -224,10 +226,9 @@ function Recommendation(props) {
         stalls.push(s);
       }
       // current time
-      const d = new Date();
-      const day = d.getDay();
-      const hr = d.getHours();
-      const min = d.getMinutes();
+      const day = today.getDay();
+      const hr = today.getHours();
+      const min = today.getMinutes();
       const t = hr * 60 + min;
       for (let i = 0; i < stalls.length; i++) {
         // filter by Halal
