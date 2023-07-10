@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 function MapComponent(props) {
   const [map, setMap] = useState(null);
-  const [userLocation, setUserLocation] = useState(null);
   const [customLocation, setCustomLocation] = useState(null);
   console.log(props.location);
   console.log(props.userLocation);
