@@ -33,10 +33,10 @@ function MapComponent(props) {
         const customMarker = new window.google.maps.Marker({
           position: props.location,
           map: newMap,
-          title: 'Reccomendation',
+          title: 'Recommendation',
           label: '',
         });
-        attachInfoWindow(customMarker, 'Custom Location');
+        attachInfoWindow(customMarker, 'Recommendation');
         setCustomLocation(customMarker);
       }
     };
