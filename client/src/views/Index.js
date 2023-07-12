@@ -1,10 +1,5 @@
-import { useState } from "react";
-// node.js library that concatenates classes (strings)
-import classnames from "classnames";
-// javascipt plugin for creating charts
-import Chart from "chart.js";
-// react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 // reactstrap components
 import {
   Button,
@@ -19,16 +14,59 @@ import {
   Container,
   Row,
   Col,
+  CardTitle,
 } from "reactstrap";
+import { auth, authForFirebaseUI } from '../components/firebase.js';
 
-// core components
+const Index = () => {
+  console.log('Home Page called');
 
-import Header from "../components/Headers/Header.js";
+  // page navigation
+  const navigate = useNavigate();
 
-const Index = (props) => {
+  // current userID
+  const [uid, setUid] = useState(null);
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      setUid(authForFirebaseUI.currentUser.uid);
+    } else {
+      window.location.reload();
+    }
+  });
 
+  // Current Time
+  const now = new Date().toLocaleTimeString();
+  const [time, setTime] = useState(now);
+  setInterval(updateTime, 1000);
 
-  return ( <div></div>
+  function updateTime() {
+    setTime(new Date().toLocaleTimeString());
+  }
+
+  return ( 
+    <>
+      <div className="pb-8 pt-5 pt-md-8">
+      <Container className="mt-7"fluid>
+        <Row>
+          <div className="col">
+            <div className="px-4 py-5 my-5 text-center">
+              <h1 className="display-5 fw-bold text-body-emphasis">{time}</h1>
+              <h1 className="display-5 fw-bold text-body-emphasis">"Hunger knows no friend but its feeder."</h1>
+              <div className="col-lg-6 mx-auto">
+                <p className="lead mb-4">-Aristophenes</p>
+                <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                  <Button className="btn btn-light text-center" onClick={(e) => {
+                    e.preventDefault();
+                    navigate(`/admin/recommendation/${uid}`);
+                  }}>Generate Recommendation</Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Row>
+      </Container>
+      </div>
+    </>
   );
 };
 

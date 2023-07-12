@@ -5,7 +5,6 @@ import { db } from '../components/firebase';
 import {
   collection, getDocs, getDoc, doc, query, where
 } from 'firebase/firestore';
-import { useDocument } from 'react-firebase-hooks/firestore';
 // for geopoint queries
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
@@ -16,7 +15,7 @@ import MapComponent from '../components/MapComponent';
 import Navbar from '../components/Navbar';
 import NUSModerator from 'nusmoderator';
 
-function Recommendation(props) {
+function Recommendation() {
   console.log('Recommendation Page called');
 
   // page navigation

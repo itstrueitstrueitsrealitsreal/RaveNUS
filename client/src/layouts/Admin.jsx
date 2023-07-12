@@ -3,7 +3,6 @@ import { useLocation, Route, Routes, Navigate } from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
-import AdminNavbar from "../components/Navbars/AdminNavbar.jsx";
 import AdminFooter from "../components/Footers/AdminFooter.js";
 import Sidebar from "../components/Sidebar/Sidebar.jsx";
 
@@ -57,10 +56,6 @@ const Admin = (props) => {
         }}
       />
       <div className="main-content" ref={mainContent}>
-        <AdminNavbar
-          {...props}
-          brandText={getBrandText(props?.location?.pathname)}
-        />
         <Routes>
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/admin/index" replace />} />

@@ -6,6 +6,7 @@ import Tables from "./views/examples/Tables.js";
 import Icons from "./views/examples/Icons.js";
 import Reset from './views/examples/Reset.js';
 import Login from './views/examples/Login.js';
+import Recommendation from './pages/Recommendation.jsx'
 
 var routes = [
   {
@@ -70,6 +71,13 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: <Reset />,
     layout: "/auth",
+  },
+  {
+    path: "/recommendation/:uid",
+    name: "Recommendation",
+    icon: "ni ni-circle-08 text-pink",
+    component: <Recommendation />,
+    layout: "/admin",
   },
 ];
 export default routes;

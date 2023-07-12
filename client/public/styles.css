@@ -1,3 +1,9 @@
+.generate-recommendation {
+  font-family: 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -121,3 +127,4 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   align-items: center;
   justify-content: center;
 }
+
