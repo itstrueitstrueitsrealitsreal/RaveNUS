@@ -14,7 +14,7 @@ const AdminNavbar = () => {
           <NavbarBrand to="/" tag={Link}>
             <img
               alt="..."
-              src={require("../../assets/img/brand/ravenus_header.png")}
+              src={require("../../assets/img/brand/ravenus_header_auth.png")}
             />
           </NavbarBrand>
         </Container>

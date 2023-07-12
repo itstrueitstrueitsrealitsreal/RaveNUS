@@ -9,7 +9,7 @@ import Sidebar from "../components/Sidebar/Sidebar.jsx";
 
 import routes from "../routes.js";
 
-import img from "../assets/img/brand/argon-react.png";
+import img from "../assets/img/brand/ravenus_header_admin.png";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
