@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Form, Button } from "react-bootstrap";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../components/firebase';
-import Input from '../../components/Input';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = (props) => {

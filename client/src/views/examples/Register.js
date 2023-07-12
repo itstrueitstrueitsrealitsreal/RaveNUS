@@ -21,6 +21,7 @@ import { auth } from '../../components/firebase.js';
 const Register = () => {
   console.log('Register component called');
 
+  // navigation
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -121,7 +122,7 @@ const Register = () => {
                 </InputGroup>
               </FormGroup>
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="submit" onClick={signUp}>
+                <Button className="mt-4" color="primary" type="button" onClick={signUp}>
                   Create account
                 </Button>
               </div>
@@ -135,8 +136,7 @@ const Register = () => {
               href="#pablo"
               onClick={(e) => {
                 e.preventDefault();
-                navigate(`/auth/login`)
-
+                navigateToSignIn();
               }}
             >
               <small>Already have an account?</small>
