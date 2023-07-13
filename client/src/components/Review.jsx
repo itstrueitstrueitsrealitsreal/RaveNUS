@@ -19,7 +19,10 @@ function Review(props) {
     setPicURL(url.toString());
   };
   if (props.revpic && props.revpic !== '') {
+    console.log(props.revpic);
+    console.log('getting url')
     getURL();
+    console.log(picURL);
   }
 
   return (

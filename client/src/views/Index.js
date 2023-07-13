@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation, useHistory } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 // reactstrap components
 import {
   Button,
@@ -52,7 +52,7 @@ const Index = () => {
   return ( 
     <>
       <div className="pb-8 pt-5 pt-md-8">
-        <Container className="mt-7"fluid>
+        <Container className="mt-7" fluid>
           <Row>
             <div className="px-4 py-5 my-5 text-center">
               <h1 className="display-5 fw-bold text-body-emphasis">{time}</h1>

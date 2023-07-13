@@ -50,26 +50,26 @@ function App() {
       <div className="App">
         <Router>
           <Routes>
-            <Route path="/" element={<Start />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/statistics" element={<Statistics />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/reviews" element={<Reviews />} />
-            <Route path="/reviews/profile" element={<ProfileReviews />} />
-            <Route path="/vr/:eatid/:stallid" element={<ViewReviews />} />
-            <Route path="/sync" element={<Sync />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/recommendation/:uid" element={<Recommendation />} />
-            <Route path="/updatereview/:revid/:eatid/:stallid/:uid" element={<UpdateReview />} />
-            <Route path="/cr/:id" element={<CREatery />} />
-            <Route path="/cr/:uid/:locid" element={<CRStall />} />
-            <Route path="/cr/:uid/:locid/:stallid" element={<CreateReview />} />
-            <Route path="/changepassword" element={<ChangePassword />} />
-            <Route path="/resetpassword" element={<ResetPassword />} />
-            <Route path="/createprofile" element={<CreateProfile />} />
-            <Route path="/updateprofile/:id" element={<UpdateProfile />} />
+            {/* <Route path="/" element={<Start />} /> */}
+            {/* <Route path="/signin" element={<SignIn />} /> */}
+            {/* <Route path="/signup" element={<SignUp />} /> */}
+            {/* <Route path="/home" element={<Home />} /> */}
+            {/* <Route path="/statistics" element={<Statistics />} /> */}
+            {/* <Route path="/profile" element={<Profile />} /> */}
+            {/* <Route path="/reviews" element={<Reviews />} /> */}
+            {/* <Route path="/reviews/profile" element={<ProfileReviews />} /> */}
+            {/* <Route path="/vr/:eatid/:stallid" element={<ViewReviews />} /> */}
+            {/* <Route path="/sync" element={<Sync />} /> */}
+            {/* <Route path="/leaderboard" element={<Leaderboard />} /> */}
+            {/* <Route path="/recommendation/:uid" element={<Recommendation />} /> */}
+            {/* <Route path="/updatereview/:revid/:eatid/:stallid/:uid" element={<UpdateReview />} /> */}
+            {/* <Route path="/cr/:id" element={<CREatery />} /> */}
+            {/* <Route path="/cr/:uid/:locid" element={<CRStall />} /> */}
+            {/* <Route path="/cr/:uid/:locid/:stallid" element={<CreateReview />} /> */}
+            {/* <Route path="/changepassword" element={<ChangePassword />} /> */}
+            {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
+            {/* <Route path="/createprofile" element={<CreateProfile />} /> */}
+            {/* <Route path="/updateprofile/:id" element={<UpdateProfile />} /> */}
           </Routes>
         </Router>
       </div>

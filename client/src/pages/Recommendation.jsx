@@ -10,20 +10,30 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import * as geofirestore from 'geofirestore';
 import Spinner from 'react-bootstrap/Spinner';
-import { Button } from 'react-bootstrap';
 import MapComponent from '../components/MapComponent';
 import NUSModerator from 'nusmoderator';
+// reactstrap components
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  NavItem,
+  NavLink,
+  Nav,
+  Progress,
+  Table,
+  Container,
+  Row,
+  Col,
+  CardTitle,
+} from "reactstrap";
 
 function Recommendation() {
   console.log('Recommendation Page called');
 
   // page navigation
   const navigate = useNavigate();
-  const navigateToNewRec = () => {
-    setLoading(true);
-    const nav = `/admin/recommendation/${uid}`;
-    navigate(nav);
-  };
 
   // current userID
   const url = useLocation();
@@ -247,6 +257,7 @@ function Recommendation() {
   // Stall recommendation
   const [recStalls, setRecStalls] = useState(null);
   const [recStall, setRecStall] = useState(null);
+
   const findStalls = async (id) => {
     if (id) {
       const stallsPath = `eateries/${id}/Stalls/`;
@@ -354,21 +365,30 @@ function Recommendation() {
   const [limit, setLimit] = useState(10);
 
   // Page content
-  const cont = isLoading ? <Spinner /> : (
+  const cont = isLoading ? <div className="pb-8 pt-5 pt-md-8 text-center"><Spinner /></div> : (
     recStall === null ? 
     // if there are no stalls to recommend
-    <div>
-      <h1>Oops!</h1>
-      <h2>We can't seem to find a Stall to recommend you!</h2>
-      <p>Either there are no stalls open currently, 
-          or there are none open that fit your dietary requirements, 
-          or the stalls available are not rated highly enough for us to consider recommending them to you!</p>
-      <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <button onClick={navigateToNewRec} type="button" className="btn btn-primary btn-lg px-4 gap-3">Generate ANOTHER Recommendation</button>
-      </div>
+    <div className="pb-8 pt-5 pt-md-8">
+      <Container className="mt-7" fluid>
+        <Row>
+          <div className="px-4 py-5 my-5 text-center">
+            <h1 className="display-5 fw-bold text-body-emphasis">Sorry!</h1>
+            <h1 className="display-5 fw-bold text-body-emphasis">There are no stalls which are open which are highly rated enough or suit your dietary restrictions.</h1>
+            <div className="col-lg-6 mx-auto">
+              <p className="lead mb-4">Try again later!</p>
+              <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <Button className="btn btn-light text-center" type='button' onClick={(e) => {
+                  e.preventDefault();
+                  window.location.reload();
+                }}>Generate Recommendation</Button>
+              </div>
+            </div>
+          </div>
+        </Row>
+      </Container>
     </div> :
     // recommend stall
-    <div>
+    <div className="pb-8 pt-5 pt-md-8">
       <h1>{location.name}</h1>
       <MapComponent location={location.coords} userLocation={userLocation}/>
       <br />
@@ -376,7 +396,10 @@ function Recommendation() {
       <Button onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a Review!</Button>
       {/* Increase number of reviews by 10 */}
       <Button onClick={() => { setLimit(limit + 10); }}>load more reviews</Button>
-      <Rec stall={recStall} recPage={navigateToNewRec} revs={revs} limit={limit} viewerUID={uid} />
+      <Rec stall={recStall} recPage={(e) => {
+        e.preventDefault();
+        window.location.reload();
+      }} revs={revs} limit={limit} viewerUID={uid} />
     </div>
   );
 
