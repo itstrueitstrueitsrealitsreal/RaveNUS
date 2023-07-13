@@ -250,6 +250,7 @@ function Recommendation() {
   const findStalls = async (id) => {
     if (id) {
       const stallsPath = `eateries/${id}/Stalls/`;
+      console.log('Calling findstalls');
       const stallsData = await getDocs(collection(db, stallsPath));
       const allStalls = stallsData.docs.map((doc) => ({
         key: doc.id, ...doc.data(), id: doc.id, eateryID: id,
@@ -267,9 +268,11 @@ function Recommendation() {
   const getRevs = async (path) => {
     // getting reviews
     console.log('Reviews getRev called');
-    const data = await getDocs(collection(db, path));
-    const allRevs = data.docs.map((doc) => ({ key: doc.id, ...doc.data(), id: doc.id }));
-    return allRevs;
+    if (path) {
+      const data = await getDocs(collection(db, path)).catch((err) => console.log(err));
+      const allRevs = data.docs.map((doc) => ({ key: doc.id, ...doc.data(), id: doc.id }));
+      return allRevs;
+    }
   };
 
   // Create a GeoQuery based on a location

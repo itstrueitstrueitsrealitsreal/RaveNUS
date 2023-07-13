@@ -18,7 +18,7 @@ function Review(props) {
     const url = await getDownloadURL(urlRef);
     setPicURL(url.toString());
   };
-  if (props.revpic !== null && props.revpic !== '') {
+  if (props.revpic && props.revpic !== '') {
     getURL();
   }
 
