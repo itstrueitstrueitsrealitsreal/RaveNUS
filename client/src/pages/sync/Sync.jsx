@@ -334,7 +334,9 @@ function Sync() {
     </div>
   );
 
-  return <Navbar content={loading ? <Spinner /> : cont} />;
+  return <div className="pb-8 pt-5 pt-md-8">
+    {loading ? <div className='text-center'><Spinner /></div> : cont}
+  </div>
 }
 
 export default Sync;

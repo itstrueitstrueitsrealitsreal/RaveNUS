@@ -1,9 +1,6 @@
 import Index from "./views/Index.js";
 import Profile from "./views/examples/Profile.jsx";
-import Maps from "./views/examples/Maps.js";
 import Register from "./views/examples/Register.js";
-import Tables from "./views/examples/Tables.js";
-import Icons from "./views/examples/Icons.js";
 import Reset from './views/examples/Reset.js';
 import Login from './views/examples/Login.js';
 import Recommendation from './pages/Recommendation.jsx'
@@ -11,6 +8,15 @@ import Statistics from './pages/Statistics.jsx';
 import Reviews from './pages/reviews/Reviews.jsx';
 import Sync from './pages/sync/Sync.jsx';
 import Leaderboard from './pages/Leaderboard.jsx';
+import ProfileReviews from "./pages/reviews/ProfileReviews.jsx";
+import ViewReviews from './pages/reviews/ViewReviews.jsx';
+import UpdateReview from './pages/reviews/UpdateReview.jsx';
+import CreateReview from './pages/reviews/CreateReview.jsx';
+import CREatery from './pages/reviews/CREatery.jsx';
+import CRStall from './pages/reviews/CRStall.jsx';
+import ChangePassword from './pages/profile/ChangePassword.jsx';
+import CreateProfile from './pages/profile/CreateProfile.jsx';
+import UpdateProfile from './pages/profile/UpdateProfile.jsx';
 
 var routes = [
   {
