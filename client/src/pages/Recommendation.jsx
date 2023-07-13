@@ -3,7 +3,7 @@ import Rec from '../components/rec/Rec';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { db } from '../components/firebase';
 import {
-  collection, getDocs, getDoc, doc, query, where
+  collection, getDocs, getDoc, doc
 } from 'firebase/firestore';
 // for geopoint queries
 import firebase from 'firebase/compat/app';
@@ -12,7 +12,6 @@ import * as geofirestore from 'geofirestore';
 import Spinner from 'react-bootstrap/Spinner';
 import { Button } from 'react-bootstrap';
 import MapComponent from '../components/MapComponent';
-import Navbar from '../components/Navbar';
 import NUSModerator from 'nusmoderator';
 
 function Recommendation() {
@@ -22,13 +21,13 @@ function Recommendation() {
   const navigate = useNavigate();
   const navigateToNewRec = () => {
     setLoading(true);
-    const nav = `/recommendation/${uid}`;
+    const nav = `/admin/recommendation/${uid}`;
     navigate(nav);
   };
 
   // current userID
   const url = useLocation();
-  const uid = url.pathname.split('/')[2];
+  const uid = url.pathname.split('/')[3];
 
   // Create a Firestore reference
   const firestore = firebase.firestore();
@@ -378,7 +377,7 @@ function Recommendation() {
     </div>
   );
 
-  return <Navbar content={cont} />;
+  return cont;
 }
 
 export default Recommendation;

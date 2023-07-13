@@ -31,19 +31,17 @@ const Admin = (props) => {
       }
     });
   };
-
-  const getBrandText = (path) => {
-    for (let i = 0; i < routes.length; i++) {
-      if (
-        props?.location?.pathname.indexOf(routes[i].layout + routes[i].path) !==
-        -1
-      ) {
-        return routes[i].name;
-      }
-    }
-    return "Brand";
-  };
-
+  // // console.log(getRoutes(routes));
+  // // let renderedRoutes = getRoutes(routes);
+  // // while (renderedRoutes.length > 6) {
+  // //   renderedRoutes.push();
+  // // }
+  // // console.log(renderedRoutes)
+  // const renderedRoutes = routes;
+  // while (renderedRoutes.length > 6) {
+  //    renderedRoutes.pop();
+  // }
+  // console.log(renderedRoutes);
   return (
     <>
       <Sidebar
@@ -57,6 +55,7 @@ const Admin = (props) => {
       />
       <div className="main-content" ref={mainContent}>
         <Routes>
+          
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/admin/index" replace />} />
         </Routes>

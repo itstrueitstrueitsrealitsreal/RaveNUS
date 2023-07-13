@@ -44,13 +44,8 @@ const Sidebar = (props) => {
   };
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
-    var links = routes;
-    // change this number according to number of items on sidebar
-    while (links.length > 6) {
-      links.pop();
-    }
-    return links.map((prop, key) => {
-      return (
+    return routes.map((prop, key) => {
+      return key < 6 ? (
         <NavItem key={key}>
           <NavLink
             to={prop.layout + prop.path}
@@ -61,7 +56,7 @@ const Sidebar = (props) => {
             {prop.name}
           </NavLink>
         </NavItem>
-      );
+      ) : null;
     });
   };
 
@@ -190,20 +185,6 @@ const Sidebar = (props) => {
               </Col>
             </Row>
           </div>
-          {/* Form */}
-          <Form className="mt-4 mb-3 d-md-none">
-            <InputGroup className="input-group-rounded input-group-merge">
-              <Input
-                aria-label="Search"
-                className="form-control-rounded form-control-prepended"
-                placeholder="Search"
-                type="search"
-              />
-                <InputGroupText>
-                  <span className="fa fa-search" />
-                </InputGroupText>
-            </InputGroup>
-          </Form>
           {/* Navigation */}
           <Nav navbar>{createLinks(routes)}</Nav>
         </Collapse>
