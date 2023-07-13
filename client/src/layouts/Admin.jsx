@@ -9,6 +9,7 @@ import Sidebar from "../components/Sidebar/Sidebar.jsx";
 import routes from "../routes.js";
 
 import img from "../assets/img/brand/ravenus_header_admin.png";
+import AdminNavbar from "../components/Navbars/AdminNavbar.js";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -31,17 +32,18 @@ const Admin = (props) => {
       }
     });
   };
-  // // console.log(getRoutes(routes));
-  // // let renderedRoutes = getRoutes(routes);
-  // // while (renderedRoutes.length > 6) {
-  // //   renderedRoutes.push();
-  // // }
-  // // console.log(renderedRoutes)
-  // const renderedRoutes = routes;
-  // while (renderedRoutes.length > 6) {
-  //    renderedRoutes.pop();
-  // }
-  // console.log(renderedRoutes);
+  const getBrandText = (path) => {
+    for (let i = 0; i < routes.length; i++) {
+      if (
+        props?.location?.pathname.indexOf(routes[i].layout + routes[i].path) !==
+        -1
+      ) {
+        return routes[i].name;
+      }
+    }
+    return "Brand";
+  };
+  
   return (
     <>
       <Sidebar
@@ -54,8 +56,11 @@ const Admin = (props) => {
         }}
       />
       <div className="main-content" ref={mainContent}>
+        <AdminNavbar
+          {...props}
+          brandText={getBrandText(props?.location?.pathname)}
+        />
         <Routes>
-          
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/admin/index" replace />} />
         </Routes>

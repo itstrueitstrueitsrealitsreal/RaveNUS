@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import NUSModerator from 'nusmoderator';
-import Navbar from '../../components/Navbar';
-import { ref, uploadBytes } from "firebase/storage";
 import { auth, authForFirebaseUI } from "../../components/firebase";
-import { db, storage,  } from "../../components/firebase";
-import { doc, setDoc, getDoc, getDocs, collection, updateDoc, deleteDoc, deleteField } from "firebase/firestore";
+import { db } from "../../components/firebase";
+import { doc, getDoc, updateDoc, deleteField } from "firebase/firestore";
 import Spinner from 'react-bootstrap/Spinner';
+import {
+  Card,
+  CardHeader,
+  CardSubtitle,
+  ListGroup,
+  ListGroupItem,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  UncontrolledTooltip,
+} from "reactstrap";
+// react component that copies the given text inside your clipboard
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 function Sync() {
   console.log('Sync Page called');
@@ -156,9 +168,6 @@ function Sync() {
         return timetable;
       });
     }
-    // for (var i = 0; i < newState.length; i++) {
-    //   newState[i].timetable = Object.assign({}, newState[i].timetable);
-    // }
     console.log('newState');
     console.log(newState);
     setTimetableData(newState);
@@ -285,50 +294,83 @@ function Sync() {
     console.log(event.target.value);
     e.preventDefault();
   }
+  const [copiedText, setCopiedText] = useState();
 
   const cont = (
     <div id="syncPage">
       {callAlert ? 
-      <div>
-        <h2>Oops! You have yet to create a profile!</h2>
-        <p>Create a profile from the profile page to sync your timetable!</p>
+      <div className="pb-8 pt-5 pt-md-8">
+        <Container fluid>
+          <Row>
+            <div className="px-4 py-5 my-5 text-center">
+              <h1 className="display-5 fw-bold text-body-emphasis">Sorry!</h1>
+              <h1 className="display-5 fw-bold text-body-emphasis">There are no stalls which are open which are highly rated enough or suit your dietary restrictions.</h1>
+              <div className="col-lg-6 mx-auto">
+                <p className="lead mb-4">Try again later!</p>
+                <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                  <Button className="btn btn-light text-center" type='button' onClick={(e) => {
+                    e.preventDefault();
+                    window.location.reload();
+                  }}>Generate Recommendation</Button>
+                </div>
+              </div>
+            </div>
+          </Row>
+        </Container>
       </div> 
       :
-      <div>
-        <h1>Timetable Sync</h1>
-        <h2>Sync your timetable in 3 simple steps!</h2>
-        <ol>
-          <li>
-            Go to the Timetable tab with your desired timetable on NUSMods using the button below.
-            <br />
-            <Button
-              variant="primary"
-              onClick={navigateToNUSMods}
-            >
-              NUSMods
-
-            </Button>
-          </li>
-          <li>
-            Click the Share/Sync button on the bottom right of the timetable as shown below.
-            <br />
-            <img src={require('../../components/img/nusmods_screenshot.png')} alt="screenshot of sync button" />
-          </li>
-          <li>
-            Copy and paste the URL into the box below!
-            <Form.Group
-              className="mb-3"
-            >
-              <Form.Control
-                type="url"
-                placeholder="Paste URL here:"
-                value={url}
-                onChange={(e) => setURL(e.target.value)}
-              />
-            </Form.Group>
-            <Button variant="primary" onClick={syncTimetable}>Sync</Button>
-          </li>
-        </ol>
+      <div className="pb-8 pt-5 pt-md-8">
+        <Container className="mt--6" fluid>
+          {/* Table */}
+          <Row>
+            <div className="col">
+              <Card className="shadow">
+                <CardHeader className="bg-transparent">
+                  <h1 className="mb-0 h1">Timetable Sync</h1>
+                  <h2 className="mb-2 text-muted h2">Sync your timetable in 3 simple steps!</h2>
+                </CardHeader>
+                <CardBody>
+                  <Row>
+                    <Col>
+                      <ListGroup flush>
+                          <ListGroupItem>
+                            1. Go to the Timetable tab with your desired timetable on NUSMods using the button below.
+                            <br />
+                            <Button
+                              className="mt-3"
+                              variant="primary"
+                              onClick={navigateToNUSMods}
+                            >
+                              NUSMods
+                            </Button>
+                          </ListGroupItem>
+                          <ListGroupItem>
+                            2. Click the Share/Sync button on the bottom right of the timetable as shown below.
+                            <br />
+                            <img className="my-3 rounded img-fluid" src={require('../../components/img/nusmods_screenshot.png')} alt="screenshot of sync button" />
+                          </ListGroupItem>
+                          <ListGroupItem>
+                            3. Copy and paste the URL into the box below!
+                            <Form.Group
+                              className="my-3"
+                            >
+                              <Form.Control
+                                type="url"
+                                placeholder="Paste URL here:"
+                                value={url}
+                                onChange={(e) => setURL(e.target.value)}
+                              />
+                            </Form.Group>
+                            <Button variant="primary" onClick={syncTimetable}>Sync</Button>
+                          </ListGroupItem>
+                      </ListGroup>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
+            </div>
+          </Row>
+        </Container>
       </div>
       }
     </div>

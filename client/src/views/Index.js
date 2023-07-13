@@ -3,25 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 // reactstrap components
 import {
   Button,
-  Card,
-  CardHeader,
-  CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
   Container,
-  Row,
-  Col,
-  CardTitle,
+  Row
 } from "reactstrap";
 import { auth, authForFirebaseUI } from '../components/firebase.js';
 
 const Index = () => {
   console.log('Home Page called');
-
-  const url = useLocation();
 
   // page navigation
   const navigate = useNavigate();
