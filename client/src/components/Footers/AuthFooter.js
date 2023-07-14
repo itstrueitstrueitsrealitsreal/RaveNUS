@@ -2,6 +2,7 @@
 import { NavItem, NavLink, Nav, Container, Row, Col } from "reactstrap";
 
 const Login = () => {
+  console.log(`AuthFooter called`);
   return (
     <>
       <footer className="py-5">

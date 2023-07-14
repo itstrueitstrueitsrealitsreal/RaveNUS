@@ -6,7 +6,8 @@ import {
   Container,
 } from "reactstrap";
 
-const AdminNavbar = () => {
+const AuthNavbar = () => {
+  console.log(`AuthNavbar called`);
   return (
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark bg-default" expand="md">
@@ -23,4 +24,4 @@ const AdminNavbar = () => {
   );
 };
 
-export default AdminNavbar;
+export default AuthNavbar;

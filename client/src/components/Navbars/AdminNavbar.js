@@ -19,6 +19,7 @@ import {
 import img from "../../assets/img/theme/team-4-800x800.jpg";
 
 const AdminNavbar = (props) => {
+  console.log(`AdminNavbar called`);
   return (
     <>
       <Navbar className="navbar-top navbar-dark d-none" expand="md" id="navbar-main d-md-none">

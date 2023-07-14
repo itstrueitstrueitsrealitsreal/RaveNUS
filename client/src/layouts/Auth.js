@@ -10,6 +10,7 @@ import AuthFooter from "../components/Footers/AuthFooter.js";
 import routes from "../routes.js";
 
 const Auth = (props) => {
+  console.log(`Auth called`);
   const mainContent = React.useRef(null);
   const location = useLocation();
 

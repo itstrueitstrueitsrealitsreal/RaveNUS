@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../components/Navbar";
 import { useNavigate } from 'react-router-dom';
 import { Button, Form } from "react-bootstrap";
 import { db } from "../../components/firebase";
@@ -113,10 +112,10 @@ function Reviews(props) {
         <Button onClick={() => {navigate(`/vr/${eatID}/${stallID}`)}}>View Reviews</Button>
       </Form>
     </div> :
-    <div></div>
+    <div className="pb-8 pt-5 pt-md-8"><h1 className="text-center">Quota exceeded</h1></div>
   )
 
-  return <Navbar content={cont}/>
+  return cont;
 }
 
 export default Reviews;

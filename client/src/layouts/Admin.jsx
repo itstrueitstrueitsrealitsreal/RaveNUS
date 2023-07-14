@@ -12,6 +12,7 @@ import img from "../assets/img/brand/ravenus_header_admin.png";
 import AdminNavbar from "../components/Navbars/AdminNavbar.js";
 
 const Admin = (props) => {
+  console.log(`Admin called`);
   const mainContent = React.useRef(null);
   const location = useLocation();
 

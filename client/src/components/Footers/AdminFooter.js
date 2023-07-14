@@ -2,6 +2,7 @@
 import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
 
 const Footer = () => {
+  console.log(`AdminFooter called`);
   return (
     <footer className="footer">
       <Row className="align-items-center justify-content-xl-between">

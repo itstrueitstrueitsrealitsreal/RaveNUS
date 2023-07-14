@@ -20,7 +20,7 @@ function UpdateProfile() {
 
   // profile id
   const location = useLocation();
-  const profID = location.pathname.split('/')[2];
+  const profID = location.pathname.split('/')[3];
   const profRef = doc(db, 'profile', profID);
 
   // profile states

@@ -1,3 +1,12 @@
+import React, { useState, useEffect } from "react";
+import Auth from "../../components/auth/Auth";
+import { useNavigate } from "react-router-dom";
+import UserID from "../../components/auth/UserID";
+import { db, storage } from "../../components/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../../components/firebase';
 // reactstrap components
 import {
   Button,
@@ -17,9 +26,89 @@ import UserHeader from "../../components/Headers/UserHeader.js";
 import img from "../../assets/img/theme/team-4-800x800.jpg";
 
 const Profile = () => {
+  console.log(`Profile called`);
+  // page navigation
+  const navigate = useNavigate();
+  const navigateToChangePassword = () => {
+    navigate('/admin/changepassword');
+  };
+  const navigateToCreateProfile = () => {
+    navigate('/admin/createprofile');
+  };
+  const navigateToStart = () => {
+    navigate('/auth/login');
+  };
+
+  // current userID
+  const uid = UserID();
+
+  // profile collection
+  const profileCollectionRef = collection(db, 'profile');
+
+  // check if user profile exists
+  const [profs, setProfs] = useState([]);
+
+  useEffect(() => {
+    const checkProfile = async () => {
+      const profiles = await getDocs(profileCollectionRef);
+      setProfs(profiles.docs.map((doc) => ({ key: doc.id, id: doc.id, ...doc.data() })));
+    };
+    checkProfile();
+  }, []);
+
+  // filtering out the user's profile
+  const profiles = profs.filter((p) => (p.UserID === uid));
+
+  // retrieve profile pic url
+  const [profPicURL, setProfPicURL] = useState('');
+  const profileURL = async (name) => {
+    const urlRef = ref(storage, name);
+    const url = await getDownloadURL(urlRef);
+    setProfPicURL(url.toString());
+  };
+
+  if (profiles.length === 1) {
+    profileURL(profiles[0].ProfPic);
+  }
+
+  const [authUser, setAuthUser] = useState(null);
+
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+      } else {
+        setAuthUser(null);
+      }
+    });
+
+    return () => {
+      listen();
+    };
+  }, []);
+
+  const userSignOut = async () => {
+    signOut(auth).then(() => {
+      console.log('signed out');
+      alert('Successfully signed out. Redirecting you to start page...');
+    }).catch((error) => console.log(error));
+    navigateToStart();
+  };
+
+  const username = profiles[0] ? profiles[0].Username : null;
+  const id = profiles[0] ? profiles[0].id : null;
+
   return (
     <>
-      <UserHeader />
+      <UserHeader name={username} profileExists={profiles.length === 1} 
+        navigateToChangePassword={navigateToChangePassword}
+        navigateToCreateProfile={navigateToCreateProfile}
+        userSignOut={userSignOut}
+        navigateToUpdateProfile={() => {
+          navigate(`/admin/updateprofile/${id}`);
+        }
+        }
+        />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
