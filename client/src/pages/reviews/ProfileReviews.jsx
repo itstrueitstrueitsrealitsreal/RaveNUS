@@ -14,7 +14,7 @@ function ProfileReviews(props) {
   // page navigation
   const navigate = useNavigate();
   const navigateToReviews = () => {
-    navigate('/reviews');
+    navigate('/admin/reviews');
   }
 
   // loading state
@@ -117,7 +117,7 @@ function ProfileReviews(props) {
         <h2>Oops! You have yet to Create a Profile!</h2>
         <p>Create a Profile from the Profile Page to start creating reviews!</p>
       </div> 
-      : <Button className="btn btn-light" onClick={() => {navigate(`/cr/${uids}`)}}>Create New Review</Button>}
+      : <Button className="btn btn-light" onClick={() => {navigate(`/admin/cr/${uids}`)}}>Create New Review</Button>}
       <br />
       <br />
       
@@ -131,7 +131,7 @@ function ProfileReviews(props) {
             <Review 
               recPage={false}
               deleteRev={deleteRev}
-              updateRev={`/updatereview/${rev.id}/${rev.EateryID}/${rev.StallID}/${rev.UserID}`}
+              updateRev={`/admin/updatereview/${rev.id}/${rev.EateryID}/${rev.StallID}/${rev.UserID}`}
               id={rev.id}
               poster={rev.Poster}
               content={rev.Content}

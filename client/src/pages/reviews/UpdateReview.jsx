@@ -15,18 +15,18 @@ function UpdateReview(props) {
   // page navigation
   const navigate = useNavigate();
   const navigateToProfileReviews = () => {
-    navigate('/reviews/profile');
+    navigate('/admin/reviews/profile');
   }
 
   // current userID
   const location = useLocation();
-  const uid = location.pathname.split("/")[5];
+  const uid = location.pathname.split("/")[6];
   // review id
-  const revID = location.pathname.split("/")[2];
+  const revID = location.pathname.split("/")[3];
   // eatery id
-  const eateryID = location.pathname.split("/")[3];
+  const eateryID = location.pathname.split("/")[4];
   // stall id
-  const stallID = location.pathname.split("/")[4];
+  const stallID = location.pathname.split("/")[5];
 
   // review references
   const userRevRef = doc(db, "profile/" + uid + "/reviews", revID);

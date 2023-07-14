@@ -11,7 +11,7 @@ function Reviews(props) {
   // page navigation
   const navigate = useNavigate();
   const navigateToProfileReviews = () => {
-    navigate('/reviews/profile');
+    navigate('/admin/reviews/profile');
   }
 
   // Get Eateries and Stalls
@@ -109,7 +109,7 @@ function Reviews(props) {
         </Form.Group>
 
         {/* review query */}
-        <Button onClick={() => {navigate(`/vr/${eatID}/${stallID}`)}}>View Reviews</Button>
+        <Button onClick={() => {navigate(`/admin/vr/${eatID}/${stallID}`)}}>View Reviews</Button>
       </Form>
     </div> :
     <div className="pb-8 pt-5 pt-md-8"><h1 className="text-center">Quota exceeded</h1></div>

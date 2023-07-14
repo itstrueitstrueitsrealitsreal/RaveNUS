@@ -13,7 +13,7 @@ function ViewReviews(props) {
   // page navigation
   const navigate = useNavigate();
   const navigateToReviews = () => {
-    navigate('/reviews');
+    navigate('/admin/reviews');
   }
 
   // loading state
@@ -22,9 +22,9 @@ function ViewReviews(props) {
   // url
   const location = useLocation();
   // eatery id
-  const eateryID = location.pathname.split("/")[2];
+  const eateryID = location.pathname.split("/")[3];
   // stall id
-  const stallID = location.pathname.split("/")[3];
+  const stallID = location.pathname.split("/")[4];
 
   // paths
   const stallRevsPath = "eateries/" + eateryID + "/Stalls/" + stallID + "/reviews";

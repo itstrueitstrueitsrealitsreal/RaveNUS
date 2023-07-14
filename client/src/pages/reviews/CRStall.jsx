@@ -12,14 +12,14 @@ export default function CRStall() {
   // page navigation
   const navigate = useNavigate();
   const navigateToProfileReviews = () => {
-    navigate('/reviews/profile');
+    navigate('/admin/reviews/profile');
   }
 
   // current userID
   const location = useLocation();
-  const uid = location.pathname.split("/")[2];
+  const uid = location.pathname.split("/")[3];
   // locID
-  const locID = location.pathname.split("/")[3];
+  const locID = location.pathname.split("/")[4];
 
   // location
   const [eatery, setEatery] = useState({});
@@ -77,10 +77,10 @@ export default function CRStall() {
 
         <br />
         {/* BACK BUTTON  */}
-        <Button className="btn btn-light" onClick={() => {navigate(`/cr/${uid}`)}}>Back</Button>
+        <Button className="btn btn-light" onClick={() => {navigate(`/admin/cr/${uid}`)}}>Back</Button>
         {/* NEXT BUTTON  */}
         <Button className="btn btn-light" onClick={() => {
-          stallID !== null ? navigate(`/cr/${uid}/${locID}/${stallID}`) :
+          stallID !== null ? navigate(`/admin/cr/${uid}/${locID}/${stallID}`) :
           alert("Please select a Stall before proceeding")}}>Next</Button>
       </Form>    
 

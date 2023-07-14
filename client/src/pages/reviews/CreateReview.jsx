@@ -15,16 +15,16 @@ function CreateReview(props) {
   // page navigation
   const navigate = useNavigate();
   const navigateToProfileReviews = () => {
-    navigate('/reviews/profile');
+    navigate('/admin/reviews/profile');
   }
 
   // current userID
   const location = useLocation();
-  const uid = location.pathname.split("/")[2];
+  const uid = location.pathname.split("/")[3];
   // locID
-  const locID = location.pathname.split("/")[3];
+  const locID = location.pathname.split("/")[4];
   // stallID
-  const stallID = location.pathname.split("/")[4];
+  const stallID = location.pathname.split("/")[5];
 
   // paths
   const stallPath = "eateries/" + locID + "/Stalls/" + stallID + "/reviews";
@@ -222,7 +222,7 @@ function CreateReview(props) {
       </div>
 
       {/* BACK BUTTON  */}
-      <Button className="btn btn-light" onClick={() => {navigate(`/cr/${uid}/${locID}`)}}>Back</Button>
+      <Button className="btn btn-light" onClick={() => {navigate(`/admin/cr/${uid}/${locID}`)}}>Back</Button>
 
       <br />
       <br />

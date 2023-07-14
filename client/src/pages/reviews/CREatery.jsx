@@ -12,12 +12,12 @@ export default function CREatery() {
   // page navigation
   const navigate = useNavigate();
   const navigateToProfileReviews = () => {
-    navigate('/reviews/profile');
+    navigate('/admin/reviews/profile');
   }
 
   // current userID
   const location = useLocation();
-  const uid = location.pathname.split("/")[2];
+  const uid = location.pathname.split("/")[3];
 
   // eateries
   const [eateries, setEateries] = useState([]);
@@ -67,7 +67,7 @@ export default function CREatery() {
         <br />
         {/* NEXT BUTTON  */}
         <Button className="btn btn-light" onClick={() => {
-          locID !== null ? navigate(`/cr/${uid}/${locID}`) : 
+          locID !== null ? navigate(`/admin/cr/${uid}/${locID}`) : 
           alert("Please select an Eatery before proceeding")}}>Next</Button>
       </Form>
 
