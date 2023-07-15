@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Auth from "../../components/auth/Auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import UserID from "../../components/auth/UserID";
 import { db, storage } from "../../components/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, updateDoc } from "firebase/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../components/firebase';
+import defaultImg from '../../assets/img/theme/defaultprofile.png'
 // reactstrap components
 import {
   Button,
@@ -20,10 +21,9 @@ import {
   Row,
   Col,
 } from "reactstrap";
+
 // core components
 import UserHeader from "../../components/Headers/UserHeader.js";
-
-import img from "../../assets/img/theme/team-4-800x800.jpg";
 
 const Profile = () => {
   console.log(`Profile called`);
@@ -94,9 +94,14 @@ const Profile = () => {
     }).catch((error) => console.log(error));
     navigateToStart();
   };
-
-  const username = profiles[0] ? profiles[0].Username : null;
-  const id = profiles[0] ? profiles[0].id : null;
+  var username;
+  var id;
+  console.log(profiles);
+  if (profiles.length === 1) {
+    username = profiles[0] ? profiles[0].Username : null;
+    console.log(profiles);
+    id = profiles[0] ? profiles[0].UserID : null;
+  }
 
   return (
     <>
@@ -121,7 +126,7 @@ const Profile = () => {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        src={img}
+                        src={profPicURL === '' ? defaultImg : profPicURL}
                       />
                     </a>
                   </div>
