@@ -3,11 +3,12 @@ import Auth from "../../components/auth/Auth";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserID from "../../components/auth/UserID";
 import { db, storage } from "../../components/firebase";
-import { collection, getDocs, getDoc, doc, updateDoc } from "firebase/firestore";
-import { ref, getDownloadURL } from "firebase/storage";
+import { collection, getDocs, getDoc, doc, updateDoc, setDoc } from "firebase/firestore";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../components/firebase';
 import defaultImg from '../../assets/img/theme/defaultprofile.png'
+import { v4 } from 'uuid';
 // reactstrap components
 import {
   Button,
@@ -20,8 +21,10 @@ import {
   Container,
   Row,
   Col,
+  Label,
+  FormText
 } from "reactstrap";
-
+import { Checkbox, FormControlLabel } from '@mui/material';
 // core components
 import UserHeader from "../../components/Headers/UserHeader.js";
 
@@ -103,6 +106,120 @@ const Profile = () => {
     id = profiles[0] ? profiles[0].UserID : null;
   }
 
+  // create profile
+
+  // page navigation
+  const navigateToProfile = () => {
+    navigate('/admin/profile');
+  };
+
+  // info
+  const [newProf, setNewProf] = useState({
+    UserID: uid,
+    Username: '',
+    Halal: false,
+    Vegetarian: false,
+    ProfPic: '',
+  });
+
+  // new info states
+  // username
+  function handleProf(event) {
+    event.preventDefault();
+    const { name, value } = event.target;
+    console.log('handling username...');
+    setNewProf((prevProf) => ({
+      ...prevProf,
+      [name]: value,
+      UserID: uid,
+    }));
+  }
+  // halal
+  function handleHalal(event) {
+    event.preventDefault();
+    console.log('handling halal...');
+    const oldHalal = newProf.Halal;
+    setNewProf((prevProf) => ({
+      ...prevProf,
+      Halal: !oldHalal,
+      UserID: uid,
+    }));
+    setCheckedH(!checkedH);
+  }
+  // vegetarian
+  function handleVegetarian(event) {
+    event.preventDefault();
+    console.log('handling vegetarian...');
+    const oldVeg = newProf.Vegetarian;
+    setNewProf((prevProf) => ({
+      ...prevProf,
+      Vegetarian: !oldVeg,
+      UserID: uid,
+    }));
+    setCheckedV(!checkedV);
+  }
+
+  // image
+  const [image, setImage] = useState(null);
+  const [uploadLoc, setUploadLoc] = useState('');
+
+  // handle image
+  function handleImage(event) {
+    console.log(event.target.files[0]);
+    setImage(event.target.files[0]);
+    const loc = `ProfilePhotos/${v4()}`;
+    setUploadLoc(loc);
+    setNewProf((prevProf) => ({
+      ...prevProf,
+      ProfPic: loc,
+      UserID: uid,
+    }));
+  }
+
+  // upload image
+  const uploadImage = () => {
+    if (image === null) {
+      return;
+    }
+    const uploadRef = ref(storage, uploadLoc);
+    uploadBytes(uploadRef, image).then(() => {
+      console.log(`image uploaded ${uploadLoc}`);
+    });
+  };
+
+  // add new profile to db
+  const addProfInfo = async () => {
+    if (newProf.Username === '') {
+      alert('Username field is mandatory');
+    } else {
+      const confirmed = window.confirm('Are you sure you want to Create this Profile?\n'
+        + `\n    Username: ${newProf.Username}\n    Halal: ${newProf.Halal}\n    Vegetarian: ${newProf.Vegetarian}`);
+      if (confirmed) {
+        console.log('adding profile...');
+        delete (newProf.undefined);
+        await setDoc(doc(db, 'profile', uid), newProf);
+        setNewProf({
+          UserID: uid,
+          Username: '',
+          Halal: false,
+          Vegetarian: false,
+        });
+        window.location.reload();
+      }
+    }
+  };
+
+  // submit handle function
+  function addProf() {
+    uploadImage();
+    addProfInfo();
+  }
+
+  // checkbox states
+  const [checkedH, setCheckedH] = useState(false);
+  const [checkedV, setCheckedV] = useState(false);
+
+
   return (
     <>
       <UserHeader name={username} profileExists={profiles.length === 1} 
@@ -115,14 +232,16 @@ const Profile = () => {
         }
         />
       {/* Page content */}
-      <Container className="mt--7" fluid>
+      {profiles.length === 1 ? <Container className="mt--7" fluid>
         <Row>
           <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
             <Card className="card-profile shadow">
               <Row className="justify-content-center">
                 <Col className="order-lg-2" lg="3">
                   <div className="card-profile-image">
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                    <a href="#pablo" onClick={(e) => {
+                      e.preventDefault();
+                    }}>
                       <img
                         alt="..."
                         className="rounded-circle"
@@ -141,7 +260,7 @@ const Profile = () => {
                     onClick={(e) => e.preventDefault()}
                     size="sm"
                   >
-                    Connect
+                    Change profile picture
                   </Button>
                   <Button
                     className="float-right"
@@ -150,7 +269,7 @@ const Profile = () => {
                     onClick={(e) => e.preventDefault()}
                     size="sm"
                   >
-                    Message
+                    Remove profile picture
                   </Button>
                 </div>
               </CardHeader>
@@ -217,7 +336,7 @@ const Profile = () => {
                       onClick={(e) => e.preventDefault()}
                       size="sm"
                     >
-                      Settings
+                      Update profile
                     </Button>
                   </Col>
                 </Row>
@@ -300,106 +419,103 @@ const Profile = () => {
                       </Col>
                     </Row>
                   </div>
-                  <hr className="my-4" />
-                  {/* Address */}
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container> :
+      <Container className="mt--7" fluid>
+        <Row>
+          <Col className="order-xl-1" xl="8">
+            <Card className="bg-secondary shadow">
+              <CardHeader className="bg-white border-0">
+                <Row className="align-items-center">
+                  <Col xs="8">
+                    <h3 className="mb-0">Get started by creating a profile.</h3>
+                  </Col>
+                  <Col className="text-right" xs="4">
+                    <Button
+                      color="primary"
+                      href="#pablo"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        addProf();
+                      }}
+                      size="sm"
+                    >
+                      Create profile
+                    </Button>
+                  </Col>
+                </Row>
+              </CardHeader>
+              <CardBody>
+                <Form>
                   <h6 className="heading-small text-muted mb-4">
-                    Contact information
+                    User information
                   </h6>
                   <div className="pl-lg-4">
                     <Row>
-                      <Col md="12">
+                      <Col lg="6">
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-address"
+                            htmlFor="input-username"
                           >
-                            Address
+                            Username
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            id="input-address"
-                            placeholder="Home Address"
+                            placeholder="Username"
+                            name="Username"
+                            value={newProf.Username}
+                            onChange={handleProf}
                             type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-city"
-                          >
-                            City
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="New York"
-                            id="input-city"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Country
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="United States"
-                            id="input-country"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Postal code
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            id="input-postal-code"
-                            placeholder="Postal code"
-                            type="number"
                           />
                         </FormGroup>
                       </Col>
                     </Row>
                   </div>
                   <hr className="my-4" />
-                  {/* Description */}
-                  <h6 className="heading-small text-muted mb-4">About me</h6>
+                  <h6 className="heading-small text-muted mb-4">
+                    Dietary restrictions
+                  </h6>
                   <div className="pl-lg-4">
-                    <FormGroup>
-                      <label>About Me</label>
-                      <Input
-                        className="form-control-alternative"
-                        placeholder="A few words about you ..."
-                        rows="4"
-                        defaultValue="A beautiful Dashboard for Bootstrap 4. It is Free and
-                        Open Source."
-                        type="textarea"
-                      />
-                    </FormGroup>
+                    <Row>
+                      <Col lg="6">
+                        <FormGroup>
+                          <FormControlLabel control={<Checkbox checked={checkedH} onClick={handleHalal} />} label="Halal" />
+                          <FormControlLabel control={<Checkbox checked={checkedV} onClick={handleVegetarian} />} label="Vegetarian" />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr className="my-4" />
+                  <h6 className="heading-small text-muted mb-4">
+                    Profile picture
+                  </h6>
+                  <div className="pl-lg-4">
+                    <Row>
+                      <Col lg="6">
+                        <FormGroup>
+                          <Input
+                            onChange={handleImage}
+                            type="file"
+                            className="mb-4"
+                          />
+                          <FormText>
+                            Upload your profile picture here, if any.
+                          </FormText>
+                        </FormGroup>
+                      </Col>
+                    </Row>
                   </div>
                 </Form>
               </CardBody>
             </Card>
           </Col>
         </Row>
-      </Container>
+      </Container>}
     </>
   );
 };

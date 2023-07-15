@@ -40,7 +40,7 @@ const UserHeader = (props) => {
               </Button> : 
               <Button
                 className="mx-2"
-                color="danger"
+                color="info"
                 href="#pablo"
                 onClick={(e) =>{ 
                   e.preventDefault();
