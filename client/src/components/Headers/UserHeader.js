@@ -27,29 +27,6 @@ const UserHeader = (props) => {
               <p className="text-white mt-0 mb-2 ml-2">
                 This is your profile page. You can sign out, edit your profile or change your password here.
               </p>
-              {props.profileExists ? <Button
-                className="my-2 mx-2"
-                color="info"
-                href="#pablo"
-                onClick={(e) => {
-                  e.preventDefault();
-                  props.navigateToUpdateProfile();
-                }}
-              >
-                Edit profile
-              </Button> : 
-              <Button
-                className="mx-2"
-                color="info"
-                href="#pablo"
-                onClick={(e) =>{ 
-                  e.preventDefault();
-                  props.navigateToCreateProfile();
-                }}
-              >
-                Create profile
-              </Button>
-              }
               <Button
                 className="my-2 mx-2"
                 color="info"
@@ -60,17 +37,6 @@ const UserHeader = (props) => {
                 }}
               >
                 Change password
-              </Button>
-              <Button
-                className="mx-2"
-                color="danger"
-                href="#pablo"
-                onClick={(e) =>{ 
-                  e.preventDefault();
-                  props.userSignOut();
-                }}
-              >
-                Log out
               </Button>
             </Col>
           </Row>

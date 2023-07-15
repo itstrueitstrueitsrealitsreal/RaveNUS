@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Auth from "../../components/auth/Auth";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserID from "../../components/auth/UserID";
-import { db, storage } from "../../components/firebase";
+import { db, storage, auth, authForFirebaseUI } from "../../components/firebase";
 import { collection, getDocs, getDoc, doc, updateDoc, setDoc } from "firebase/firestore";
-import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '../../components/firebase';
 import defaultImg from '../../assets/img/theme/defaultprofile.png'
 import { v4 } from 'uuid';
+import 'firebase/compat/firestore';
 // reactstrap components
 import {
   Button,
@@ -21,7 +21,6 @@ import {
   Container,
   Row,
   Col,
-  Label,
   FormText
 } from "reactstrap";
 import { Checkbox, FormControlLabel } from '@mui/material';
@@ -41,10 +40,11 @@ const Profile = () => {
   const navigateToStart = () => {
     navigate('/auth/login');
   };
+  const navigateToProfile = () => {
+    navigate(`/admin/profile`)
+  }
 
-  // current userID
-  const uid = UserID();
-
+  const uid = auth.currentUser.uid;
   // profile collection
   const profileCollectionRef = collection(db, 'profile');
 
@@ -65,12 +65,15 @@ const Profile = () => {
   // retrieve profile pic url
   const [profPicURL, setProfPicURL] = useState('');
   const profileURL = async (name) => {
-    const urlRef = ref(storage, name);
-    const url = await getDownloadURL(urlRef);
-    setProfPicURL(url.toString());
+    if (name !== '') {
+      const profURLRef = ref(storage, name);
+      const url = await getDownloadURL(profURLRef);
+      setProfPicURL(url.toString());
+    }
   };
 
   if (profiles.length === 1) {
+    console.log(profiles[0].ProfPic)
     profileURL(profiles[0].ProfPic);
   }
 
@@ -107,11 +110,6 @@ const Profile = () => {
   }
 
   // create profile
-
-  // page navigation
-  const navigateToProfile = () => {
-    navigate('/admin/profile');
-  };
 
   // info
   const [newProf, setNewProf] = useState({
@@ -165,7 +163,6 @@ const Profile = () => {
 
   // handle image
   function handleImage(event) {
-    console.log(event.target.files[0]);
     setImage(event.target.files[0]);
     const loc = `ProfilePhotos/${v4()}`;
     setUploadLoc(loc);
@@ -197,14 +194,13 @@ const Profile = () => {
       if (confirmed) {
         console.log('adding profile...');
         delete (newProf.undefined);
-        await setDoc(doc(db, 'profile', uid), newProf);
-        setNewProf({
+        await setDoc(doc(db, 'profile', uid), newProf)
+        .then(setNewProf({
           UserID: uid,
           Username: '',
           Halal: false,
           Vegetarian: false,
-        });
-        window.location.reload();
+        })).then(navigateToProfile());
       }
     }
   };
@@ -220,6 +216,160 @@ const Profile = () => {
   const [checkedV, setCheckedV] = useState(false);
 
 
+  const profRef = doc(db, 'profile', uid);
+  // update profile
+  // profile states
+  const [oldProf, setOldProf] = useState({
+    UserID: 'not retrieved',
+  });
+  const [updatedProf, setUpdatedProf] = useState({
+    Username: '',
+    Halal: false,
+    Vegetarian: false,
+    ProfPic: '',
+    UserID: '',
+  });
+
+  // retrieve old profile
+  useEffect(() => {
+    const getOldProf = async () => {
+      const doc = await getDoc(profRef);
+      setUpdatedProf(doc.data());
+      setOldProf(doc.data());
+      setCheckedH(doc.data().Halal);
+      setCheckedV(doc.data().Vegetarian);
+    };
+    getOldProf();
+  }, []);
+
+  // retrieve old profile pic
+  const [updatedProfPicURL, setUpdatedProfPicURL] = useState('');
+  const updatedProfileURL = async (name) => {
+    if (name !== '') {
+      const updatedURLRef = ref(storage, name);
+      const url = await getDownloadURL(updatedURLRef);
+      setUpdatedProfPicURL(url.toString());
+    }
+  };
+  if (oldProf.UserID !== 'not retrieved') {
+    console.log('old profile retrieved');
+    console.log(oldProf);
+    updatedProfileURL(oldProf.ProfPic);
+  }
+
+  // new info states
+  // username
+  function handleProf(event) {
+    event.preventDefault();
+    console.log(event.target)
+    const { name, value } = event.target;
+    console.log('handling username...');
+    setUpdatedProf((prevProf) => ({
+      ...prevProf,
+      [name]: value,
+    }));
+  }
+
+  // halal
+  function handleHalal(event) {
+    event.preventDefault();
+    console.log('handling halal...');
+    const oldHalal = newProf.Halal;
+    setUpdatedProf((prevProf) => ({
+      ...prevProf,
+      Halal: !oldHalal,
+    }));
+    setCheckedH(!checkedH);
+  }
+  // vegetarian
+  function handleVegetarian(event) {
+    event.preventDefault();
+    console.log('handling vegetarian...');
+    const oldVeg = newProf.Vegetarian;
+    setUpdatedProf((prevProf) => ({
+      ...prevProf,
+      Vegetarian: !oldVeg,
+    }));
+    setCheckedV(!checkedV);
+  }
+
+  // update profile
+  const editProfile = async () => {
+    const confirmed = window.confirm('Are you sure you want to Update your profile?\n'
+        + '\n  OLD:'
+        + `\n    Username: ${oldProf.Username}\n    Halal: ${oldProf.Halal}\n    Vegetarian: ${oldProf.Vegetarian
+        }\n`
+        + '\n  NEW:'
+        + `\n    Username: ${updatedProf.Username}\n    Halal: ${updatedProf.Halal}\n    Vegetarian: ${updatedProf.Vegetarian}`);
+    if (confirmed) {
+      const newFields = {
+        Username: updatedProf.Username,
+        Halal: updatedProf.Halal,
+        Vegetarian: updatedProf.Vegetarian,
+        ProfPic: updatedProf.ProfPic,
+      };
+      await updateDoc(profRef, newFields)
+      .then(navigateToProfile());
+    }
+  };
+
+  // new image
+  const [updatedImage, setUpdatedImage] = useState(null);
+  const [newUploadLoc, setNewUploadLoc] = useState('');
+  function handleNewImage(event) {
+    console.log(event.target.files[0])
+    setUpdatedImage(event.target.files[0]);
+    const a = `ProfilePhotos/${v4()}`;
+    setNewUploadLoc(a);
+    setUpdatedProf((prevProf) => ({
+      ...prevProf,
+      ProfPic: a,
+    }));
+  }
+  const updateImage = () => {
+    if (updatedImage === null) {
+      setUpdatedProf((prevProf) => ({
+        ...prevProf,
+        ProfPic: oldProf.ProfPic,
+      }));
+    } else {
+      const uploadRef = ref(storage, newUploadLoc);
+      uploadBytes(uploadRef, updatedImage).then(() => {
+        console.log(`image uploaded ${newUploadLoc}`);
+      });
+    }
+  };
+
+  function editAll() {
+    if (updatedImage !== null) {
+      updateImage();
+      removeImageFirebase();
+    }
+    editProfile();
+  }
+
+  // remove profile picture
+  const removeImageRef = async () => {
+    const confirmed = window.confirm('Are you sure you want to Remove your Profile Picture?');
+    if (confirmed) {
+      const newFields = {
+        ProfPic: '',
+      };
+      await updateDoc(profRef, newFields).catch((e) => {return;});
+    }
+  };
+  const removeImageFirebase = async () => {
+    if (oldProf.ProfPic !== '') {
+      const delRef = ref(storage, oldProf.ProfPic);
+      await deleteObject(delRef).catch((e) => {return;});
+    }
+  };
+
+  function removeImage() {
+    removeImageFirebase();
+    removeImageRef()
+    .then(navigateToProfile());
+  }
   return (
     <>
       <UserHeader name={username} profileExists={profiles.length === 1} 
@@ -255,21 +405,15 @@ const Profile = () => {
                 <div className="d-flex justify-content-between">
                   <Button
                     className="mr-4"
-                    color="info"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    Change profile picture
-                  </Button>
-                  <Button
-                    className="float-right"
                     color="default"
                     href="#pablo"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      removeImage();
+                    }}
                     size="sm"
                   >
-                    Remove profile picture
+                    Remove picture
                   </Button>
                 </div>
               </CardHeader>
@@ -277,46 +421,19 @@ const Profile = () => {
                 <Row>
                   <div className="col">
                     <div className="card-profile-stats d-flex justify-content-center mt-md-5">
-                      <div>
-                        <span className="heading">22</span>
-                        <span className="description">Friends</span>
-                      </div>
-                      <div>
-                        <span className="heading">10</span>
-                        <span className="description">Photos</span>
-                      </div>
-                      <div>
-                        <span className="heading">89</span>
-                        <span className="description">Comments</span>
-                      </div>
                     </div>
                   </div>
                 </Row>
                 <div className="text-center">
                   <h3>
-                    Jessica Jones
-                    <span className="font-weight-light">, 27</span>
+                    {username}
                   </h3>
-                  <div className="h5 font-weight-300">
-                    <i className="ni location_pin mr-2" />
-                    Bucharest, Romania
-                  </div>
-                  <div className="h5 mt-4">
-                    <i className="ni business_briefcase-24 mr-2" />
-                    Solution Manager - Creative Tim Officer
-                  </div>
-                  <div>
-                    <i className="ni education_hat mr-2" />
-                    University of Computer Science
-                  </div>
                   <hr className="my-4" />
-                  <p>
-                    Ryan — the name taken by Melbourne-raised, Brooklyn-based
-                    Nick Murphy — writes, performs and records all of his own
-                    music.
-                  </p>
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    Show more
+                  <a href="#pablo" onClick={(e) => {
+                    e.preventDefault();
+                    userSignOut();
+                    }}>
+                    Log out
                   </a>
                 </div>
               </CardBody>
@@ -333,7 +450,10 @@ const Profile = () => {
                     <Button
                       color="primary"
                       href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        editAll();
+                      }}
                       size="sm"
                     >
                       Update profile
@@ -358,63 +478,46 @@ const Profile = () => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="lucky.jesse"
-                            id="input-username"
                             placeholder="Username"
+                            name="Username"
+                            value={updatedProf.Username}
+                            onChange={handleProf}
                             type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-email"
-                          >
-                            Email address
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            id="input-email"
-                            placeholder="jesse@example.com"
-                            type="email"
                           />
                         </FormGroup>
                       </Col>
                     </Row>
+                  </div>
+                  <hr className="my-4" />
+                  <h6 className="heading-small text-muted mb-4">
+                    Dietary restrictions
+                  </h6>
+                  <div className="pl-lg-4">
                     <Row>
                       <Col lg="6">
                         <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-first-name"
-                          >
-                            First name
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="Lucky"
-                            id="input-first-name"
-                            placeholder="First name"
-                            type="text"
-                          />
+                          <FormControlLabel control={<Checkbox checked={checkedH} onClick={handleHalal} />} label="Halal" />
+                          <FormControlLabel control={<Checkbox checked={checkedV} onClick={handleVegetarian} />} label="Vegetarian" />
                         </FormGroup>
                       </Col>
+                    </Row>
+                  </div>
+                  <hr className="my-4" />
+                  <h6 className="heading-small text-muted mb-4">
+                    Profile picture
+                  </h6>
+                  <div className="pl-lg-4">
+                    <Row>
                       <Col lg="6">
                         <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-last-name"
-                          >
-                            Last name
-                          </label>
                           <Input
-                            className="form-control-alternative"
-                            defaultValue="Jesse"
-                            id="input-last-name"
-                            placeholder="Last name"
-                            type="text"
+                            onChange={handleNewImage}
+                            type="file"
+                            className="mb-4"
                           />
+                          <FormText>
+                            Upload your profile picture here, if any.
+                          </FormText>
                         </FormGroup>
                       </Col>
                     </Row>
