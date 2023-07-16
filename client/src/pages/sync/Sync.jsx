@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import NUSModerator from 'nusmoderator';
 import { auth, authForFirebaseUI } from "../../components/firebase";
 import { db } from "../../components/firebase";
@@ -15,6 +15,7 @@ import {
   Container,
   Row,
   Col,
+  Button,
 } from "reactstrap";
 
 function Sync() {
@@ -357,7 +358,8 @@ function Sync() {
                             <br />
                             <Button
                               className="mt-3"
-                              variant="primary"
+                              color='info'
+                              href='#pablo'
                               onClick={navigateToNUSMods}
                             >
                               NUSMods
@@ -380,7 +382,13 @@ function Sync() {
                                 onChange={(e) => setURL(e.target.value)}
                               />
                             </Form.Group>
-                            <Button variant="primary" onClick={syncTimetable}>Sync</Button>
+                            <Button 
+                              onClick={syncTimetable}
+                              color='success'
+                              href='#pablo'
+                            >
+                              Sync
+                            </Button>
                           </ListGroupItem>
                       </ListGroup>
                     </Col>
