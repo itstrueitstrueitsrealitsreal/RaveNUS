@@ -80,5 +80,5 @@ export default function CREatery() {
     </div>
   )
 
-  return <Navbar content={cont} />
+  return cont;
 }

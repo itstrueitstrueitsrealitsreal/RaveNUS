@@ -89,7 +89,7 @@ function ViewReviews(props) {
     </div>
   )
 
-  return (<Navbar content={loading ? <Spinner /> : cont} />)
+  return loading ? <div className="pb-8 pt-5 pt-md-8 text-center"><Spinner /></div> : cont
 }
 
 export default ViewReviews;

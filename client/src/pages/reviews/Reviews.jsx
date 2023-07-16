@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { db } from "../../components/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import Spinner from 'react-bootstrap/Spinner';
+import img from "../../assets/img/theme/profpicheader.png";
+import {
+  Card,
+  CardHeader,
+  ListGroup,
+  ListGroupItem,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  Button,
+} from "reactstrap";
 
 function Reviews(props) {
   console.log("Reviews Page called");
@@ -66,9 +79,42 @@ function Reviews(props) {
   // Page content
   const cont = (
     stalls.length !== 0 ?
-    <div>
-      <h1>REVIEWS PAGE</h1>
-      <Button variant="primary" onClick={navigateToProfileReviews}>Your Reviews</Button>
+    <>
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Reviews</h1>
+              <p className="text-white mt-0 mb-2 ml-2 text-nowrap">
+                You can view all reviews for a stall, or write, edit or delete your reviews here!
+              </p>
+              <Button
+                className="my-2 mx-2"
+                color="info"
+                href="#pablo"
+                onClick={(e) =>{ 
+                  e.preventDefault();
+                  navigateToProfileReviews();
+                }}
+              >
+                View your reviews
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+      </div>
 
       <Form>
         <Form.Group>
@@ -111,8 +157,8 @@ function Reviews(props) {
         {/* review query */}
         <Button onClick={() => {navigate(`/admin/vr/${eatID}/${stallID}`)}}>View Reviews</Button>
       </Form>
-    </div> :
-    <div className="pb-8 pt-5 pt-md-8"><h1 className="text-center">Quota exceeded</h1></div>
+    </> :
+    <div className="pb-8 pt-5 pt-md-8 text-center"><Spinner /></div>
   )
 
   return cont;

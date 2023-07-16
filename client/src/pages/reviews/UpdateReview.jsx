@@ -268,7 +268,7 @@ function UpdateReview(props) {
       </div>
     </div> )
 
-  return <Navbar content={cont} />
+  return cont;
 }
 
 export default UpdateReview;

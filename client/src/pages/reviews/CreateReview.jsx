@@ -232,7 +232,7 @@ function CreateReview(props) {
       </div>
     </div> )
 
-  return <Navbar content={cont} />
+  return cont;
 }
 
 export default CreateReview;

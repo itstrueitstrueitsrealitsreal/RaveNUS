@@ -93,5 +93,5 @@ export default function CRStall() {
     </div>
   )
 
-  return <Navbar content={cont} />
+  return cont;
 }
