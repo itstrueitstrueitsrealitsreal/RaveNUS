@@ -65,39 +65,32 @@ function Rec(props) {
     </div>
     <br />
     <div>
-      <Row>
-        <div className="col">
-          <Card className="shadow">
-            <CardHeader className="bg-transparent">
-              <h1 className="mb-0 h1">Stall reviews</h1>
-            </CardHeader>
-            <CardBody>
-              {revs.map((rev, idx) => {
-                const date = new Date(rev.Time.seconds * 1000);
-                return (<div key={rev.id}>
-                  <Review 
-                    recPage={true}
-                    updateRev={`/reviews/profile`}
-                    id={rev.id}
-                    poster={rev.Poster}
-                    content={rev.Content}
-                    rating={rev.Rating}
-                    time={date.toString()}
-                    idx={idx}
-                    eatery={rev.Eatery}
-                    stall={rev.Stall}
-                    revpic={rev.RevPic}
-                    eateryID={rev.EateryID}
-                    stallID={rev.StallID}
-                    uid={rev.UserID}
-                    viewerUID={props.viewerUID}
-                  />
-                </div>);
-              })}
-            </CardBody>
-          </Card>
-        </div>
-      </Row>
+      <h1>Reviews:</h1>
+    </div>
+    <br />
+    <div>
+      {revs.map((rev, idx) => {
+        const date = new Date(rev.Time.seconds * 1000);
+        return (<div key={rev.id}>
+          <Review 
+            recPage={true}
+            updateRev={`/reviews/profile`}
+            id={rev.id}
+            poster={rev.Poster}
+            content={rev.Content}
+            rating={rev.Rating}
+            time={date.toString()}
+            idx={idx}
+            eatery={rev.Eatery}
+            stall={rev.Stall}
+            revpic={rev.RevPic}
+            eateryID={rev.EateryID}
+            stallID={rev.StallID}
+            uid={rev.UserID}
+            viewerUID={props.viewerUID}
+          />
+        </div>);
+      })}
     </div>
   </>
   );
