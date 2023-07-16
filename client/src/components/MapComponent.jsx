@@ -11,7 +11,36 @@ function MapComponent(props) {
       // Initialize the map
       const newMap = new window.google.maps.Map(document.getElementById('map'), {
         center: { lat: 0, lng: 0 },
-        zoom: 15,
+        zoom: 18,
+        scrollwheel: true,
+        zoomControl: true,
+        styles: [
+          {
+            featureType: "administrative",
+            elementType: "labels.text.fill",
+            stylers: [{ color: "#444444" }],
+          },
+          {
+            featureType: "landscape",
+            elementType: "all",
+            stylers: [{ color: "#f2f2f2" }],
+          },
+          {
+            featureType: "road",
+            elementType: "all",
+            stylers: [{ saturation: -100 }, { lightness: 45 }],
+          },
+          {
+            featureType: "road.highway",
+            elementType: "all",
+            stylers: [{ visibility: "simplified" }],
+          },
+          {
+            featureType: "water",
+            elementType: "all",
+            stylers: [{ color: "#5e72e4" }, { visibility: "on" }],
+          },
+        ],
       });
       setMap(newMap);
 
@@ -80,7 +109,7 @@ function MapComponent(props) {
     }
   }, [customLocation, props.location]);
 
-  return <div id="map" style={{ width: '100%', height: '400px' }} />;
+  return <div id="map" style={{ height: '600px', borderRadius:'4px' }} />;
 }
 
 export default MapComponent;

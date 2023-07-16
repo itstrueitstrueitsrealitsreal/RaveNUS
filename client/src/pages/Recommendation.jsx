@@ -407,26 +407,36 @@ function Recommendation() {
         <Container className="d-flex align-items-center" fluid>
           <Row>
             <Col lg="7" md="10">
+              <h3 className="text-white text-nowrap mt-0 mb-2 ml-2">
+              We recommend you eat at...
+              </h3>
               <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">{location.name}</h1>
-              <p className="text-white mt-0 mb-2 ml-2">
-              </p>
             </Col>
           </Row>
         </Container>
       </div>
-      <div className="pb-8 pt-5 pt-md-8">
-        <h1>{location.name}</h1>
-        <MapComponent location={location.coords} userLocation={userLocation}/>
-        <br />
-        {/* Add Review */}
-        <Button onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a Review!</Button>
-        {/* Increase number of reviews by 10 */}
-        <Button onClick={() => { setLimit(limit + 10); }}>load more reviews</Button>
-        <Rec stall={recStall} recPage={(e) => {
-          e.preventDefault();
-          window.location.reload();
-        }} revs={revs} limit={limit} viewerUID={uid} />
-      </div>
+      {/* To do: 
+        1. Get mapcomponent from template, figure out how to use it for the recco page
+        2. Use cards to stylise the recommendation and the buttons
+        3. Use cards to stylise the reviews*/}
+      <Container className="mt--7" fluid>
+        <Row>
+          <div className="col">
+            <Card className="shadow border-0 card"></Card>
+              <MapComponent location={location.coords} userLocation={userLocation}/>
+            <Card />
+          </div>
+        </Row>
+            <br />
+            {/* Add Review */}
+            <Button onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a Review!</Button>
+            {/* Increase number of reviews by 10 */}
+            <Button onClick={() => { setLimit(limit + 10); }}>load more reviews</Button>
+            <Rec stall={recStall} recPage={(e) => {
+              e.preventDefault();
+              window.location.reload();
+            }} revs={revs} limit={limit} viewerUID={uid} />
+      </Container>
     </>
   );
 
