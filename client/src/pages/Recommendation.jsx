@@ -416,7 +416,6 @@ function Recommendation() {
         </Container>
       </div>
       {/* To do: 
-        1. Get mapcomponent from template, figure out how to use it for the recco page
         2. Use cards to stylise the recommendation and the buttons
         3. Use cards to stylise the reviews*/}
       <Container className="mt--7" fluid>
@@ -427,11 +426,21 @@ function Recommendation() {
             <Card />
           </div>
         </Row>
+
             <br />
             {/* Add Review */}
-            <Button onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a Review!</Button>
+            <Button 
+              color='info'
+              href='#pablo'
+              className='' 
+              onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a review</Button>
             {/* Increase number of reviews by 10 */}
-            <Button onClick={() => { setLimit(limit + 10); }}>load more reviews</Button>
+            <Button 
+              color='default'
+              href='#pablo'
+              className='' 
+              onClick={() => { setLimit(limit + 10); }}>Load more reviews</Button>
+
             <Rec stall={recStall} recPage={(e) => {
               e.preventDefault();
               window.location.reload();
