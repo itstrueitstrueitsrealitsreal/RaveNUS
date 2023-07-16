@@ -9,7 +9,6 @@ import img from "../../assets/img/theme/profpicheader.png";
 import {
   Card,
   CardHeader,
-  CardSubtitle,
   ListGroup,
   ListGroupItem,
   CardBody,
@@ -319,6 +318,7 @@ function Sync() {
           </Row>
         </Container>
       </div>
+
     <div id="syncPage">
       {callAlert ? 
       <div className="pb-8 pt-0 pt-md-0">

@@ -408,7 +408,7 @@ function Recommendation() {
           <Row>
             <Col lg="7" md="10">
               <h3 className="text-white text-nowrap mt-0 mb-2 ml-2">
-              We recommend you eat at...
+              We recommend that you eat at...
               </h3>
               <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">{location.name}</h1>
             </Col>
@@ -416,18 +416,19 @@ function Recommendation() {
         </Container>
       </div>
       {/* To do: 
-        2. Use cards to stylise the recommendation and the buttons
         3. Use cards to stylise the reviews*/}
       <Container className="mt--7" fluid>
         <Row>
           <div className="col">
             <Card className="shadow border-0 card"></Card>
-              <MapComponent location={location.coords} userLocation={userLocation}/>
+              <Row>
+                <MapComponent location={location.coords} userLocation={userLocation}/>
+              </Row>
             <Card />
           </div>
         </Row>
-
-            <br />
+        <Row>
+          <div className="col text-center m-4">
             {/* Add Review */}
             <Button 
               color='info'
@@ -440,12 +441,17 @@ function Recommendation() {
               href='#pablo'
               className='' 
               onClick={() => { setLimit(limit + 10); }}>Load more reviews</Button>
-
-            <Rec stall={recStall} recPage={(e) => {
-              e.preventDefault();
-              window.location.reload();
-            }} revs={revs} limit={limit} viewerUID={uid} />
+          </div>
+        </Row>
       </Container>
+        <Row>
+          <div className="col text-center m-4">
+              <Rec stall={recStall} recPage={(e) => {
+                e.preventDefault();
+                window.location.reload();
+              }} revs={revs} limit={limit} viewerUID={uid} />
+          </div>
+        </Row>
     </>
   );
 
