@@ -311,7 +311,7 @@ function Sync() {
         <Container className="d-flex align-items-center" fluid>
           <Row>
             <Col lg="7" md="10">
-              <h1 className="display-2 text-white mb-0 ml-2">Timetable sync</h1>
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Timetable sync</h1>
               <p className="text-white mt-0 mb-2 ml-2">
                 Sync your timetable by following the instructions below!
               </p>
@@ -346,8 +346,7 @@ function Sync() {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="bg-transparent">
-                  <h1 className="mb-0 h1">Timetable Sync</h1>
-                  <h2 className="mb-2 text-muted h2">Sync your timetable in 3 simple steps!</h2>
+                  <h2 className="mb-0 h2">Sync your timetable in 3 simple steps!</h2>
                 </CardHeader>
                 <CardBody>
                   <Row>
@@ -396,7 +395,7 @@ function Sync() {
     </>
   );
 
-  return loading ? <div className='text-center'><Spinner /></div> : cont;
+  return loading ? <div className='pb-8 pt-5 pt-md-8 text-center'><Spinner /></div> : cont;
 }
 
 export default Sync;

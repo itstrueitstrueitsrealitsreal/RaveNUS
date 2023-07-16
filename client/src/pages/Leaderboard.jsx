@@ -25,7 +25,7 @@ function Leaderboard() {
         <Container className="d-flex align-items-center" fluid>
           <Row>
             <Col lg="7" md="10">
-              <h1 className="display-2 text-white mb-0 ml-2">Leaderboard</h1>
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Leaderboard</h1>
               <p className="text-white mt-0 mb-2 ml-2">
               </p>
             </Col>

@@ -12,6 +12,7 @@ import * as geofirestore from 'geofirestore';
 import Spinner from 'react-bootstrap/Spinner';
 import MapComponent from '../components/MapComponent';
 import NUSModerator from 'nusmoderator';
+import img from "../assets/img/theme/profpicheader.png";
 // reactstrap components
 import {
   Button,
@@ -388,19 +389,45 @@ function Recommendation() {
       </Container>
     </div> :
     // recommend stall
-    <div className="pb-8 pt-5 pt-md-8">
-      <h1>{location.name}</h1>
-      <MapComponent location={location.coords} userLocation={userLocation}/>
-      <br />
-      {/* Add Review */}
-      <Button onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a Review!</Button>
-      {/* Increase number of reviews by 10 */}
-      <Button onClick={() => { setLimit(limit + 10); }}>load more reviews</Button>
-      <Rec stall={recStall} recPage={(e) => {
-        e.preventDefault();
-        window.location.reload();
-      }} revs={revs} limit={limit} viewerUID={uid} />
-    </div>
+    <>
+    {/* header */}
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">{location.name}</h1>
+              <p className="text-white mt-0 mb-2 ml-2">
+              </p>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      <div className="pb-8 pt-5 pt-md-8">
+        <h1>{location.name}</h1>
+        <MapComponent location={location.coords} userLocation={userLocation}/>
+        <br />
+        {/* Add Review */}
+        <Button onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a Review!</Button>
+        {/* Increase number of reviews by 10 */}
+        <Button onClick={() => { setLimit(limit + 10); }}>load more reviews</Button>
+        <Rec stall={recStall} recPage={(e) => {
+          e.preventDefault();
+          window.location.reload();
+        }} revs={revs} limit={limit} viewerUID={uid} />
+      </div>
+    </>
   );
 
   return cont;
