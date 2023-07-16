@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Auth from "../../components/auth/Auth";
 import { useNavigate } from "react-router-dom";
-import UserID from "../../components/auth/UserID";
-import { db, storage, auth, authForFirebaseUI } from "../../components/firebase";
+import { db, storage, auth } from "../../components/firebase";
 import { collection, getDocs, getDoc, doc, updateDoc, setDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import defaultImg from '../../assets/img/theme/defaultprofile.png'
 import { v4 } from 'uuid';
 import 'firebase/compat/firestore';
-import Spinner from 'react-bootstrap/Spinner';
 // reactstrap components
 import {
   Button,
