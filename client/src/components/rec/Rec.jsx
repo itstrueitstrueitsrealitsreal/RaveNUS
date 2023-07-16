@@ -44,7 +44,7 @@ function Rec(props) {
                         <h3 className="text-muted">Not to your liking?</h3>
                         <br />
                         <Button
-                          color='default'
+                          color='warning'
                           href='#pablo'
                           onClick={(e) => {
                             e.preventDefault();

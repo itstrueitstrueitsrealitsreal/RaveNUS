@@ -429,7 +429,7 @@ function Recommendation() {
           <div className="col text-center m-4">
             {/* Add Review */}
             <Button 
-              color='info'
+              color='success'
               href='#pablo'
               className='' 
               onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a review</Button>
