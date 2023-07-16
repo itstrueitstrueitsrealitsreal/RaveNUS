@@ -116,47 +116,70 @@ function Reviews(props) {
         </Container>
       </div>
 
-      <Form>
-        <Form.Group>
-        <Form.Label>Eatery</Form.Label>
-        <FormControl fullWidth>
-          <InputLabel>Eatery</InputLabel>
-          <Select
-            value={eatIndex}
-            label="Eatery"
-            onChange={(event) => {
-              var i = event.target.value;
-              var e = eateries[i]
-              setEatIndex(i);
-              setEatID(e.id);
-            }}
-          >
-          {eateries.map((eat) => {
-            return <MenuItem value={eat.index}>{eat.name}</MenuItem>
-          })}
-          </Select>
-        </FormControl>
-        </Form.Group>
+<Container className="mt--7" fluid>
+          {/* Table */}
+          <Row>
+            <div className="col">
+              <Card className="shadow">
+                <CardHeader className="bg-transparent">
+                  <h2 className="mb-0 h2">View reviews for a specific eatery:</h2>
+                </CardHeader>
+                <CardBody>
+                  <Form>
+                    <Row>
+                      <Form.Group>
+                      <FormControl fullWidth>
+                        <InputLabel>Eatery</InputLabel>
+                        <Select
+                          value={eatIndex}
+                          label="Eatery"
+                          onChange={(event) => {
+                            var i = event.target.value;
+                            var e = eateries[i]
+                            setEatIndex(i);
+                            setEatID(e.id);
+                          }}
+                        >
+                        {eateries.map((eat) => {
+                          return <MenuItem value={eat.index}>{eat.name}</MenuItem>
+                        })}
+                        </Select>
+                      </FormControl>
+                      </Form.Group>
+                    </Row>
+                    <hr className='my-3'/>
+                    <Row>
+                      <Form.Group>
+                      <FormControl fullWidth>
+                        <InputLabel>Stall</InputLabel>
+                        <Select
+                          value={stallID}
+                          label="Stall"
+                          onChange={(event) => {setStallID(event.target.value)}}
+                        >
+                        {stalls[eatIndex].map((s) => {
+                          return <MenuItem value={s.id}>{s.name}</MenuItem>
+                        })}
+                        </Select>
+                      </FormControl>
+                      </Form.Group>
+                    </Row>
 
-        <Form.Group>
-        <Form.Label>Stall</Form.Label>
-        <FormControl fullWidth>
-          <InputLabel>Stall</InputLabel>
-          <Select
-            value={stallID}
-            label="Eatery"
-            onChange={(event) => {setStallID(event.target.value)}}
-          >
-          {stalls[eatIndex].map((s) => {
-            return <MenuItem value={s.id}>{s.name}</MenuItem>
-          })}
-          </Select>
-        </FormControl>
-        </Form.Group>
-
-        {/* review query */}
-        <Button onClick={() => {navigate(`/admin/vr/${eatID}/${stallID}`)}}>View Reviews</Button>
-      </Form>
+                    {/* review query */}
+                    <Button 
+                      onClick={() => {navigate(`/admin/vr/${eatID}/${stallID}`)}}
+                      color='info'
+                      href='#pablo'
+                      className='mt-3'
+                      >
+                      View Reviews
+                    </Button>
+                  </Form>
+                </CardBody>
+              </Card>
+            </div>
+          </Row>
+        </Container>
     </> :
     <div className="pb-8 pt-5 pt-md-8 text-center"><Spinner /></div>
   )

@@ -109,7 +109,7 @@ function MapComponent(props) {
     }
   }, [customLocation, props.location]);
 
-  return <div id="map" style={{ height: '600px', borderRadius:'4px' }} />;
+  return <div id="map" style={{ height: '600px', borderRadius:'4px', overflow:'hidden' }} />;
 }
 
 export default MapComponent;

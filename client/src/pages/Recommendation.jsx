@@ -378,7 +378,7 @@ function Recommendation() {
             <div className="col-lg-6 mx-auto">
               <p className="lead mb-4">Try again later!</p>
               <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <Button className="btn btn-light text-center" type='button' onClick={(e) => {
+                <Button className="btn btn-light text-center mt-5" type='button' color='default' onClick={(e) => {
                   e.preventDefault();
                   window.location.reload();
                 }}>Generate Recommendation</Button>
@@ -415,16 +415,14 @@ function Recommendation() {
           </Row>
         </Container>
       </div>
-      {/* To do: 
-        3. Use cards to stylise the reviews*/}
       <Container className="mt--7" fluid>
         <Row>
           <div className="col">
-            <Card className="shadow border-0 card"></Card>
+            <Card className="shadow border-0 card">
               <Row>
                 <MapComponent location={location.coords} userLocation={userLocation}/>
               </Row>
-            <Card />
+            </Card>
           </div>
         </Row>
         <Row>

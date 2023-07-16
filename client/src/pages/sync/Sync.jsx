@@ -330,10 +330,10 @@ function Sync() {
               <h1 className="display-5 fw-bold text-body-emphasis">Create a profile to use the sync function.</h1>
               <div className="col-lg-6 mx-auto">
                 <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                  <Button className="btn btn-light text-center" type='button' onClick={(e) => {
+                  <Button className="btn btn-light text-center mt-5" type='button' color='default' onClick={(e) => {
                     e.preventDefault();
-                    window.location.reload();
-                  }}>Generate Recommendation</Button>
+                    navigate(`/admin/profile`);
+                  }}>Create profile</Button>
                 </div>
               </div>
             </div>

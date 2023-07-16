@@ -24,7 +24,7 @@ function Rec(props) {
 
   return (
   <>
-    <div className="mt--7" fluid>
+    <div >
       {/* Table */}
       <Row>
         <div className="col">
