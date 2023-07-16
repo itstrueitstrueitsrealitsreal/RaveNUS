@@ -5,6 +5,7 @@ import { auth, authForFirebaseUI } from "../../components/firebase";
 import { db } from "../../components/firebase";
 import { doc, getDoc, updateDoc, deleteField } from "firebase/firestore";
 import Spinner from 'react-bootstrap/Spinner';
+import img from "../../assets/img/theme/profpicheader.png";
 import {
   Card,
   CardHeader,
@@ -291,19 +292,42 @@ function Sync() {
     console.log(event.target.value);
     e.preventDefault();
   }
-  const [copiedText, setCopiedText] = useState();
 
   const cont = (
+    <>
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h1 className="display-2 text-white mb-0 ml-2">Timetable sync</h1>
+              <p className="text-white mt-0 mb-2 ml-2">
+                Sync your timetable by following the instructions below!
+              </p>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     <div id="syncPage">
       {callAlert ? 
-      <div className="pb-8 pt-5 pt-md-8">
+      <div className="pb-8 pt-0 pt-md-0">
         <Container fluid>
           <Row>
             <div className="px-4 py-5 my-5 text-center">
               <h1 className="display-5 fw-bold text-body-emphasis">Sorry!</h1>
-              <h1 className="display-5 fw-bold text-body-emphasis">There are no stalls which are open which are highly rated enough or suit your dietary restrictions.</h1>
+              <h1 className="display-5 fw-bold text-body-emphasis">Create a profile to use the sync function.</h1>
               <div className="col-lg-6 mx-auto">
-                <p className="lead mb-4">Try again later!</p>
                 <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
                   <Button className="btn btn-light text-center" type='button' onClick={(e) => {
                     e.preventDefault();
@@ -316,8 +340,7 @@ function Sync() {
         </Container>
       </div> 
       :
-      <div className="pb-8 pt-5 pt-md-8">
-        <Container className="mt--6" fluid>
+        <Container className="mt--7" fluid>
           {/* Table */}
           <Row>
             <div className="col">
@@ -368,14 +391,12 @@ function Sync() {
             </div>
           </Row>
         </Container>
-      </div>
       }
     </div>
+    </>
   );
 
-  return <div className="pb-8 pt-5 pt-md-8">
-    {loading ? <div className='text-center'><Spinner /></div> : cont}
-  </div>
+  return loading ? <div className='text-center'><Spinner /></div> : cont;
 }
 
 export default Sync;
