@@ -9,6 +9,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import defaultImg from '../../assets/img/theme/defaultprofile.png'
 import { v4 } from 'uuid';
 import 'firebase/compat/firestore';
+import Spinner from 'react-bootstrap/Spinner';
 // reactstrap components
 import {
   Button,
@@ -45,6 +46,7 @@ const Profile = () => {
   }
 
   const uid = auth.currentUser.uid;
+
   // profile collection
   const profileCollectionRef = collection(db, 'profile');
 
@@ -64,18 +66,6 @@ const Profile = () => {
 
   // retrieve profile pic url
   const [profPicURL, setProfPicURL] = useState('');
-  const profileURL = async (name) => {
-    if (name !== '') {
-      const profURLRef = ref(storage, name);
-      const url = await getDownloadURL(profURLRef);
-      setProfPicURL(url.toString());
-    }
-  };
-
-  if (profiles.length === 1) {
-    console.log(profiles[0].ProfPic)
-    profileURL(profiles[0].ProfPic);
-  }
 
   const [authUser, setAuthUser] = useState(null);
 
@@ -309,7 +299,8 @@ const Profile = () => {
         ProfPic: updatedProf.ProfPic,
       };
       await updateDoc(profRef, newFields)
-      .then(navigateToProfile());
+      .then(alert(`Profile updated. Redirecting you to home page...`))
+      .then(navigate(`/admin/index`));
     }
   };
 
@@ -355,34 +346,47 @@ const Profile = () => {
       const newFields = {
         ProfPic: '',
       };
-      await updateDoc(profRef, newFields).catch((e) => {return;});
+      await updateDoc(profRef, newFields)
+      .then(setUpdatedProfPicURL(''));
     }
   };
   const removeImageFirebase = async () => {
     if (oldProf.ProfPic !== '') {
       const delRef = ref(storage, oldProf.ProfPic);
-      await deleteObject(delRef).catch((e) => {return;});
+      await deleteObject(delRef);
     }
   };
 
-  function removeImage() {
-    removeImageFirebase();
-    removeImageRef()
-    .then(navigateToProfile());
+  const removeImage = async () => {
+    await removeImageRef()
+    .then(alert(`Profile updated. Redirecting you to home page...`))
+    .then(navigate(`/admin/index`));
   }
+
+  useEffect(() => {
+    const profileURL = async (name) => {
+      if (name !== '') {
+        const profURLRef = ref(storage, name);
+        const url = await getDownloadURL(profURLRef);
+        setProfPicURL(url.toString());
+      }
+    };
+    if (profiles.length === 1) {
+      console.log(profiles[0].ProfPic)
+      profileURL(profiles[0].ProfPic);
+    }
+  }, [updatedProfPicURL])
   return (
     <>
       <UserHeader name={username} profileExists={profiles.length === 1} 
         navigateToChangePassword={navigateToChangePassword}
-        navigateToCreateProfile={navigateToCreateProfile}
-        userSignOut={userSignOut}
         navigateToUpdateProfile={() => {
           navigate(`/admin/updateprofile/${id}`);
         }
         }
         />
       {/* Page content */}
-      {profiles.length === 1 ? <Container className="mt--7" fluid>
+      {profiles.length === 1 ? (<Container className="mt--7" fluid>
         <Row>
           <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
             <Card className="card-profile shadow">
@@ -527,8 +531,8 @@ const Profile = () => {
             </Card>
           </Col>
         </Row>
-      </Container> :
-      <Container className="mt--7" fluid>
+      </Container>) :
+      (<Container className="mt--7" fluid>
         <Row>
           <Col className="order-xl-1" xl="8">
             <Card className="bg-secondary shadow">
@@ -618,7 +622,7 @@ const Profile = () => {
             </Card>
           </Col>
         </Row>
-      </Container>}
+      </Container>)}
     </>
   );
 };

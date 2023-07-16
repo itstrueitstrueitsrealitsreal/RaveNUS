@@ -70,7 +70,7 @@ function ChangePassword() {
     </div>
   );
 
-  return <Navbar content={cont} />;
+  return cont;
 }
 
 export default ChangePassword;

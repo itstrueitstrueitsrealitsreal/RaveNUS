@@ -122,18 +122,6 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/createprofile",
-    name: "Create profile",
-    component: <CreateProfile />,
-    layout: "/admin",
-  },
-  {
-    path: "/updateprofile/:id",
-    name: "Update profile",
-    component: <UpdateProfile />,
-    layout: "/admin",
-  },
-  {
     path: "/changepassword",
     name: "Change password",
     component: <ChangePassword />,
