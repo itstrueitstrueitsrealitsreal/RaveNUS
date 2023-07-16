@@ -104,7 +104,7 @@ function ViewReviews(props) {
             <h2 className="display-5 fw-bold text-body-emphasis">No reviews matching your search criteria have been posted.</h2>
             <div className="col-lg-6 mx-auto">
               <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <Button className="btn btn-light text-center mt-5" type='button' color='default' onClick={(e) => {
+                <Button className="mt-5" type='button' color='default' onClick={(e) => {
                   e.preventDefault();
                   navigateToReviews();
                 }}>Back</Button>

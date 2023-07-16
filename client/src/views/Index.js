@@ -48,7 +48,7 @@ const Index = () => {
               <div className="col-lg-6 mx-auto">
                 <p className="lead mb-4">-Aristophenes</p>
                 <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                  <Button className="btn btn-light text-center" type='button' onClick={navigateToRecommmendation}>Generate Recommendation</Button>
+                  <Button className="" type='button' color="warning" onClick={navigateToRecommmendation}>Generate Recommendation</Button>
                 </div>
               </div>
             </div>

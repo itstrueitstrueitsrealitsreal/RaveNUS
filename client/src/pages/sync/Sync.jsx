@@ -311,7 +311,7 @@ function Sync() {
         <Container className="d-flex align-items-center" fluid>
           <Row>
             <Col lg="7" md="10">
-              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Timetable sync</h1>
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Timetable Sync</h1>
               <p className="text-white mt-0 mb-2 ml-2">
                 Sync your timetable by following the instructions below!
               </p>
@@ -330,7 +330,7 @@ function Sync() {
               <h1 className="display-5 fw-bold text-body-emphasis">Create a profile to use the sync function.</h1>
               <div className="col-lg-6 mx-auto">
                 <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                  <Button className="btn btn-light text-center mt-5" type='button' color='default' onClick={(e) => {
+                  <Button className="mt-5" type='button' color='success' onClick={(e) => {
                     e.preventDefault();
                     navigate(`/admin/profile`);
                   }}>Create profile</Button>
@@ -358,7 +358,7 @@ function Sync() {
                             <br />
                             <Button
                               className="mt-3"
-                              color='info'
+                              color='warning'
                               href='#pablo'
                               onClick={navigateToNUSMods}
                             >
