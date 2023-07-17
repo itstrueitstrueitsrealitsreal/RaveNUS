@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import { useState } from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import { NavLink as NavLinkRRD, Link, useNavigate } from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 
@@ -28,6 +28,7 @@ import {
 
 const Sidebar = (props) => {
   console.log(`Sidebar called`);
+  const navigate = useNavigate();
   const [collapseOpen, setCollapseOpen] = useState();
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
@@ -95,6 +96,10 @@ const Sidebar = (props) => {
               alt={logo.imgAlt}
               className="navbar-brand-img"
               src={logo.imgSrc}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(`/admin/index`);
+              }}
             />
           </NavbarBrand>
         ) : null}

@@ -8,7 +8,7 @@ import Rating from '@mui/material/Rating';
 import { v4 } from "uuid";
 import Input from "../../components/Input";
 import { ref, uploadBytes } from "firebase/storage";
-import img from "../../assets/img/theme/profpicheader.png";
+import img from "../../components/img/profpicheader.png";
 import {
   Card,
   CardHeader,

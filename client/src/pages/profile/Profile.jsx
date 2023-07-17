@@ -5,7 +5,7 @@ import { db, storage, auth } from "../../components/firebase";
 import { collection, getDocs, getDoc, doc, updateDoc, setDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import defaultImg from '../../assets/img/theme/defaultprofile.png'
+import defaultImg from '../../components/img/defaultprofile.png'
 import { v4 } from 'uuid';
 import 'firebase/compat/firestore';
 // reactstrap components
@@ -391,6 +391,7 @@ const Profile = () => {
           navigate(`/admin/updateprofile/${id}`);
         }
         }
+        userSignOut={userSignOut}
         />
       {/* Page content */}
       {profiles.length === 1 && profiles[0].UserID ? (<Container className="mt--7" fluid>
@@ -439,13 +440,6 @@ const Profile = () => {
                   <h3>
                     {username}
                   </h3>
-                  <hr className="my-4" />
-                  <a href="#pablo" onClick={(e) => {
-                    e.preventDefault();
-                    userSignOut();
-                    }}>
-                    Log out
-                  </a>
                 </div>
               </CardBody>
             </Card>

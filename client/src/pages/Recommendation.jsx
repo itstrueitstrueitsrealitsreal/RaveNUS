@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Rec from '../components/rec/Rec';
+import Rec from '../components/Rec';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { db } from '../components/firebase';
 import {
@@ -12,7 +12,7 @@ import * as geofirestore from 'geofirestore';
 import Spinner from 'react-bootstrap/Spinner';
 import MapComponent from '../components/MapComponent';
 import NUSModerator from 'nusmoderator';
-import img from "../assets/img/theme/profpicheader.png";
+import img from "../components/img/profpicheader.png";
 // reactstrap components
 import {
   Button,
@@ -339,13 +339,14 @@ function Recommendation() {
           // set stalls from chosen eatery
           setRecStalls(stalls);
           const randomIndex = Math.floor(Math.random() * stalls.length);
-          const recStall = stalls[randomIndex];
+          const recStall = recStall[randomIndex];
           // set chosen stall
           setRecStall(recStall);
           return "eateries/" + recStall.eateryID + "/Stalls/" + recStall.id + "/reviews";
         } else {
           // No Stalls are available
           setLoading(false)
+          setRecStall(null);
           return null;
         }
       }

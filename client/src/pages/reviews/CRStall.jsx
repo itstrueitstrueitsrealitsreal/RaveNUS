@@ -4,7 +4,7 @@ import { db } from "../../components/firebase";
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import { Form } from "react-bootstrap";
 import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
-import img from "../../assets/img/theme/profpicheader.png";
+import img from "../../components/img/profpicheader.png";
 import {
   Card,
   CardHeader,
