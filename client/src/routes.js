@@ -1,8 +1,8 @@
-import Index from "./views/Index.js";
-import Profile from "./views/examples/Profile.jsx";
-import Register from "./views/examples/Register.js";
-import Reset from './views/examples/Reset.js';
-import Login from './views/examples/Login.js';
+import Index from "./pages/Index.js";
+import Profile from "./pages/profile/Profile.jsx";
+import Register from "./pages/start/Register.js";
+import Reset from './pages/start/Reset.js';
+import Login from './pages/start/Login.js';
 import Recommendation from './pages/Recommendation.jsx'
 import Statistics from './pages/Statistics.jsx';
 import Reviews from './pages/reviews/Reviews.jsx';
@@ -15,8 +15,7 @@ import CreateReview from './pages/reviews/CreateReview.jsx';
 import CREatery from './pages/reviews/CREatery.jsx';
 import CRStall from './pages/reviews/CRStall.jsx';
 import ChangePassword from './pages/profile/ChangePassword.jsx';
-import CreateProfile from './pages/profile/CreateProfile.jsx';
-import UpdateProfile from './pages/profile/UpdateProfile.jsx';
+
 
 var routes = [
   {

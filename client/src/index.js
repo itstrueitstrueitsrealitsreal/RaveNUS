@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import App from './components/App.jsx';
+import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 import "./assets/plugins/nucleo/css/nucleo.css";
@@ -13,8 +13,7 @@ import AuthLayout from "./layouts/Auth.js";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <App />
-  <BrowserRouter>
+  <BrowserRouter className="App">
     <Routes>
       <Route path="/admin/*" element={<AdminLayout />} />
       <Route path="/auth/*" element={<AuthLayout />} />
