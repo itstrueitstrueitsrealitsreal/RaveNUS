@@ -115,34 +115,34 @@ export default function CRStall() {
                 <h2 className="mb-0 h2">Select stall from {eatery.name}:</h2>
               </CardHeader>
               <CardBody>
-        {/* STALL SELECTION  */}
-        <Form>
-          <Form.Group>
-          <FormControl fullWidth>
-            <InputLabel>Stall</InputLabel>
-            <Select
-              value={stallID}
-              label="Stall"
-              onChange={(event) => {setStallID(event.target.value)}}
-            >
-            {stalls.map((stall) => {
-              return <MenuItem key={stall.id} value={stall.id}>{stall.name}</MenuItem>
-            })}
-            </Select>
-          </FormControl>
-          </Form.Group>
-          <br />
-          {/* NEXT BUTTON  */}
-          <Button 
-          className="" 
-          color="warning"
-          onClick={() => {
-            stallID !== null ? navigate(`/admin/cr/${uid}/${locID}/${stallID}`) :
-            alert("Please select a Stall before proceeding")}}
-          >
-            Next
-          </Button>
-        </Form>   
+                {/* STALL SELECTION  */}
+                <Form>
+                  <Form.Group>
+                  <FormControl fullWidth>
+                    <InputLabel>Stall</InputLabel>
+                    <Select
+                      value={stallID}
+                      label="Stall"
+                      onChange={(event) => {setStallID(event.target.value)}}
+                    >
+                    {stalls.map((stall) => {
+                      return <MenuItem key={stall.id} value={stall.id}>{stall.name}</MenuItem>
+                    })}
+                    </Select>
+                  </FormControl>
+                  </Form.Group>
+                  <br />
+                  {/* NEXT BUTTON  */}
+                  <Button 
+                  className="" 
+                  color="warning"
+                  onClick={() => {
+                    stallID !== null ? navigate(`/admin/cr/${uid}/${locID}/${stallID}`) :
+                    alert("Please select a Stall before proceeding")}}
+                  >
+                    Next
+                  </Button>
+                </Form>   
               </CardBody>
             </Card>
           </div> 
