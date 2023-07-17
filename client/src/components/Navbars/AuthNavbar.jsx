@@ -15,7 +15,7 @@ const AuthNavbar = () => {
           <NavbarBrand to="/" tag={Link}>
             <img
               alt="..."
-              src={require("../../img/ravenus_header_auth.png")}
+              src={require("../../components/img/ravenus_header_auth.png")}
             />
           </NavbarBrand>
         </Container>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // reactstrap components
 import { Button, Container, Row, Col } from "reactstrap";
-import img from "../../img/profpicheader.png";
+import img from "../../components/img/profpicheader.png";
 
 const UserHeader = (props) => {
   const greeting = props.name ? `Hello ${props.name}!` : `Hello!`;
@@ -37,6 +37,17 @@ const UserHeader = (props) => {
                 }}
               >
                 Change password
+              </Button>
+              <Button
+                className="my-2 mx-2"
+                color="info"
+                href="#pablo"
+                onClick={(e) =>{ 
+                  e.preventDefault();
+                  props.userSignOut();
+                }}
+              >
+                Log out
               </Button>
             </Col>
           </Row>

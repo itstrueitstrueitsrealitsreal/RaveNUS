@@ -12,7 +12,7 @@ import * as geofirestore from 'geofirestore';
 import Spinner from 'react-bootstrap/Spinner';
 import MapComponent from '../components/MapComponent';
 import NUSModerator from 'nusmoderator';
-import img from "../img/profpicheader.png";
+import img from "../components/img/profpicheader.png";
 // reactstrap components
 import {
   Button,

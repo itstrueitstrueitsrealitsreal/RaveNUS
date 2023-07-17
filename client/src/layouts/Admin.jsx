@@ -8,7 +8,7 @@ import Sidebar from "../components/Sidebar/Sidebar.jsx";
 
 import routes from "../routes.js";
 
-import img from "../img/ravenus_header_admin.png";
+import img from "../components/img/ravenus_header_admin.png";
 import AdminNavbar from "../components/Navbars/AdminNavbar.js";
 
 const Admin = (props) => {
