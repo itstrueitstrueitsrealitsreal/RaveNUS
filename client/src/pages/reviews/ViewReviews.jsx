@@ -93,7 +93,7 @@ function ViewReviews(props) {
                 href="#pablo"
                 onClick={(e) =>{ 
                   e.preventDefault();
-                  navigate(-1);
+                  navigate(`/admin/reviews`);
                 }}
               >
                 Back

@@ -3,7 +3,6 @@ import Rating from '@mui/material/Rating';
 import { useNavigate } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from './firebase';
-// import { Row, Col, Card, Button } from 'react-bootstrap';
 import {
   Card,
   CardHeader,

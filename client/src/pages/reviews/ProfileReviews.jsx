@@ -1,12 +1,25 @@
 import { collection, getDocs, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db, auth, authForFirebaseUI, storage } from "../../components/firebase";
-import { Button } from "react-bootstrap";
 import Review from "../../components/Review";
 import Spinner from 'react-bootstrap/Spinner';
 import { deleteObject, ref } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import img from "../../assets/img/theme/profpicheader.png";
+import {
+  Card,
+  CardHeader,
+  CardSubtitle,
+  ListGroup,
+  ListGroupItem,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  Button,
+  CardText,
+  CardImg
+} from "reactstrap";
 
 function ProfileReviews(props) {
   console.log("Profile Reviews Page called");
@@ -123,18 +136,36 @@ function ProfileReviews(props) {
           <Container className="d-flex align-items-center" fluid>
             <Row>
               <Col lg="7" md="10">
-                <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">View reviews</h1>
+                <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Your reviews</h1>
                 <p className="text-white mt-0 mb-2 ml-2 text-nowrap">
-                  You can view all reviews for a stall here!
+                  You can view all the reviews that you have posted here!
                 </p>
+                <Button
+                  className="my-2 mx-2"
+                  color="warning"
+                  href="#pablo"
+                  onClick={(e) =>{ 
+                    e.preventDefault();
+                    navigate(`/admin/cr/${uids}`);
+                  }}
+                >
+                  Create new review
+                </Button>
+                <Button
+                  className="my-2 mx-2"
+                  color="light"
+                  href="#pablo"
+                  onClick={(e) =>{ 
+                    e.preventDefault();
+                    navigate(`/admin/reviews`);
+                  }}
+                >
+                  Back
+                </Button>
               </Col>
             </Row>
           </Container>
         </div>
-        <h1>REVIEWS PAGE</h1>
-        <h2>Your Reviews</h2>
-        <Button variant="primary" onClick={navigateToReviews}>Back</Button>
-        <br />
 
         {/* add new review  */}
         {callAlert ? 
@@ -142,39 +173,39 @@ function ProfileReviews(props) {
           <h2>Oops! You have yet to Create a Profile!</h2>
           <p>Create a Profile from the Profile Page to start creating reviews!</p>
         </div> 
-        : <Button className="btn btn-light" onClick={() => {navigate(`/admin/cr/${uids}`)}}>Create New Review</Button>}
-        <br />
-        <br />
-        
-        {/* Reviews */}
-        {/* uses getDocs  */}
-        <div>
-          {/* Filter by User's own reviews and map to display  */}
-          {revs.map((rev, idx) => {
-            const date = new Date(rev.Time.seconds * 1000);
-            return (<div key={rev.id}>
-              <Review 
-                recPage={false}
-                deleteRev={deleteRev}
-                updateRev={`/admin/updatereview/${rev.id}/${rev.EateryID}/${rev.StallID}/${rev.UserID}`}
-                id={rev.id}
-                poster={rev.Poster}
-                content={rev.Content}
-                rating={rev.Rating}
-                time={date.toString()}
-                idx={idx}
-                eatery={rev.Eatery}
-                stall={rev.Stall}
-                revpic={rev.RevPic}
-                eateryID={rev.EateryID}
-                stallID={rev.StallID}
-                uid={rev.UserID}
-                viewerUID={uids}
-              />
-            </div>);
-          })}
-        </div>
-        
+        : null }
+        <Container className='mt--7' fluid>
+          <Row>
+            {/* Reviews */}
+            {/* uses getDocs  */}
+            <div className='col text-center m-4'>
+              {/* Filter by User's own reviews and map to display  */}
+              {revs.map((rev, idx) => {
+                const date = new Date(rev.Time.seconds * 1000);
+                return (<div key={rev.id}>
+                  <Review 
+                    recPage={false}
+                    deleteRev={deleteRev}
+                    updateRev={`/admin/updatereview/${rev.id}/${rev.EateryID}/${rev.StallID}/${rev.UserID}`}
+                    id={rev.id}
+                    poster={rev.Poster}
+                    content={rev.Content}
+                    rating={rev.Rating}
+                    time={date.toString()}
+                    idx={idx}
+                    eatery={rev.Eatery}
+                    stall={rev.Stall}
+                    revpic={rev.RevPic}
+                    eateryID={rev.EateryID}
+                    stallID={rev.StallID}
+                    uid={rev.UserID}
+                    viewerUID={uids}
+                  />
+                </div>);
+              })}
+            </div>
+          </Row>
+        </Container>
       </div>
     </>)
   

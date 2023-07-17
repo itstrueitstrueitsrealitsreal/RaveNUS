@@ -264,6 +264,66 @@ const Profile = () => {
     }
   }, [updatedProfPicURL])
 
+  // new info states
+  // username
+  function handleProf(event) {
+    event.preventDefault();
+    console.log(event.target)
+    const { name, value } = event.target;
+    console.log('handling username...');
+    setUpdatedProf((prevProf) => ({
+      ...prevProf,
+      [name]: value,
+    }));
+  }
+
+  // halal
+  function handleHalal(event) {
+    event.preventDefault();
+    console.log('handling halal...');
+    const oldHalal = newProf.Halal;
+    setUpdatedProf((prevProf) => ({
+      ...prevProf,
+      Halal: !oldHalal,
+    }));
+    setCheckedH(!checkedH);
+  }
+  // vegetarian
+  function handleVegetarian(event) {
+    event.preventDefault();
+    console.log('handling vegetarian...');
+    const oldVeg = newProf.Vegetarian;
+    setUpdatedProf((prevProf) => ({
+      ...prevProf,
+      Vegetarian: !oldVeg,
+    }));
+    setCheckedV(!checkedV);
+  }
+
+  const removeImageFirebase = async () => {
+    if (oldProf.ProfPic !== '') {
+      const delRef = ref(storage, oldProf.ProfPic);
+      await deleteObject(delRef);
+    }
+  };
+
+  const removeImage = async () => {
+    await removeImageRef()
+    .then(alert(`Profile updated. Redirecting you to home page...`))
+    .then(navigate(`/admin/index`));
+  }
+
+  // remove profile picture
+  const removeImageRef = async () => {
+    const confirmed = window.confirm('Are you sure you want to Remove your Profile Picture?');
+    if (confirmed) {
+      const newFields = {
+        ProfPic: '',
+      };
+      await updateDoc(profRef, newFields)
+      .then(setUpdatedProfPicURL(''));
+    }
+  };
 
   if (profiles.length === 1) {
 
@@ -280,40 +340,12 @@ const Profile = () => {
       updatedProfileURL(oldProf.ProfPic);
     }
 
-    // new info states
-    // username
-    function handleProf(event) {
-      event.preventDefault();
-      console.log(event.target)
-      const { name, value } = event.target;
-      console.log('handling username...');
-      setUpdatedProf((prevProf) => ({
-        ...prevProf,
-        [name]: value,
-      }));
-    }
-
-    // halal
-    function handleHalal(event) {
-      event.preventDefault();
-      console.log('handling halal...');
-      const oldHalal = newProf.Halal;
-      setUpdatedProf((prevProf) => ({
-        ...prevProf,
-        Halal: !oldHalal,
-      }));
-      setCheckedH(!checkedH);
-    }
-    // vegetarian
-    function handleVegetarian(event) {
-      event.preventDefault();
-      console.log('handling vegetarian...');
-      const oldVeg = newProf.Vegetarian;
-      setUpdatedProf((prevProf) => ({
-        ...prevProf,
-        Vegetarian: !oldVeg,
-      }));
-      setCheckedV(!checkedV);
+    function editAll() {
+      if (updatedImage !== null) {
+        updateImage();
+        removeImageFirebase();
+      }
+      editProfile();
     }
 
     // update profile
@@ -349,38 +381,6 @@ const Profile = () => {
         });
       }
     };
-
-    function editAll() {
-      if (updatedImage !== null) {
-        updateImage();
-        removeImageFirebase();
-      }
-      editProfile();
-    }
-
-    // remove profile picture
-    const removeImageRef = async () => {
-      const confirmed = window.confirm('Are you sure you want to Remove your Profile Picture?');
-      if (confirmed) {
-        const newFields = {
-          ProfPic: '',
-        };
-        await updateDoc(profRef, newFields)
-        .then(setUpdatedProfPicURL(''));
-      }
-    };
-    const removeImageFirebase = async () => {
-      if (oldProf.ProfPic !== '') {
-        const delRef = ref(storage, oldProf.ProfPic);
-        await deleteObject(delRef);
-      }
-    };
-
-    const removeImage = async () => {
-      await removeImageRef()
-      .then(alert(`Profile updated. Redirecting you to home page...`))
-      .then(navigate(`/admin/index`));
-    }
 
   }
   return (
