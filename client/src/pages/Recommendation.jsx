@@ -3,33 +3,42 @@ import Rec from '../components/rec/Rec';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { db } from '../components/firebase';
 import {
-  collection, getDocs, getDoc, doc, query, where
+  collection, getDocs, getDoc, doc
 } from 'firebase/firestore';
-import { useDocument } from 'react-firebase-hooks/firestore';
 // for geopoint queries
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import * as geofirestore from 'geofirestore';
 import Spinner from 'react-bootstrap/Spinner';
-import { Button } from 'react-bootstrap';
 import MapComponent from '../components/MapComponent';
-import Navbar from '../components/Navbar';
 import NUSModerator from 'nusmoderator';
+import img from "../assets/img/theme/profpicheader.png";
+// reactstrap components
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  NavItem,
+  NavLink,
+  Nav,
+  Progress,
+  Table,
+  Container,
+  Row,
+  Col,
+  CardTitle,
+} from "reactstrap";
 
-function Recommendation(props) {
+function Recommendation() {
   console.log('Recommendation Page called');
 
   // page navigation
   const navigate = useNavigate();
-  const navigateToNewRec = () => {
-    setLoading(true);
-    const nav = `/recommendation/${uid}`;
-    navigate(nav);
-  };
 
   // current userID
   const url = useLocation();
-  const uid = url.pathname.split('/')[2];
+  const uid = url.pathname.split('/')[3];
 
   // Create a Firestore reference
   const firestore = firebase.firestore();
@@ -249,9 +258,11 @@ function Recommendation(props) {
   // Stall recommendation
   const [recStalls, setRecStalls] = useState(null);
   const [recStall, setRecStall] = useState(null);
+
   const findStalls = async (id) => {
     if (id) {
       const stallsPath = `eateries/${id}/Stalls/`;
+      console.log('Calling findstalls');
       const stallsData = await getDocs(collection(db, stallsPath));
       const allStalls = stallsData.docs.map((doc) => ({
         key: doc.id, ...doc.data(), id: doc.id, eateryID: id,
@@ -269,9 +280,11 @@ function Recommendation(props) {
   const getRevs = async (path) => {
     // getting reviews
     console.log('Reviews getRev called');
-    const data = await getDocs(collection(db, path));
-    const allRevs = data.docs.map((doc) => ({ key: doc.id, ...doc.data(), id: doc.id }));
-    return allRevs;
+    if (path) {
+      const data = await getDocs(collection(db, path)).catch((err) => console.log(err));
+      const allRevs = data.docs.map((doc) => ({ key: doc.id, ...doc.data(), id: doc.id }));
+      return allRevs;
+    }
   };
 
   // Create a GeoQuery based on a location
@@ -353,33 +366,94 @@ function Recommendation(props) {
   const [limit, setLimit] = useState(10);
 
   // Page content
-  const cont = isLoading ? <Spinner /> : (
+  const cont = isLoading ? <div className="pb-8 pt-5 pt-md-8 text-center"><Spinner /></div> : (
     recStall === null ? 
     // if there are no stalls to recommend
-    <div>
-      <h1>Oops!</h1>
-      <h2>We can't seem to find a Stall to recommend you!</h2>
-      <p>Either there are no stalls open currently, 
-          or there are none open that fit your dietary requirements, 
-          or the stalls available are not rated highly enough for us to consider recommending them to you!</p>
-      <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <button onClick={navigateToNewRec} type="button" className="btn btn-primary btn-lg px-4 gap-3">Generate ANOTHER Recommendation</button>
-      </div>
+    <div className="pb-8 pt-5 pt-md-8">
+      <Container className="mt-7" fluid>
+        <Row>
+          <div className="px-4 py-5 my-5 text-center">
+            <h1 className="display-5 fw-bold text-body-emphasis">Sorry!</h1>
+            <h1 className="display-5 fw-bold text-body-emphasis">There are no stalls which are open which are highly rated enough or suit your dietary restrictions.</h1>
+            <div className="col-lg-6 mx-auto">
+              <p className="lead mb-4">Try again later!</p>
+              <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <Button className="btn btn-light text-center mt-5" type='button' color='default' onClick={(e) => {
+                  e.preventDefault();
+                  window.location.reload();
+                }}>Generate Recommendation</Button>
+              </div>
+            </div>
+          </div>
+        </Row>
+      </Container>
     </div> :
     // recommend stall
-    <div>
-      <h1>{location.name}</h1>
-      <MapComponent location={location.coords} userLocation={userLocation}/>
-      <br />
-      {/* Add Review */}
-      <Button onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a Review!</Button>
-      {/* Increase number of reviews by 10 */}
-      <Button onClick={() => { setLimit(limit + 10); }}>load more reviews</Button>
-      <Rec stall={recStall} recPage={navigateToNewRec} revs={revs} limit={limit} viewerUID={uid} />
-    </div>
+    <>
+    {/* header */}
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h3 className="text-white text-nowrap mt-0 mb-2 ml-2">
+              We recommend that you eat at...
+              </h3>
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">{location.name}</h1>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      <Container className="mt--7" fluid>
+        <Row>
+          <div className="col">
+            <Card className="shadow border-0 card">
+              <Row>
+                <MapComponent location={location.coords} userLocation={userLocation}/>
+              </Row>
+            </Card>
+          </div>
+        </Row>
+        <Row>
+          <div className="col text-center m-4">
+            {/* Add Review */}
+            <Button 
+              color='success'
+              href='#pablo'
+              className='' 
+              onClick={() => {navigate(`/cr/${uid}/${location.id}/${recStall.id}`)}}>Add a review</Button>
+            {/* Increase number of reviews by 10 */}
+            <Button 
+              color='default'
+              href='#pablo'
+              className='' 
+              onClick={() => { setLimit(limit + 10); }}>Load more reviews</Button>
+          </div>
+        </Row>
+      </Container>
+      <Row>
+        <div className="col text-center m-4">
+            <Rec stall={recStall} recPage={(e) => {
+              e.preventDefault();
+              window.location.reload();
+            }} revs={revs} limit={limit} viewerUID={uid} />
+        </div>
+      </Row>
+    </>
   );
 
-  return <Navbar content={cont} />;
+  return cont;
 }
 
 export default Recommendation;

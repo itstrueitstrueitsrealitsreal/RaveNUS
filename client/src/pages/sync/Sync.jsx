@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import NUSModerator from 'nusmoderator';
-import Navbar from '../../components/Navbar';
-import { ref, uploadBytes } from "firebase/storage";
 import { auth, authForFirebaseUI } from "../../components/firebase";
-import { db, storage,  } from "../../components/firebase";
-import { doc, setDoc, getDoc, getDocs, collection, updateDoc, deleteDoc, deleteField } from "firebase/firestore";
+import { db } from "../../components/firebase";
+import { doc, getDoc, updateDoc, deleteField } from "firebase/firestore";
 import Spinner from 'react-bootstrap/Spinner';
+import img from "../../assets/img/theme/profpicheader.png";
+import {
+  Card,
+  CardHeader,
+  ListGroup,
+  ListGroupItem,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  Button,
+} from "reactstrap";
 
 function Sync() {
   console.log('Sync Page called');
@@ -156,9 +166,6 @@ function Sync() {
         return timetable;
       });
     }
-    // for (var i = 0; i < newState.length; i++) {
-    //   newState[i].timetable = Object.assign({}, newState[i].timetable);
-    // }
     console.log('newState');
     console.log(newState);
     setTimetableData(newState);
@@ -287,54 +294,113 @@ function Sync() {
   }
 
   const cont = (
-    <div id="syncPage">
-      {callAlert ? 
-      <div>
-        <h2>Oops! You have yet to create a profile!</h2>
-        <p>Create a profile from the profile page to sync your timetable!</p>
-      </div> 
-      :
-      <div>
-        <h1>Timetable Sync</h1>
-        <h2>Sync your timetable in 3 simple steps!</h2>
-        <ol>
-          <li>
-            Go to the Timetable tab with your desired timetable on NUSMods using the button below.
-            <br />
-            <Button
-              variant="primary"
-              onClick={navigateToNUSMods}
-            >
-              NUSMods
-
-            </Button>
-          </li>
-          <li>
-            Click the Share/Sync button on the bottom right of the timetable as shown below.
-            <br />
-            <img src={require('../../components/img/nusmods_screenshot.png')} alt="screenshot of sync button" />
-          </li>
-          <li>
-            Copy and paste the URL into the box below!
-            <Form.Group
-              className="mb-3"
-            >
-              <Form.Control
-                type="url"
-                placeholder="Paste URL here:"
-                value={url}
-                onChange={(e) => setURL(e.target.value)}
-              />
-            </Form.Group>
-            <Button variant="primary" onClick={syncTimetable}>Sync</Button>
-          </li>
-        </ol>
+    <>
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Timetable Sync</h1>
+              <p className="text-white mt-0 mb-2 ml-2">
+                Sync your timetable by following the instructions below!
+              </p>
+            </Col>
+          </Row>
+        </Container>
       </div>
-      }
+
+    <div id="syncPage">
+      <Container className="mt--7" fluid>
+        {/* Table */}
+        <Row>
+          <div className="col">
+            <Card className="shadow">
+              <CardHeader className="bg-transparent">
+                <h2 className="mb-0 h2">Sync your timetable in 3 simple steps!</h2>
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <Col>
+                    <ListGroup flush>
+                        <ListGroupItem>
+                          1. Go to the Timetable tab with your desired timetable on NUSMods using the button below.
+                          <br />
+                          <Button
+                            className="mt-3"
+                            color='warning'
+                            href='#pablo'
+                            onClick={navigateToNUSMods}
+                          >
+                            NUSMods
+                          </Button>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          2. Click the Share/Sync button on the bottom right of the timetable as shown below.
+                          <br />
+                          <img className="my-3 rounded img-fluid" src={require('../../assets/img/nusmods_screenshot.png')} alt="screenshot of sync button" />
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          3. Copy and paste the URL into the box below!
+                          <Form.Group
+                            className="my-3"
+                          >
+                            <Form.Control
+                              type="url"
+                              placeholder="Paste URL here:"
+                              value={url}
+                              onChange={(e) => setURL(e.target.value)}
+                            />
+                          </Form.Group>
+                          <Button 
+                            onClick={syncTimetable}
+                            color='success'
+                            href='#pablo'
+                          >
+                            Sync
+                          </Button>
+                        </ListGroupItem>
+                    </ListGroup>
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
+          </div>
+        </Row>
+      </Container>
     </div>
+    </>
   );
 
-  return <Navbar content={loading ? <Spinner /> : cont} />;
+  return (loading ? <div className='pb-8 pt-5 pt-md-8 text-center'><Spinner /></div> : callAlert ?       
+    <div className="pb-8 pt-0 pt-md-0">
+      <Container fluid>
+        <Row>
+          <div className="px-4 py-5 my-5 text-center">
+            <h1 className="display-5 fw-bold text-body-emphasis">Sorry!</h1>
+            <h1 className="display-5 fw-bold text-body-emphasis">Create a profile to use the sync function.</h1>
+            <div className="col-lg-6 mx-auto">
+              <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <Button className="mt-5" type='button' color='success' onClick={(e) => {
+                  e.preventDefault();
+                  navigate(`/admin/profile`);
+                }}>Create profile</Button>
+              </div>
+            </div>
+          </div>
+        </Row>
+      </Container>
+    </div> : cont);
 }
 
 export default Sync;

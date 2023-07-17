@@ -1,6 +1,18 @@
 import React from 'react';
 import Rating from '@mui/material/Rating';
 import Review from '../Review';
+import {
+  Card,
+  CardHeader,
+  CardSubtitle,
+  ListGroup,
+  ListGroupItem,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  Button
+} from "reactstrap";
 
 function Rec(props) {
   console.log('Rec Component called');
@@ -11,26 +23,52 @@ function Rec(props) {
   const revs = props.revs.slice(0, props.limit);
 
   return (
+  <>
+    <div >
+      {/* Table */}
+      <Row>
+        <div className="col">
+          <Card className="shadow">
+            <CardHeader className="bg-transparent">
+              <h1 className="mb-0 h1">Recommendation: {recStall.name}</h1>
+            </CardHeader>
+            <CardBody>
+              <Row>
+                <Col>
+                  <ListGroup flush>
+                      <ListGroupItem>
+                        <h2>Average Rating: {recStall.rating ? (recStall.rating + '/5') : 'No reviews yet'}</h2>
+                        <br />
+                        {recStall.rating ? <Rating name="read-only" value={recStall.rating} max={5} readOnly /> : ''}
+                        <br />
+                        <h3 className="text-muted">Not to your liking?</h3>
+                        <br />
+                        <Button
+                          color='warning'
+                          href='#pablo'
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.location.reload();
+                          }
+                          } 
+                        >
+                          Generate another recommendation
+                        </Button>
+                      </ListGroupItem>
+                  </ListGroup>
+                </Col>
+              </Row>
+            </CardBody>
+          </Card>
+        </div>
+      </Row>
+    </div>
+    <br />
     <div>
-      <h1>
-        Recommendation: {recStall.name}
-      </h1>
-      <h2>
-        Average Rating: {recStall.rating ? (recStall.rating + '/5') : 'No reviews yet'}
-      </h2>
-      {/* rating */}
-      {recStall.rating ? <Rating name="read-only" value={recStall.rating} max={5} readOnly /> : ''}
-
-      <br />
-      <br />
-      <h2>Not to your liking?</h2>
-      <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <button onClick={props.recPage} type="button" className="btn btn-primary btn-lg px-4 gap-3">Generate ANOTHER Recommendation</button>
-      </div>
-      <br />
-      <br />
-
-      <h2>Stall Reviews</h2>
+      <h1>Reviews:</h1>
+    </div>
+    <br />
+    <div>
       {revs.map((rev, idx) => {
         const date = new Date(rev.Time.seconds * 1000);
         return (<div key={rev.id}>
@@ -53,11 +91,8 @@ function Rec(props) {
           />
         </div>);
       })}
-
-      <br />
-      <br />
-
     </div>
+  </>
   );
 }
 

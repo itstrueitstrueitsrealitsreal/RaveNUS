@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
-import {
-  Button, Card, Col, Row,
-} from 'react-bootstrap';
 import Rating from '@mui/material/Rating';
 import { useNavigate } from "react-router-dom";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from './firebase';
+import {
+  Card,
+  CardHeader,
+  CardSubtitle,
+  ListGroup,
+  ListGroupItem,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  Button,
+  CardText,
+  CardImg
+} from "reactstrap";
 
 function Review(props) {
   // page navigation
@@ -18,38 +29,49 @@ function Review(props) {
     const url = await getDownloadURL(urlRef);
     setPicURL(url.toString());
   };
-  if (props.revpic !== null && props.revpic !== '') {
+  if (props.revpic && props.revpic !== '') {
+    console.log(props.revpic);
+    console.log('getting url')
     getURL();
+    console.log(picURL);
   }
 
   return (
-    <Row xs={1} md={1} className="g-4">
+  <>
+    <Row xs={1} md={1} className="my-4">
       <Col key={props.idx}>
-        <Card className="my-2">
-          <Card.Body>
+        <Card className="shadow">
+          <CardBody>
             {/* poster */}
-            <Card.Title>{`Poster: ${props.poster}`}</Card.Title>
+            <CardHeader className="my-0 h1 bg-transparent">
+              <h1>{`Poster: ${props.poster}`}</h1>
+            </CardHeader>
             {/* eatery */}
-            <Card.Text>
-              {`Eatery: ${props.eatery}`}
-            </Card.Text>
+            <CardText className="my-2">
+              <h2>{`Eatery: ${props.eatery}`}</h2>
+            </CardText>
             {/* stall */}
-            <Card.Text>
-              {`Stall: ${props.stall}`}
-            </Card.Text>
+            <CardText className="my-2">
+              <h2>{`Stall: ${props.stall}`}</h2>
+            </CardText>
             {/* rating */}
-            <Rating name="read-only" value={props.rating} max={5} readOnly />
+            <Rating 
+              className="my-2"
+              name="read-only" 
+              value={props.rating} 
+              max={5} 
+              readOnly />
             <br />
             {/* image */}
-            <Card.Img variant="top" src={picURL} />
+            <CardImg className="my-2" variant="top" src={picURL} />
             {/* content */}
-            <Card.Text>
-              {`Content: ${props.content}`}
-            </Card.Text>
+            <CardText className="my-2 text-black-50">
+              <p>{`${props.content}`}</p>
+            </CardText>
             {/* date */}
-            <Card.Subtitle className="mb-2 text-muted text-black-50">
-              {props.time}
-            </Card.Subtitle>
+            <CardSubtitle className="my-2 text-muted text-black-50">
+              <p>{props.time}</p>
+            </CardSubtitle>
             {/* user can only update or delete the review if user created it */}
             { props.viewerUID === props.uid ? (props.recPage === true
               ? (
@@ -61,18 +83,19 @@ function Review(props) {
                 </Button> ):
                 <div>
                 {/* update the review  */}
-                <Button className="btn btn-light" onClick={() => {navigate(props.updateRev)}}>Edit</Button>
+                <Button color="info" onClick={() => {navigate(props.updateRev)}}>Edit</Button>
                 {/* delete the review  */}
-                <Button onClick={() => props.deleteRev(props.id, props.content, 
+                <Button color="light" onClick={() => props.deleteRev(props.id, props.content, 
                     props.rating, props.uid, props.eateryID, props.stallID, props.eatery, props.stall, props.revpic)}>
                   Delete
                 </Button></div>) :
                 <></>
               } 
-            </Card.Body>
+            </CardBody>
           </Card>
         </Col>
     </Row>
+  </>
   );
 }
 
