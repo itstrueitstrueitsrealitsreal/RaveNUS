@@ -50,6 +50,47 @@ const Profile = () => {
 
   // check if user profile exists
   const [profs, setProfs] = useState([]);
+  // retrieve profile pic url
+  const [profPicURL, setProfPicURL] = useState('');
+
+  const [authUser, setAuthUser] = useState(null);
+
+  // info
+  const [newProf, setNewProf] = useState({
+    UserID: uid,
+    Username: '',
+    Halal: false,
+    Vegetarian: false,
+    ProfPic: '',
+  });
+
+  // image
+  const [image, setImage] = useState(null);
+  const [uploadLoc, setUploadLoc] = useState('');
+
+  // checkbox states
+  const [checkedH, setCheckedH] = useState(false);
+  const [checkedV, setCheckedV] = useState(false);
+
+  // update profile
+  // profile states
+  const [oldProf, setOldProf] = useState({
+    UserID: 'not retrieved',
+  });
+  const [updatedProf, setUpdatedProf] = useState({
+    Username: '',
+    Halal: false,
+    Vegetarian: false,
+    ProfPic: '',
+    UserID: '',
+  });
+
+  // retrieve old profile pic
+  const [updatedProfPicURL, setUpdatedProfPicURL] = useState('');
+
+  // new image
+  const [updatedImage, setUpdatedImage] = useState(null);
+  const [newUploadLoc, setNewUploadLoc] = useState('');
 
   useEffect(() => {
     const checkProfile = async () => {
@@ -62,10 +103,6 @@ const Profile = () => {
   // filtering out the user's profile
   const profiles = profs.filter((p) => (p.UserID === uid));
 
-  // retrieve profile pic url
-  const [profPicURL, setProfPicURL] = useState('');
-
-  const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -98,16 +135,6 @@ const Profile = () => {
   }
 
   // create profile
-
-  // info
-  const [newProf, setNewProf] = useState({
-    UserID: uid,
-    Username: '',
-    Halal: false,
-    Vegetarian: false,
-    ProfPic: '',
-  });
-
   // new info states
   // username
   function handleProf(event) {
@@ -144,10 +171,6 @@ const Profile = () => {
     }));
     setCheckedV(!checkedV);
   }
-
-  // image
-  const [image, setImage] = useState(null);
-  const [uploadLoc, setUploadLoc] = useState('');
 
   // handle image
   function handleImage(event) {
@@ -197,114 +220,11 @@ const Profile = () => {
   function addProf() {
     uploadImage();
     addProfInfo();
+    alert(`Successfully created profile. Redirecting you to dashboard...`)
+    navigateToStart();
   }
-
-  // checkbox states
-  const [checkedH, setCheckedH] = useState(false);
-  const [checkedV, setCheckedV] = useState(false);
-
-
   const profRef = doc(db, 'profile', uid);
-  // update profile
-  // profile states
-  const [oldProf, setOldProf] = useState({
-    UserID: 'not retrieved',
-  });
-  const [updatedProf, setUpdatedProf] = useState({
-    Username: '',
-    Halal: false,
-    Vegetarian: false,
-    ProfPic: '',
-    UserID: '',
-  });
 
-  // retrieve old profile
-  useEffect(() => {
-    const getOldProf = async () => {
-      const doc = await getDoc(profRef);
-      setUpdatedProf(doc.data());
-      setOldProf(doc.data());
-      setCheckedH(doc.data().Halal);
-      setCheckedV(doc.data().Vegetarian);
-    };
-    getOldProf();
-  }, []);
-
-  // retrieve old profile pic
-  const [updatedProfPicURL, setUpdatedProfPicURL] = useState('');
-  const updatedProfileURL = async (name) => {
-    if (name !== '') {
-      const updatedURLRef = ref(storage, name);
-      const url = await getDownloadURL(updatedURLRef);
-      setUpdatedProfPicURL(url.toString());
-    }
-  };
-  if (oldProf.UserID !== 'not retrieved') {
-    console.log('old profile retrieved');
-    console.log(oldProf);
-    updatedProfileURL(oldProf.ProfPic);
-  }
-
-  // new info states
-  // username
-  function handleProf(event) {
-    event.preventDefault();
-    console.log(event.target)
-    const { name, value } = event.target;
-    console.log('handling username...');
-    setUpdatedProf((prevProf) => ({
-      ...prevProf,
-      [name]: value,
-    }));
-  }
-
-  // halal
-  function handleHalal(event) {
-    event.preventDefault();
-    console.log('handling halal...');
-    const oldHalal = newProf.Halal;
-    setUpdatedProf((prevProf) => ({
-      ...prevProf,
-      Halal: !oldHalal,
-    }));
-    setCheckedH(!checkedH);
-  }
-  // vegetarian
-  function handleVegetarian(event) {
-    event.preventDefault();
-    console.log('handling vegetarian...');
-    const oldVeg = newProf.Vegetarian;
-    setUpdatedProf((prevProf) => ({
-      ...prevProf,
-      Vegetarian: !oldVeg,
-    }));
-    setCheckedV(!checkedV);
-  }
-
-  // update profile
-  const editProfile = async () => {
-    const confirmed = window.confirm('Are you sure you want to Update your profile?\n'
-        + '\n  OLD:'
-        + `\n    Username: ${oldProf.Username}\n    Halal: ${oldProf.Halal}\n    Vegetarian: ${oldProf.Vegetarian
-        }\n`
-        + '\n  NEW:'
-        + `\n    Username: ${updatedProf.Username}\n    Halal: ${updatedProf.Halal}\n    Vegetarian: ${updatedProf.Vegetarian}`);
-    if (confirmed) {
-      const newFields = {
-        Username: updatedProf.Username,
-        Halal: updatedProf.Halal,
-        Vegetarian: updatedProf.Vegetarian,
-        ProfPic: updatedProf.ProfPic,
-      };
-      await updateDoc(profRef, newFields)
-      .then(alert(`Profile updated. Redirecting you to home page...`))
-      .then(navigate(`/admin/index`));
-    }
-  };
-
-  // new image
-  const [updatedImage, setUpdatedImage] = useState(null);
-  const [newUploadLoc, setNewUploadLoc] = useState('');
   function handleNewImage(event) {
     console.log(event.target.files[0])
     setUpdatedImage(event.target.files[0]);
@@ -315,51 +235,20 @@ const Profile = () => {
       ProfPic: a,
     }));
   }
-  const updateImage = () => {
-    if (updatedImage === null) {
-      setUpdatedProf((prevProf) => ({
-        ...prevProf,
-        ProfPic: oldProf.ProfPic,
-      }));
-    } else {
-      const uploadRef = ref(storage, newUploadLoc);
-      uploadBytes(uploadRef, updatedImage).then(() => {
-        console.log(`image uploaded ${newUploadLoc}`);
-      });
-    }
-  };
 
-  function editAll() {
-    if (updatedImage !== null) {
-      updateImage();
-      removeImageFirebase();
+  // retrieve old profile
+  useEffect(() => {
+    const getOldProf = async () => {
+      const doc = await getDoc(profRef);
+      setUpdatedProf(doc.data());
+      setOldProf(doc.data());
+      setCheckedH(doc.data().Halal);
+      setCheckedV(doc.data().Vegetarian);
+    };
+    if (profiles.length === 1) {
+      getOldProf();
     }
-    editProfile();
-  }
-
-  // remove profile picture
-  const removeImageRef = async () => {
-    const confirmed = window.confirm('Are you sure you want to Remove your Profile Picture?');
-    if (confirmed) {
-      const newFields = {
-        ProfPic: '',
-      };
-      await updateDoc(profRef, newFields)
-      .then(setUpdatedProfPicURL(''));
-    }
-  };
-  const removeImageFirebase = async () => {
-    if (oldProf.ProfPic !== '') {
-      const delRef = ref(storage, oldProf.ProfPic);
-      await deleteObject(delRef);
-    }
-  };
-
-  const removeImage = async () => {
-    await removeImageRef()
-    .then(alert(`Profile updated. Redirecting you to home page...`))
-    .then(navigate(`/admin/index`));
-  }
+  }, []);
 
   useEffect(() => {
     const profileURL = async (name) => {
@@ -374,6 +263,126 @@ const Profile = () => {
       profileURL(profiles[0].ProfPic);
     }
   }, [updatedProfPicURL])
+
+
+  if (profiles.length === 1) {
+
+    const updatedProfileURL = async (name) => {
+      if (name !== '') {
+        const updatedURLRef = ref(storage, name);
+        const url = await getDownloadURL(updatedURLRef);
+        setUpdatedProfPicURL(url.toString());
+      }
+    };
+    if (oldProf.UserID !== 'not retrieved') {
+      console.log('old profile retrieved');
+      console.log(oldProf);
+      updatedProfileURL(oldProf.ProfPic);
+    }
+
+    // new info states
+    // username
+    function handleProf(event) {
+      event.preventDefault();
+      console.log(event.target)
+      const { name, value } = event.target;
+      console.log('handling username...');
+      setUpdatedProf((prevProf) => ({
+        ...prevProf,
+        [name]: value,
+      }));
+    }
+
+    // halal
+    function handleHalal(event) {
+      event.preventDefault();
+      console.log('handling halal...');
+      const oldHalal = newProf.Halal;
+      setUpdatedProf((prevProf) => ({
+        ...prevProf,
+        Halal: !oldHalal,
+      }));
+      setCheckedH(!checkedH);
+    }
+    // vegetarian
+    function handleVegetarian(event) {
+      event.preventDefault();
+      console.log('handling vegetarian...');
+      const oldVeg = newProf.Vegetarian;
+      setUpdatedProf((prevProf) => ({
+        ...prevProf,
+        Vegetarian: !oldVeg,
+      }));
+      setCheckedV(!checkedV);
+    }
+
+    // update profile
+    const editProfile = async () => {
+      const confirmed = window.confirm('Are you sure you want to Update your profile?\n'
+          + '\n  OLD:'
+          + `\n    Username: ${oldProf.Username}\n    Halal: ${oldProf.Halal}\n    Vegetarian: ${oldProf.Vegetarian
+          }\n`
+          + '\n  NEW:'
+          + `\n    Username: ${updatedProf.Username}\n    Halal: ${updatedProf.Halal}\n    Vegetarian: ${updatedProf.Vegetarian}`);
+      if (confirmed) {
+        const newFields = {
+          Username: updatedProf.Username,
+          Halal: updatedProf.Halal,
+          Vegetarian: updatedProf.Vegetarian,
+          ProfPic: updatedProf.ProfPic,
+        };
+        await updateDoc(profRef, newFields)
+        .then(alert(`Profile updated. Redirecting you to home page...`))
+        .then(navigate(`/admin/index`));
+      }
+    };
+    const updateImage = () => {
+      if (updatedImage === null) {
+        setUpdatedProf((prevProf) => ({
+          ...prevProf,
+          ProfPic: oldProf.ProfPic,
+        }));
+      } else {
+        const uploadRef = ref(storage, newUploadLoc);
+        uploadBytes(uploadRef, updatedImage).then(() => {
+          console.log(`image uploaded ${newUploadLoc}`);
+        });
+      }
+    };
+
+    function editAll() {
+      if (updatedImage !== null) {
+        updateImage();
+        removeImageFirebase();
+      }
+      editProfile();
+    }
+
+    // remove profile picture
+    const removeImageRef = async () => {
+      const confirmed = window.confirm('Are you sure you want to Remove your Profile Picture?');
+      if (confirmed) {
+        const newFields = {
+          ProfPic: '',
+        };
+        await updateDoc(profRef, newFields)
+        .then(setUpdatedProfPicURL(''));
+      }
+    };
+    const removeImageFirebase = async () => {
+      if (oldProf.ProfPic !== '') {
+        const delRef = ref(storage, oldProf.ProfPic);
+        await deleteObject(delRef);
+      }
+    };
+
+    const removeImage = async () => {
+      await removeImageRef()
+      .then(alert(`Profile updated. Redirecting you to home page...`))
+      .then(navigate(`/admin/index`));
+    }
+
+  }
   return (
     <>
       <UserHeader name={username} profileExists={profiles.length === 1} 
@@ -384,7 +393,7 @@ const Profile = () => {
         }
         />
       {/* Page content */}
-      {profiles.length === 1 ? (<Container className="mt--7" fluid>
+      {profiles.length === 1 && profiles[0].UserID ? (<Container className="mt--7" fluid>
         <Row>
           <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
             <Card className="card-profile shadow">
