@@ -8,6 +8,7 @@ import Rating from '@mui/material/Rating';
 import { v4 } from "uuid";
 import Input from "../../components/Input";
 import { ref, uploadBytes } from "firebase/storage";
+import img from "../../assets/img/theme/profpicheader.png";
 
 function CreateReview(props) {
   console.log("Create Review..");
@@ -174,63 +175,90 @@ function CreateReview(props) {
 
   // Page content
   const cont = (
-    <div>
+    <>
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Create Review</h1>
+              <p className="text-white mt-0 mb-2 ml-2">
+                Start by selecting an eatery below.
+              </p>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+
       <div>
-        <h1>Create a new review!</h1>
-        <br />
-        <h2>Step 3: Write your Review!</h2>
-        <br />
-        {/* SELECTED EATERY  */}
-        <h3>Eatery: {loc.name}</h3>
-        <br />
-        {/* SELECTED STALL  */}
-        <h3>Stall: {stall.name}</h3>
-        <br />
-        {/* REVIEW WRITING  */}
-        <Form>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Type your review here:</Form.Label>
-            <Form.Control 
-              as="textarea" 
-              rows={3} 
-              name="Content" 
-              value={newRev.Content} 
-              placeholder="Content" 
-              onChange={handleRev}/>
-          </Form.Group>
-          <Form.Label>Rating:</Form.Label> <br/>
-          <Rating 
-            name="Rating"
-            type="number"
-            placeholder="Rating"
-            value={newRev.Rating}
-            onClick={handleRating}
-          />
-          <Form.Group>
-            <Form.Label>Review Picture:</Form.Label>
-            <Input type="file" onChange={handleImage}>here</Input>
-          </Form.Group>
+        <div>
+          <h1>Create a new review!</h1>
           <br />
-          <Button 
-            className="btn btn-primary btn-lg px-4 gap-2" 
-            variant="primary" 
-            onClick={addReview}>
-            Add Review
-          </Button>
-        </Form>
+          <h2>Step 3: Write your Review!</h2>
+          <br />
+          {/* SELECTED EATERY  */}
+          <h3>Eatery: {loc.name}</h3>
+          <br />
+          {/* SELECTED STALL  */}
+          <h3>Stall: {stall.name}</h3>
+          <br />
+          {/* REVIEW WRITING  */}
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+              <Form.Label>Type your review here:</Form.Label>
+              <Form.Control 
+                as="textarea" 
+                rows={3} 
+                name="Content" 
+                value={newRev.Content} 
+                placeholder="Content" 
+                onChange={handleRev}/>
+            </Form.Group>
+            <Form.Label>Rating:</Form.Label> <br/>
+            <Rating 
+              name="Rating"
+              type="number"
+              placeholder="Rating"
+              value={newRev.Rating}
+              onClick={handleRating}
+            />
+            <Form.Group>
+              <Form.Label>Review Picture:</Form.Label>
+              <Input type="file" onChange={handleImage}>here</Input>
+            </Form.Group>
+            <br />
+            <Button 
+              className="btn btn-primary btn-lg px-4 gap-2" 
+              variant="primary" 
+              onClick={addReview}>
+              Add Review
+            </Button>
+          </Form>
+          <br />
+        </div>
+
+        {/* BACK BUTTON  */}
+        <Button className="btn btn-light" onClick={() => {navigate(`/admin/cr/${uid}/${locID}`)}}>Back</Button>
+
         <br />
-      </div>
-
-      {/* BACK BUTTON  */}
-      <Button className="btn btn-light" onClick={() => {navigate(`/admin/cr/${uid}/${locID}`)}}>Back</Button>
-
-      <br />
-      <br />
-      {/* CANCEL BUTTON  */}
-      <div>
-        <Button variant="primary" onClick={navigateToProfileReviews}>Cancel</Button>
-      </div>
-    </div> )
+        <br />
+        {/* CANCEL BUTTON  */}
+        <div>
+          <Button variant="primary" onClick={navigateToProfileReviews}>Cancel</Button>
+        </div>
+      </div> 
+    </>)
 
   return cont;
 }

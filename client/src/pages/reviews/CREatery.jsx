@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../components/Navbar";
 import { useNavigate, useLocation } from "react-router-dom";
 import { db } from "../../components/firebase";
 import { collection, getDocs } from "firebase/firestore";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import img from "../../assets/img/theme/profpicheader.png";
+import {
+  Card,
+  CardHeader,
+  ListGroup,
+  ListGroupItem,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  Button,
+} from "reactstrap";
 
 export default function CREatery() {
   console.log("Create Review Step 1: Eatery Selection");
@@ -41,43 +52,71 @@ export default function CREatery() {
 
   // Page content
   const cont = (
-    <div>
-      <h1>Create a New Review!</h1>
-      <br />
-      <h2>Step 1: Select an Eatery!</h2>
-      <br />
-      {/* EATERY SELECTION  */}
-      <Form>
-        <Form.Group>
-        <Form.Label>Eatery</Form.Label>
-        <FormControl fullWidth>
-          <InputLabel>Eatery</InputLabel>
-          <Select
-            value={locID}
-            label="Eatery"
-            onChange={(event) => {setLocID(event.target.value)}}
-          >
-          {eateries.map((eat) => {
-            return <MenuItem value={eat.id}>{eat.name}</MenuItem>
-          })}
-          </Select>
-        </FormControl>
-        </Form.Group>
-
-        <br />
-        {/* NEXT BUTTON  */}
-        <Button className="btn btn-light" onClick={() => {
-          locID !== null ? navigate(`/admin/cr/${uid}/${locID}`) : 
-          alert("Please select an Eatery before proceeding")}}>Next</Button>
-      </Form>
-
-      <br />  
-
-      {/* CANCEL BUTTON  */}
-      <div>
-        <Button variant="primary" onClick={navigateToProfileReviews}>Cancel</Button>
+    <>
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Create Review</h1>
+              <p className="text-white mt-0 mb-2 ml-2">
+                Start by selecting an eatery below.
+              </p>
+            </Col>
+          </Row>
+        </Container>
       </div>
-    </div>
+      <Container className="mt--7" fluid>
+        <Row>
+          <div className="col ">
+            <Card className="shadow">
+              <CardHeader className="bg-transparent">
+                <h2 className="mb-0 h2">Select eatery:</h2>
+              </CardHeader>
+              <CardBody>
+                {/* EATERY SELECTION  */}
+                <Form>
+                  <Row>
+                    <Form.Group>
+                    <FormControl fullWidth>
+                      <InputLabel>Eatery</InputLabel>
+                      <Select
+                        value={locID}
+                        label="Eatery"
+                        onChange={(event) => {setLocID(event.target.value)}}
+                      >
+                      {eateries.map((eat) => {
+                        return <MenuItem value={eat.id}>{eat.name}</MenuItem>
+                      })}
+                      </Select>
+                    </FormControl>
+                    </Form.Group>
+                  </Row>
+                  {/* NEXT BUTTON  */}
+                  <Button 
+                    className="mt-4"
+                    color='warning'
+                    onClick={() => {
+                    locID !== null ? navigate(`/admin/cr/${uid}/${locID}`) : 
+                    alert("Please select an Eatery before proceeding")}}>Next</Button>
+                </Form>
+              </CardBody>
+            </Card>
+          </div>
+        </Row>
+      </Container>
+    </>
   )
 
   return cont;
