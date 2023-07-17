@@ -26,7 +26,7 @@ function CreateProfile() {
   // page navigation
   const navigate = useNavigate();
   const navigateToProfile = () => {
-    navigate('/profile');
+    navigate('/admin/profile');
   };
 
   // current userID

@@ -124,7 +124,7 @@ const Profile = () => {
 
 
 
-  return false ? (
+  return profiles.length === 1 ? (
     <>
       <div
         className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"

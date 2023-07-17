@@ -339,14 +339,13 @@ function Recommendation() {
           // set stalls from chosen eatery
           setRecStalls(stalls);
           const randomIndex = Math.floor(Math.random() * stalls.length);
-          const recStall = recStall[randomIndex];
+          const recStall = stalls[randomIndex];
           // set chosen stall
           setRecStall(recStall);
           return "eateries/" + recStall.eateryID + "/Stalls/" + recStall.id + "/reviews";
         } else {
           // No Stalls are available
           setLoading(false)
-          setRecStall(null);
           return null;
         }
       }
