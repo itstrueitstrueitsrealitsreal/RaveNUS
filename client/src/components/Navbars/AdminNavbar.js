@@ -16,8 +16,6 @@ import {
   Media,
 } from "reactstrap";
 
-import img from "../../assets/img/theme/team-4-800x800.jpg";
-
 const AdminNavbar = (props) => {
   console.log(`AdminNavbar called`);
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import img from "../assets/img/theme/profpicheader.png";
+import img from "../img/profpicheader.png";
 import {
   Container,
   Row,

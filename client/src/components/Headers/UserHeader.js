@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // reactstrap components
 import { Button, Container, Row, Col } from "reactstrap";
-import img from "../../assets/img/theme/profpicheader.png";
+import img from "../../img/profpicheader.png";
 
 const UserHeader = (props) => {
   const greeting = props.name ? `Hello ${props.name}!` : `Hello!`;
