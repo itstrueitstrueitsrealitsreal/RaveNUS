@@ -442,14 +442,14 @@ function Recommendation() {
           </div>
         </Row>
       </Container>
-        <Row>
-          <div className="col text-center m-4">
-              <Rec stall={recStall} recPage={(e) => {
-                e.preventDefault();
-                window.location.reload();
-              }} revs={revs} limit={limit} viewerUID={uid} />
-          </div>
-        </Row>
+      <Row>
+        <div className="col text-center m-4">
+            <Rec stall={recStall} recPage={(e) => {
+              e.preventDefault();
+              window.location.reload();
+            }} revs={revs} limit={limit} viewerUID={uid} />
+        </div>
+      </Row>
     </>
   );
 

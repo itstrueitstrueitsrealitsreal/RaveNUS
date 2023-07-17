@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../components/Navbar";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getDoc, doc, updateDoc, collection, getDocs } from "firebase/firestore";
 import { db, storage } from "../../components/firebase";

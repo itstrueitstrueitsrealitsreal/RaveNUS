@@ -39,7 +39,7 @@ function Review(props) {
 
   return (
   <>
-    <Row xs={1} md={1}>
+    <Row xs={1} md={1} className="my-4">
       <Col key={props.idx}>
         <Card className="shadow">
           <CardBody>

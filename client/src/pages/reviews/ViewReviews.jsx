@@ -15,6 +15,7 @@ import {
   Col,
   Button,
 } from "reactstrap";
+import img from "../../assets/img/theme/profpicheader.png";
 
 function ViewReviews(props) {
   console.log("View Reviews Page called");
@@ -64,38 +65,72 @@ function ViewReviews(props) {
 
   // Page Content
   const cont = eateryID !== 'null' && stallID !== 'null' && revs.length !== 0 ? (
-    <div>
-      <Button variant="primary" onClick={navigateToReviews}>Back</Button>
-      <h2>Stall Reviews</h2>
-      {/* SELECTED EATERY  */}
-      <h3>Eatery: {eatery.name}</h3>
-      <br />
-      {/* SELECTED Stall  */}
-      <h3>Stall: {stall.name}</h3>
-      <br />
-      {revs.map((rev, idx) => {
-          const date = new Date(rev.Time.seconds * 1000);
-          return (<div key={rev.id}>
-            <Review 
-              recPage={true}
-              updateRev={`/reviews`}
-              id={rev.id}
-              poster={rev.Poster}
-              content={rev.Content}
-              rating={rev.Rating}
-              time={date.toString()}
-              idx={idx}
-              eatery={rev.Eatery}
-              stall={rev.Stall}
-              revpic={rev.RevPic}
-              eateryID={rev.EateryID}
-              stallID={rev.StallID}
-              uid={rev.UserID}
-              viewerUID={props.viewerUID}
-            />
-          </div>);
-        })}
-    </div>
+    <>
+    {/* header */}
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h1 className="display-2 text-white mb-0 ml-2">View reviews for: {stall.name}, {eatery.name}</h1>
+              <p className="text-white mt-0 mb-2 ml-2 text-nowrap">
+                You can view all reviews for {stall.name} here!
+              </p>
+              <Button
+                className="my-2 mx-2"
+                color="warning"
+                href="#pablo"
+                onClick={(e) =>{ 
+                  e.preventDefault();
+                  navigate(-1);
+                }}
+              >
+                Back
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      <Container className="mt--7" fluid>
+      </Container>
+      <Row>
+        <div className="col text-center m-4">
+          {revs.map((rev, idx) => {
+              const date = new Date(rev.Time.seconds * 1000);
+              return (<div key={rev.id}>
+                <Review 
+                  recPage={true}
+                  updateRev={`/reviews`}
+                  id={rev.id}
+                  poster={rev.Poster}
+                  content={rev.Content}
+                  rating={rev.Rating}
+                  time={date.toString()}
+                  idx={idx}
+                  eatery={rev.Eatery}
+                  stall={rev.Stall}
+                  revpic={rev.RevPic}
+                  eateryID={rev.EateryID}
+                  stallID={rev.StallID}
+                  uid={rev.UserID}
+                  viewerUID={props.viewerUID}
+                />
+              </div>);
+            })}
+        </div>
+      </Row>
+    </>
   ) : 
     <div className="pb-8 pt-0 pt-md-0">
       <Container fluid>

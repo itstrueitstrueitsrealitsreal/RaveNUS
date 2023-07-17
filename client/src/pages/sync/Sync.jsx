@@ -321,8 +321,68 @@ function Sync() {
       </div>
 
     <div id="syncPage">
-      {callAlert ? 
-      <div className="pb-8 pt-0 pt-md-0">
+      <Container className="mt--7" fluid>
+        {/* Table */}
+        <Row>
+          <div className="col">
+            <Card className="shadow">
+              <CardHeader className="bg-transparent">
+                <h2 className="mb-0 h2">Sync your timetable in 3 simple steps!</h2>
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <Col>
+                    <ListGroup flush>
+                        <ListGroupItem>
+                          1. Go to the Timetable tab with your desired timetable on NUSMods using the button below.
+                          <br />
+                          <Button
+                            className="mt-3"
+                            color='warning'
+                            href='#pablo'
+                            onClick={navigateToNUSMods}
+                          >
+                            NUSMods
+                          </Button>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          2. Click the Share/Sync button on the bottom right of the timetable as shown below.
+                          <br />
+                          <img className="my-3 rounded img-fluid" src={require('../../components/img/nusmods_screenshot.png')} alt="screenshot of sync button" />
+                        </ListGroupItem>
+                        <ListGroupItem>
+                          3. Copy and paste the URL into the box below!
+                          <Form.Group
+                            className="my-3"
+                          >
+                            <Form.Control
+                              type="url"
+                              placeholder="Paste URL here:"
+                              value={url}
+                              onChange={(e) => setURL(e.target.value)}
+                            />
+                          </Form.Group>
+                          <Button 
+                            onClick={syncTimetable}
+                            color='success'
+                            href='#pablo'
+                          >
+                            Sync
+                          </Button>
+                        </ListGroupItem>
+                    </ListGroup>
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
+          </div>
+        </Row>
+      </Container>
+    </div>
+    </>
+  );
+
+  return (loading ? <div className='pb-8 pt-5 pt-md-8 text-center'><Spinner /></div> : callAlert ?       <div className="pb-8 pt-0 pt-md-0">
         <Container fluid>
           <Row>
             <div className="px-4 py-5 my-5 text-center">
@@ -339,71 +399,7 @@ function Sync() {
             </div>
           </Row>
         </Container>
-      </div> 
-      :
-        <Container className="mt--7" fluid>
-          {/* Table */}
-          <Row>
-            <div className="col">
-              <Card className="shadow">
-                <CardHeader className="bg-transparent">
-                  <h2 className="mb-0 h2">Sync your timetable in 3 simple steps!</h2>
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                    <Col>
-                      <ListGroup flush>
-                          <ListGroupItem>
-                            1. Go to the Timetable tab with your desired timetable on NUSMods using the button below.
-                            <br />
-                            <Button
-                              className="mt-3"
-                              color='warning'
-                              href='#pablo'
-                              onClick={navigateToNUSMods}
-                            >
-                              NUSMods
-                            </Button>
-                          </ListGroupItem>
-                          <ListGroupItem>
-                            2. Click the Share/Sync button on the bottom right of the timetable as shown below.
-                            <br />
-                            <img className="my-3 rounded img-fluid" src={require('../../components/img/nusmods_screenshot.png')} alt="screenshot of sync button" />
-                          </ListGroupItem>
-                          <ListGroupItem>
-                            3. Copy and paste the URL into the box below!
-                            <Form.Group
-                              className="my-3"
-                            >
-                              <Form.Control
-                                type="url"
-                                placeholder="Paste URL here:"
-                                value={url}
-                                onChange={(e) => setURL(e.target.value)}
-                              />
-                            </Form.Group>
-                            <Button 
-                              onClick={syncTimetable}
-                              color='success'
-                              href='#pablo'
-                            >
-                              Sync
-                            </Button>
-                          </ListGroupItem>
-                      </ListGroup>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </div>
-          </Row>
-        </Container>
-      }
-    </div>
-    </>
-  );
-
-  return loading ? <div className='pb-8 pt-5 pt-md-8 text-center'><Spinner /></div> : cont;
+      </div> : cont);
 }
 
 export default Sync;
