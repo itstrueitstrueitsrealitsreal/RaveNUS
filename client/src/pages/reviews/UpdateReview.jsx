@@ -2,11 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getDoc, doc, updateDoc, collection, getDocs } from "firebase/firestore";
 import { db, storage } from "../../components/firebase";
-import { Button, Form, Card } from "react-bootstrap";
+import { Form, Card } from "react-bootstrap";
 import Rating from '@mui/material/Rating';
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
 import Input from "../../components/Input";
+import img from "../../assets/img/theme/profpicheader.png";
+import {
+  CardHeader,
+  ListGroup,
+  ListGroupItem,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  Button,
+  CardTitle
+} from "reactstrap";
 
 function UpdateReview(props) {
   console.log("Update Review..");
@@ -208,64 +220,96 @@ function UpdateReview(props) {
 
   // Page content
   const cont = (
-    <div>
-      <div>
-      <h1>Edit Review</h1>
-        <Card className="my-2">
-          <Card.Body>
-            {/* eatery */}
-            <Card.Text>
-              {"Eatery: " + oldRev.Eatery}
-            </Card.Text>
-            {/* stall */}
-            <Card.Text>
-              {"Stall: " + oldRev.Stall}
-            </Card.Text>
-            {/* image */}
-            <Card.Img variant="top" src={revPicURL} alt="" />
-          </Card.Body>
-        </Card>
-        <Button onClick={removeImage}>Remove Review Picture</Button>
-        <Form>
-          {/* content */}
-          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Type your review here:</Form.Label>
-            <Form.Control 
-              as="textarea" 
-              rows={3} 
-              name="Content" 
-              value={rev.Content} 
-              placeholder="Content" 
-              onChange={handleRev}/>
-          </Form.Group>
-          {/* rating */}
-          <Rating 
-            name="Rating"
-            type="number"
-            placeholder="Rating"
-            value={rev.Rating}
-            onClick={handleRating}
-          />
-          {/* new image */}
-          <Form.Group>
-            <Form.Label>Change Review Picture:</Form.Label>
-            <Input type="file" onChange={handleImage}>here</Input>
-          </Form.Group>
-          <br />
-          <Button 
-            className="btn btn-primary btn-lg px-4 gap-2" 
-            variant="primary" 
-            onClick={editAll}>
-            Update Review
-          </Button>
-        </Form>
+    <>
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h1 className="display-2 text-white mb-0 ml-2 text-nowrap">Edit Review</h1>
+              <p className="text-white mt-0 mb-2 ml-2 text-nowrap">
+                Edit your review below.
+              </p> 
+              <Button
+                className="my-2 mx-2"
+                color="light"
+                href="#pablo"
+                onClick={(e) =>{ 
+                  e.preventDefault();
+                  navigateToProfileReviews();
+                }}
+              >
+                Cancel
+              </Button>
+            </Col>
+          </Row>
+        </Container>
       </div>
 
-      <div>
-        <br />
-        <Button onClick={navigateToProfileReviews}>Back</Button>
-      </div>
-    </div> )
+      <Container className='mt--7' fluid>
+        <Card className="my-2">
+          <CardHeader className='my-0 h1 bg-transparent'>
+            Editing review for {oldRev.Stall}, {oldRev.Eatery}:
+          </CardHeader>
+          <Card.Body>
+            <CardTitle className="h2">Image:</CardTitle>
+            {/* image */}
+            <Card.Img src={revPicURL} alt="" />
+            <Button 
+              className="my-2" 
+              onClick={removeImage}
+              color='danger'>Remove image</Button>
+            <Form>
+              {/* content */}
+              <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                <Form.Label>Review content:</Form.Label>
+                <Form.Control 
+                  as="textarea" 
+                  rows={3} 
+                  name="Content" 
+                  value={rev.Content} 
+                  placeholder="Content" 
+                  onChange={handleRev}/>
+              </Form.Group>
+              {/* rating */}
+              <Form.Label>Review rating:</Form.Label>
+              <br/>
+              <Rating 
+                name="Rating"
+                type="number"
+                placeholder="Rating"
+                value={rev.Rating}
+                onClick={handleRating}
+              />
+              {/* new image */}
+              <Form.Group>
+                <Form.Label>Change Review Picture:</Form.Label>
+                <Input type="file" onChange={handleImage}>here</Input>
+              </Form.Group>
+              <br />
+              <Button 
+                className="btn btn-primary btn-lg px-4 gap-2" 
+                color='warning'
+                onClick={editAll}>
+                Update review
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container> 
+    </>
+  )
 
   return cont;
 }

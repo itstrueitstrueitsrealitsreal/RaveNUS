@@ -242,43 +242,43 @@ function CreateReview(props) {
                 <h2 className="mb-0 h2">Currently reviewing: {stall.name}, {loc.name}</h2>
               </CardHeader>
               <CardBody>
-              <div>
-                {/* REVIEW WRITING  */}
-                <Form>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                    <Form.Label>Type your review here:</Form.Label>
-                    <Form.Control 
-                      as="textarea" 
-                      rows={3} 
-                      name="Content" 
-                      value={newRev.Content} 
-                      placeholder="Content" 
-                      onChange={handleRev}/>
-                  </Form.Group>
-                  <Form.Label>Rating:</Form.Label> <br/>
-                  <Rating 
-                    name="Rating"
-                    type="number"
-                    placeholder="Rating"
-                    value={newRev.Rating}
-                    onClick={handleRating}
-                  />
-                  <Form.Group>
-                  <br/>
-                    <Form.Label>Upload picture (optional):</Form.Label> 
-                    <Input type="file" onChange={handleImage}/>
-                  </Form.Group>
+                <div>
+                  {/* REVIEW WRITING  */}
+                  <Form>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                      <Form.Label>Type your review here:</Form.Label>
+                      <Form.Control 
+                        as="textarea" 
+                        rows={3} 
+                        name="Content" 
+                        value={newRev.Content} 
+                        placeholder="Content" 
+                        onChange={handleRev}/>
+                    </Form.Group>
+                    <Form.Label>Rating:</Form.Label> <br/>
+                    <Rating 
+                      name="Rating"
+                      type="number"
+                      placeholder="Rating"
+                      value={newRev.Rating}
+                      onClick={handleRating}
+                    />
+                    <Form.Group>
+                    <br/>
+                      <Form.Label>Upload picture (optional):</Form.Label> 
+                      <Input type="file" onChange={handleImage}/>
+                    </Form.Group>
+                    <br />
+                    <Button 
+                      className="px-4 gap-2" 
+                      color='warning'
+                      variant="primary" 
+                      onClick={addReview}>
+                      Add Review
+                    </Button>
+                  </Form>
                   <br />
-                  <Button 
-                    className="px-4 gap-2" 
-                    color='warning'
-                    variant="primary" 
-                    onClick={addReview}>
-                    Add Review
-                  </Button>
-                </Form>
-                <br />
-              </div>
+                </div>
               </CardBody>
             </Card>
           </div>
