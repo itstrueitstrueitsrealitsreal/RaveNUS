@@ -382,24 +382,25 @@ function Sync() {
     </>
   );
 
-  return (loading ? <div className='pb-8 pt-5 pt-md-8 text-center'><Spinner /></div> : callAlert ?       <div className="pb-8 pt-0 pt-md-0">
-        <Container fluid>
-          <Row>
-            <div className="px-4 py-5 my-5 text-center">
-              <h1 className="display-5 fw-bold text-body-emphasis">Sorry!</h1>
-              <h1 className="display-5 fw-bold text-body-emphasis">Create a profile to use the sync function.</h1>
-              <div className="col-lg-6 mx-auto">
-                <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                  <Button className="mt-5" type='button' color='success' onClick={(e) => {
-                    e.preventDefault();
-                    navigate(`/admin/profile`);
-                  }}>Create profile</Button>
-                </div>
+  return (loading ? <div className='pb-8 pt-5 pt-md-8 text-center'><Spinner /></div> : callAlert ?       
+    <div className="pb-8 pt-0 pt-md-0">
+      <Container fluid>
+        <Row>
+          <div className="px-4 py-5 my-5 text-center">
+            <h1 className="display-5 fw-bold text-body-emphasis">Sorry!</h1>
+            <h1 className="display-5 fw-bold text-body-emphasis">Create a profile to use the sync function.</h1>
+            <div className="col-lg-6 mx-auto">
+              <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <Button className="mt-5" type='button' color='success' onClick={(e) => {
+                  e.preventDefault();
+                  navigate(`/admin/profile`);
+                }}>Create profile</Button>
               </div>
             </div>
-          </Row>
-        </Container>
-      </div> : cont);
+          </div>
+        </Row>
+      </Container>
+    </div> : cont);
 }
 
 export default Sync;
