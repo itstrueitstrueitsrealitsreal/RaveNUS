@@ -73,6 +73,17 @@ export default function CREatery() {
               <p className="text-white mt-0 mb-2 ml-2">
                 Start by selecting an eatery below.
               </p>
+              <Button
+                className="my-2 mx-2"
+                color="light"
+                href="#pablo"
+                onClick={(e) =>{ 
+                  e.preventDefault();
+                  navigate(`/admin/reviews/profile`);
+                }}
+              >
+                Cancel
+              </Button>
             </Col>
           </Row>
         </Container>
@@ -109,7 +120,7 @@ export default function CREatery() {
                     color='warning'
                     onClick={() => {
                     locID !== null ? navigate(`/admin/cr/${uid}/${locID}`) : 
-                    alert("Please select an Eatery before proceeding")}}>Next</Button>
+                    alert("Please select an eatery before proceeding.")}}>Next</Button>
                 </Form>
               </CardBody>
             </Card>
