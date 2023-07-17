@@ -9,14 +9,7 @@ const Footer = () => {
         <Col xl="6">
           <div className="copyright text-center text-xl-left text-muted">
             © {new Date().getFullYear()}{" "}
-            <a
-              className="font-weight-bold ml-1"
-              href="https://www.creative-tim.com?ref=adr-admin-footer"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
               Kenneth Seet, Edmund Ng
-            </a>
           </div>
         </Col>
 
