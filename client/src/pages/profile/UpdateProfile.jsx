@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../components/Navbar";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "../../components/firebase";
-import { Button, Form, Card } from "react-bootstrap";
+import { Form, Card } from "react-bootstrap";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
 import { v4 } from "uuid";
 import Input from "../../components/Input";
+import img from '../../components/img/profpicheader.png'
+import defaultImg from '../../components/img/defaultprofile.png'
+import {
+  Button,
+  CardHeader,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  FormText
+} from "reactstrap";
 
 function UpdateProfile() {
   console.log('Update Profile Page');
@@ -15,7 +25,7 @@ function UpdateProfile() {
   // page navigation
   const navigate = useNavigate();
   const navigateToProfile = () => {
-    navigate('/profile');
+    navigate('/admin/profile');
   };
 
   // profile id
@@ -155,7 +165,7 @@ function UpdateProfile() {
 
   // remove profile picture
   const removeImageRef = async () => {
-    const confirmed = window.confirm('Are you sure you want to Remove your Profile Picture?');
+    const confirmed = window.confirm('Are you sure you want to remove your profile picture?');
     if (confirmed) {
       const newFields = {
         ProfPic: '',
@@ -177,49 +187,94 @@ function UpdateProfile() {
   // Page content
   const cont = (
     <div>
-      <div>
-        <h1>Update Profile</h1>
-        {/* <Avatar className="Avatar" alt={oldProf.Username} src={profPicURL}/> */}
-        <Card.Img variant="top" src={profPicURL} alt={oldProf.Username} />
-        <br />
-        <Button onClick={removeImage}>Remove Profile Picture</Button>
-        <Form>
-          <Form.Group
-            className="mb-3"
-            controlId="exampleForm.ControlInput1"
-          >
-            <Form.Label>Username:</Form.Label>
-            <Form.Control
-              placeholder="Username"
-              name="Username"
-              value={newProf.Username}
-              onChange={handleProf}
-            />
-          </Form.Group>
-
-          <FormGroup>
-            <FormControlLabel control={<Checkbox checked={checkedH} onClick={handleHalal} />} label="Halal" />
-            <FormControlLabel control={<Checkbox checked={checkedV} onClick={handleVegetarian} />} label="Vegetarian" />
-          </FormGroup>
-
-          <Form.Group>
-            <Form.Label>Change Profile Picture:</Form.Label>
-            <Input type="file" onChange={handleImage}>here</Input>
-          </Form.Group>
-
-          <br />
-          <Button onClick={editAll}>Update Profile</Button>
-        </Form>
+      <div
+        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+        style={{
+          minHeight: "600px",
+          backgroundImage:
+            "url(" + img + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* Mask */}
+        <span className="mask bg-gradient-default opacity-8" />
+        {/* Header container */}
+        <Container className="d-flex align-items-center" fluid>
+          <Row>
+            <Col lg="7" md="10">
+              <h1 className="display-2 text-white mb-0 ml-2">Update Profile</h1>
+              <p className="text-white mt-0 mb-2 ml-2">
+                This is your profile page. You can sign out, edit your profile or change your password here.
+              </p>
+              <Button
+                className="mx-2"
+                color="light"
+                href="#pablo"
+                onClick={(e) =>{ 
+                  e.preventDefault();
+                  navigate(`/admin/profile`);
+                }}
+              >
+               Back
+              </Button>
+            </Col>
+          </Row>
+        </Container>
       </div>
 
-      <br />
-      <div>
-        <Button variant="primary" onClick={navigateToProfile}>Back</Button>
-      </div>
+
+      <Container className="mt--7" fluid>
+        <Row>
+          <div className='col'>
+            <Card className='shadow'>
+              <CardHeader className="bg-transparent">
+                <h2 className="mb-0 h2">Profile details:</h2>
+              </CardHeader>
+              <CardBody>
+                <Form>
+                  <Form.Label>Profile picture:</Form.Label>
+                </Form>
+                <Row>
+                  <Card.Img variant="top" className="rounded-circle w-25" src={profPicURL ? profPicURL : defaultImg} alt={oldProf.Username} />
+                </Row>
+                <Button color='danger' className='my-2' onClick={removeImage}>Remove picture</Button>
+                <Form>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label>Username:</Form.Label>
+                    <Form.Control
+                      placeholder="Username"
+                      name="Username"
+                      value={newProf.Username}
+                      onChange={handleProf}
+                    />
+                  </Form.Group>
+
+                  <FormGroup>
+                    <FormControlLabel control={<Checkbox checked={checkedH} onClick={handleHalal} />} label="Halal" />
+                    <FormControlLabel control={<Checkbox checked={checkedV} onClick={handleVegetarian} />} label="Vegetarian" />
+                  </FormGroup>
+
+                  <Form.Group>
+                    <Form.Label>Change profile picture:</Form.Label>
+                    <Input type="file" onChange={handleImage}>here</Input>
+                  </Form.Group>
+
+                  <br />
+                  <Button color='info' onClick={editAll}>Update profile</Button>
+                </Form>
+              </CardBody>
+            </Card>
+          </div>
+        </Row>
+      </Container>
     </div>
   );
 
-  return <Navbar content={cont} />;
+  return cont;
 }
 
 export default UpdateProfile;

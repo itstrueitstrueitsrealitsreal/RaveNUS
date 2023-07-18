@@ -15,6 +15,8 @@ import CreateReview from './pages/reviews/CreateReview.jsx';
 import CREatery from './pages/reviews/CREatery.jsx';
 import CRStall from './pages/reviews/CRStall.jsx';
 import ChangePassword from './pages/profile/ChangePassword.jsx';
+import CreateProfile from './pages/profile/CreateProfile.jsx';
+import UpdateProfile from './pages/profile/UpdateProfile.jsx';
 
 
 var routes = [
@@ -124,6 +126,18 @@ var routes = [
     path: "/changepassword",
     name: "Change password",
     component: <ChangePassword />,
+    layout: "/admin",
+  },
+  {
+    path: "/createprofile",
+    name: "Create profile",
+    component: <CreateProfile />,
+    layout: "/admin",
+  },
+  {
+    path: "/updateprofile/:id",
+    name: "Update profile",
+    component: <UpdateProfile />,
     layout: "/admin",
   },
 
