@@ -7,7 +7,6 @@ import Recommendation from './pages/Recommendation.jsx'
 import Statistics from './pages/Statistics.jsx';
 import Reviews from './pages/reviews/Reviews.jsx';
 import Sync from './pages/sync/Sync.jsx';
-import Leaderboard from './pages/Leaderboard.jsx';
 import ProfileReviews from "./pages/reviews/ProfileReviews.jsx";
 import ViewReviews from './pages/reviews/ViewReviews.jsx';
 import UpdateReview from './pages/reviews/UpdateReview.jsx';
@@ -53,13 +52,6 @@ var routes = [
     name: "Sync",
     icon: "ni ni-cloud-download-95 text-blue",
     component: <Sync />,
-    layout: "/admin",
-  },
-  {
-    path: "/leaderboard",
-    name: "Leaderboard",
-    icon: "ni ni-trophy text-yellow",
-    component: <Leaderboard />,
     layout: "/admin",
   },
   {

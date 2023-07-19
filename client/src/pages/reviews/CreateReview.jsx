@@ -125,7 +125,7 @@ function CreateReview(props) {
   // add review to db
   const addReviewDoc = async () => {
     if (newRev.Content === "" || newRev.Poster === "") {
-      alert("All fields are mandatory.")
+      alert("Content and Rating is mandatory")
     } else { 
       const confirmed = window.confirm("Are you sure you want to Create this Review?\n"
         + "\n    Eatery: " + loc.name + "\n    Stall: " + stall.name

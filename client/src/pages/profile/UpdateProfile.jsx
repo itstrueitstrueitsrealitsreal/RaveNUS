@@ -67,7 +67,9 @@ function UpdateProfile() {
   if (oldProf.UserID !== 'not retrieved') {
     console.log('old profile retrieved');
     console.log(oldProf);
-    profileURL(oldProf.ProfPic);
+    if (oldProf.ProfPic !== "") {
+      profileURL(oldProf.ProfPic);
+    }
   }
 
   // new info states
@@ -158,7 +160,9 @@ function UpdateProfile() {
   function editAll() {
     if (newImage !== null) {
       uploadImage();
-      removeImageFirebase();
+      if (oldProf.ProfPic !== "") {
+        removeImageFirebase();
+      }
     }
     editProfile();
   }
@@ -180,7 +184,9 @@ function UpdateProfile() {
 
   function removeImage() {
     removeImageRef();
-    removeImageFirebase();
+    if (oldProf.ProfPic !== "") {
+      removeImageFirebase();
+    }
     navigateToProfile();
   }
 
@@ -211,7 +217,7 @@ function UpdateProfile() {
                 className="mx-2"
                 color="light"
                 href="#pablo"
-                onClick={(e) =>{ 
+                onClick={(e) => { 
                   e.preventDefault();
                   navigate(`/admin/profile`);
                 }}
