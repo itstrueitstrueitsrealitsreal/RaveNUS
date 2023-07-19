@@ -6,6 +6,7 @@ import { db } from "../../components/firebase";
 import { doc, getDoc, updateDoc, deleteField } from "firebase/firestore";
 import Spinner from 'react-bootstrap/Spinner';
 import img from "../../components/img/profpicheader.png";
+import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardHeader,
@@ -21,11 +22,17 @@ import {
 function Sync() {
   console.log('Sync Page called');
 
+  // page navigation
+  const navigate = useNavigate();
+
   // loading state
   const [loading, setLoading] = useState(true);
 
   // current userID
   const [uid, setUid] = useState(null);
+
+  // updating url text area
+  const [url, setURL] = useState('');
 
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
@@ -93,26 +100,6 @@ function Sync() {
         timetable: {}
       }]
   );
-
-  function getDayType(date, weekInfo) {
-    switch (weekInfo) {
-      case 'Reading':
-        return 'reading';
-      case 'Examination':
-        return 'examination';
-      case 'Orientation':
-        return 'orientation';
-      case 'Recess':
-        return 'recess';
-      case 'Vacation': {
-        const month = date.getMonth();
-        return month > 8 || month < 3 ? 'winter' : 'summer';
-      }
-      default:
-        if (isWeekend(date)) return 'weekend';
-        return 'holiday';
-    }
-  }
 
   function getLessonTypeAndSlot(lessons) {
     var lessonsArray = [];
@@ -254,7 +241,11 @@ function Sync() {
           });
       }
 
-      updateDb().then(setURL("")).catch((err) => console.log(err));
+      updateDb()
+        .then(updateDb())
+        .then(alert('Timetable updated successfully.'))
+        // .then(setURL(''))
+        .catch((err) => console.log(err));
     }
   };
 
@@ -262,7 +253,7 @@ function Sync() {
   const updateDb = async () => {
     const docRef = doc(db, 'profile', uid);
     if (url === '' || !url.includes('https://nusmods.com/timetable/')) {
-      alert('Please enter a valid URL.')
+      // alert('Please enter a valid URL.')
     } else {
       const data = {Timetable: timetableData}
       console.log('data');
@@ -272,8 +263,7 @@ function Sync() {
         })
         .then(await updateDoc(docRef, data, {merge:true}))
         .then((docRef) => {
-          alert('Timetable updated successfully.');
-
+          // console.log('Timetable updated successfully.');
         }).catch((err) => console.log(err));
     }
   }
@@ -284,13 +274,8 @@ function Sync() {
     window.open('https://nusmods.com', '_blank');
   };
 
-  // updating url text area
-  const [url, setURL] = useState('');
-
-  function handleChange(event) {
-    setURL(event.target.value);
-    console.log(event.target.value);
-    e.preventDefault();
+  if (uid !== null && url !== '') {
+    updateDb();
   }
 
   const cont = (
@@ -359,11 +344,15 @@ function Sync() {
                               type="url"
                               placeholder="Paste URL here:"
                               value={url}
-                              onChange={(e) => setURL(e.target.value)}
+                              onChange={(e) => {
+                                e.preventDefault();
+                                setURL(e.target.value);}}
                             />
                           </Form.Group>
                           <Button 
-                            onClick={syncTimetable}
+                            onClick={async (e) => {
+                              await syncTimetable();
+                            }}
                             color='success'
                             href='#pablo'
                           >

@@ -70,8 +70,8 @@ function Reviews(props) {
     }
   }
 
-  // location of eatery
-  const [eatID, setEatID] = useState(null);
+  // location of eatery, default TERRACE
+  const [eatID, setEatID] = useState("2gTaxcIzxaeoUPs9CuiE");
   const [eatIndex, setEatIndex] = useState(0);
   // location of stall
   const [stallID, setStallID] = useState(null);
@@ -167,7 +167,10 @@ function Reviews(props) {
 
                   {/* review query */}
                   <Button 
-                    onClick={() => {navigate(`/admin/vr/${eatID}/${stallID}`)}}
+                    onClick={() => {
+                      (stallID !== null && eatID !== null) ?
+                      navigate(`/admin/vr/${eatID}/${stallID}`) :
+                      alert("Please select an Eatery and a Stall before proceeding")}}
                     color='warning'
                     href='#pablo'
                     className='mt-3'

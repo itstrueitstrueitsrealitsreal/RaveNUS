@@ -119,9 +119,10 @@ const Profile = () => {
   };
 
   if (profiles.length === 1) {
-    profileURL(profiles[0].ProfPic);
+    if (profiles[0].ProfPic !== "") {
+      profileURL(profiles[0].ProfPic);
+    }
   }
-
 
 
   return profiles.length === 1 ? (
