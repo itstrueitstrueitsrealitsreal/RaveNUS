@@ -113,7 +113,6 @@ function Recommendation() {
     const venueQuery = (await getDoc(venueRef)).data();
     console.log('venueQuery');
     console.log(venueQuery);
-    console
     if (venueQuery && venueQuery.location.x && venueQuery.location.y) {
       console.log([true, venueQuery.location.y, venueQuery.location.x]);
       return [true, Number(venueQuery.location.y), Number(venueQuery.location.x)];
@@ -128,10 +127,11 @@ function Recommendation() {
       // if no timetable data, or location has no geolocation data,
       // or no lesson at that time,
       // use user location directly to generate recommendation
-      const timetableQuery = await getDoc(profileRef);
-      const timetable = timetableQuery.data().Timetable;
-      console.log('timetable:');
-      console.log(timetable);
+      var timetable;
+      if (profileExists) {
+        const timetableQuery = await getDoc(profileRef);
+        const timetable = timetableQuery.data().Timetable;
+      }
       // if timetable data exists and lesson is ongoing
       if (timetable) {
         const [isLessonOngoing, lesson] = await getLessonData(timetable);
@@ -147,8 +147,8 @@ function Recommendation() {
           }
         }
       } 
-      if (userLocation.latitude === null 
-        || userLocation.longitude === null) {
+      if (userLocation.lat === null 
+        || userLocation.lng === null) {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
