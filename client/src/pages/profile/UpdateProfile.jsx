@@ -39,7 +39,7 @@ function UpdateProfile() {
     Halal: false,
     Vegetarian: false,
     ProfPic: '',
-    UserID: '',
+    UserID: ''
   });
   const [oldProf, setOldProf] = useState({
     UserID: 'not retrieved',
@@ -124,7 +124,7 @@ function UpdateProfile() {
         Username: newProf.Username,
         Halal: newProf.Halal,
         Vegetarian: newProf.Vegetarian,
-        ProfPic: newProf.ProfPic,
+        ProfPic: newProf.ProfPic
       };
       await updateDoc(profRef, newFields);
       navigateToProfile();

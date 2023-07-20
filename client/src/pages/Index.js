@@ -7,6 +7,10 @@ import {
   Row
 } from "reactstrap";
 import { auth, authForFirebaseUI } from '../components/firebase.js';
+import {
+  collection, getDocs, getDoc, doc, updateDoc
+} from 'firebase/firestore';
+import { db } from "../components/firebase.js";
 
 const Index = () => {
   console.log('Home Page called');
@@ -48,7 +52,20 @@ const Index = () => {
               <div className="col-lg-6 mx-auto">
                 <p className="lead mb-4">-Aristophenes</p>
                 <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                  <Button className="" type='button' color="warning" onClick={navigateToRecommmendation}>Generate Recommendation</Button>
+                  <Button className="" type='button' color="warning" 
+                      onClick={ async (e) => {
+                        e.preventDefault();
+                        const ref = doc(db, 'profile', uid);
+                        const document = await getDoc(ref);
+                        if (document.exists()) {
+                          const p = document.data().NoOfRec;
+                          var newfields = {
+                              NoOfRec: p + 1,
+                            };
+                          await updateDoc(ref, newfields, {merge:true});
+                        }
+                        navigateToRecommmendation();
+                      }}>Generate Recommendation</Button>
                 </div>
               </div>
             </div>
