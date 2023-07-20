@@ -85,7 +85,7 @@
   "bugs": {
     "url": "https://github.com/edmundnwl/RaveNUS/issues"
   },
-  "homepage": ".",
+  "homepage": "./",
   "devDependencies": {
     "@iconify/icons-mdi": "^1.2.46",
     "node-sass": "^7.0.3"
