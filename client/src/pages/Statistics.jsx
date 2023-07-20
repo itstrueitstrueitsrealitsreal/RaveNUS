@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import img from "../components/img/profpicheader.png";
+import img from "../components/public/profpicheader.png";
 import Rating from '@mui/material/Rating';
 import {
   Card,
