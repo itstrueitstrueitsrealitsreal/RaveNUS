@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import img from "../components/img/profpicheader.png";
+import Rating from '@mui/material/Rating';
 import {
   Card,
   CardHeader,
@@ -10,6 +11,7 @@ import {
   Row,
   Col,
   Button,
+  ListGroupItemHeading,
 } from "reactstrap";
 import { useNavigate } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
@@ -117,7 +119,8 @@ function Statistics() {
           <Row>
             <Col lg="7" md="10">
               <h1 className="display-2 text-white mb-0 ml-2">Statistics</h1>
-              <p className="text-white mt-0 mb-2 ml-2">
+              <p className="text-white mt-0 mb-2 ml-2 text-nowrap">
+                View your usage statistics here!
               </p>
             </Col>
           </Row>
@@ -129,12 +132,26 @@ function Statistics() {
           <div className="col ">
             <Card className="shadow">
               <CardHeader className="bg-transparent">
-                <h2 className="mb-0 h2">Your Statistics</h2>
+                <h2 className="mb-0 h2">Your statistics:</h2>
               </CardHeader>
               <CardBody>
-                <h3>Number of Recommendations Generated: {noRecs === null ? "NIL" : noRecs}</h3>
-                <h3>Number of Reviews: {noRevs}</h3>
-                <h3>Average Review Rating: {avgRating === null ? "NIL" : avgRating}</h3>
+                <Row>
+                  <Col>
+                    <ListGroup flush>
+                      <ListGroupItem>
+                        Number of recommendations generated: {noRecs === null ? "NIL" : noRecs}
+                      </ListGroupItem>
+                      <ListGroupItem>
+                        Number of reviews: {noRevs}
+                      </ListGroupItem>
+                      <ListGroupItem>
+                        Average review rating: 
+                        <br />
+                        {avgRating === null ? "NIL" : <Rating className="mt-0" name="read-only" value={avgRating} max={5} readOnly />}
+                      </ListGroupItem>
+                    </ListGroup>
+                  </Col>
+                </Row>
               </CardBody>
             </Card>
           </div>
@@ -147,8 +164,7 @@ function Statistics() {
       <Container fluid>
         <Row>
           <div className="px-4 py-5 my-5 text-center">
-            <h1 className="display-5 fw-bold text-body-emphasis">Sorry!</h1>
-            <h1 className="display-5 fw-bold text-body-emphasis">Create a profile to track and view your Statistics</h1>
+            <h1 className="display-5 fw-bold text-body-emphasis">Create a profile to track and view your statistics.</h1>
             <div className="col-lg-6 mx-auto">
               <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
                 <Button className="mt-5" type='button' color='success' onClick={(e) => {
