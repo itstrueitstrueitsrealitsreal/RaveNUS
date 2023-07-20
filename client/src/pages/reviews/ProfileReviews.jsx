@@ -5,7 +5,6 @@ import Review from "../../components/Review";
 import Spinner from 'react-bootstrap/Spinner';
 import { deleteObject, ref } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-import img from "../../components/public/profpicheader.png";
 import {
   Card,
   CardHeader,
@@ -125,7 +124,7 @@ function ProfileReviews(props) {
           style={{
             minHeight: "600px",
             backgroundImage:
-              "url(" + img + ")",
+              "url(" + "../../assets/img/profpicheader.png" + ")",
             backgroundSize: "cover",
             backgroundPosition: "center top",
           }}

@@ -8,7 +8,6 @@ import Rating from '@mui/material/Rating';
 import { v4 } from "uuid";
 import Input from "../../components/Input";
 import { ref, uploadBytes } from "firebase/storage";
-import img from "../../components/public/profpicheader.png";
 import {
   Card,
   CardHeader,
@@ -192,7 +191,7 @@ function CreateReview(props) {
         style={{
           minHeight: "600px",
           backgroundImage:
-            "url(" + img + ")",
+            "url(" + "../../assets/img/profpicheader.png" + ")",
           backgroundSize: "cover",
           backgroundPosition: "center top",
         }}
