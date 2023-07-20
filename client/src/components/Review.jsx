@@ -76,7 +76,7 @@ function Review(props) {
             { props.viewerUID === props.uid ? (props.recPage === true
               ? (
                 <Button onClick={() => {
-                  const confirmed = window.confirm('Update this Review?\nYou will be redirected to your Reviews Page');
+                  const confirmed = window.confirm('Update this review?\nYou will be redirected to your reviews page.');
                   if (confirmed) {
                     navigate(props.updateRev)
                   }}}>Edit/Update
