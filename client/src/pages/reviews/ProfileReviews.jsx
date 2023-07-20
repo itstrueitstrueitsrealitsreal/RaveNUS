@@ -5,7 +5,7 @@ import Review from "../../components/Review";
 import Spinner from 'react-bootstrap/Spinner';
 import { deleteObject, ref } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-import img from "../../components/img/profpicheader.png";
+import img from "../../components/public/profpicheader.png";
 import {
   Card,
   CardHeader,

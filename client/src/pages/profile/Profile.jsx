@@ -5,10 +5,10 @@ import { db, storage, auth } from "../../components/firebase";
 import { collection, getDocs, getDoc, doc, updateDoc, setDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage";
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import defaultImg from '../../components/img/defaultprofile.png'
+import defaultImg from '../../components/public/defaultprofile.png'
 import { v4 } from 'uuid';
 import 'firebase/compat/firestore';
-import img from '../../components/img/profpicheader.png'
+import img from '../../components/public/profpicheader.png'
 // reactstrap components
 import {
   Button,
