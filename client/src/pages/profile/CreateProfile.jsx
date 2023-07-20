@@ -39,6 +39,7 @@ function CreateProfile() {
     Halal: false,
     Vegetarian: false,
     ProfPic: '',
+    NoOfRec: 0
   });
 
   // new info states
@@ -121,6 +122,7 @@ function CreateProfile() {
           Username: '',
           Halal: false,
           Vegetarian: false,
+          NoOfRec: 0
         });
         navigateToProfile();
       }

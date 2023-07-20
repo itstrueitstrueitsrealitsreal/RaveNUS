@@ -3,7 +3,7 @@ import Rec from '../components/Rec';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { db } from '../components/firebase';
 import {
-  collection, getDocs, getDoc, doc
+  collection, getDocs, getDoc, doc, updateDoc
 } from 'firebase/firestore';
 // for geopoint queries
 import firebase from 'firebase/compat/app';
@@ -59,7 +59,7 @@ function Recommendation() {
   const [profileExists, setProfileExists] = useState(false);
 
   const profileRef = doc(db, 'profile', uid);
-
+  const [p, setP] = useState(null);
   const checkProfile = async (userID) => {
     try {
       console.log(`checking if ${uid}'s profile exists...`);
@@ -67,6 +67,7 @@ function Recommendation() {
       if (documentSnapshot.exists()) {
         console.log(`${uid}'s profile exists`);
         setProfileExists(true);
+        // setP(documentSnapshot.data());
       } else {
         console.log(`${uid}'s profile does not exist`);
       }
@@ -75,7 +76,9 @@ function Recommendation() {
     }
   }
   if (uid !== null) {
-    checkProfile(uid);
+    if (isLoading === true) {
+      checkProfile(uid);
+    }
   }
   // use this for testing
   const today = new Date('2023-08-31T15:24:00');
@@ -130,6 +133,7 @@ function Recommendation() {
       var timetable;
       if (profileExists) {
         const timetableQuery = await getDoc(profileRef);
+        setP(timetableQuery.data());
         const timetable = timetableQuery.data().Timetable;
       }
       // if timetable data exists and lesson is ongoing
@@ -444,10 +448,8 @@ function Recommendation() {
       </Container>
       <Row>
         <div className="col text-center m-4">
-            <Rec stall={recStall} recPage={(e) => {
-              e.preventDefault();
-              window.location.reload();
-            }} revs={revs} limit={limit} viewerUID={uid} />
+            <Rec stall={recStall} 
+            profile={p} profRef={profileRef} revs={revs} limit={limit} viewerUID={uid} />
         </div>
       </Row>
     </>

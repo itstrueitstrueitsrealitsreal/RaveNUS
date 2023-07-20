@@ -13,6 +13,10 @@ import {
   Col,
   Button
 } from "reactstrap";
+import { db } from '../components/firebase';
+import {
+  collection, getDocs, getDoc, doc, updateDoc
+} from 'firebase/firestore';
 
 function Rec(props) {
   console.log('Rec Component called');
@@ -46,11 +50,18 @@ function Rec(props) {
                         <Button
                           color='warning'
                           href='#pablo'
-                          onClick={(e) => {
+                          onClick={async (e) => {
                             e.preventDefault();
+                            const doc = await getDoc(props.profRef);
+                            if (doc.exists()) {
+                              const p = doc.data().NoOfRec;
+                              var newfields = {
+                                  NoOfRec: p + 1,
+                                };
+                              await updateDoc(props.profRef, newfields, {merge:true});
+                            }
                             window.location.reload();
-                          }
-                          } 
+                          }} 
                         >
                           Generate another recommendation
                         </Button>
