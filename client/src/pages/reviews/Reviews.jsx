@@ -5,7 +5,7 @@ import { db } from "../../components/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import Spinner from 'react-bootstrap/Spinner';
-import img from "../../components/public/profpicheader.png";
+import img from "../../assets/img/profpicheader.png";
 import {
   Card,
   CardHeader,

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import "./assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -13,12 +13,12 @@ import AuthLayout from "./layouts/Auth.js";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter className="App">
+  <Router basename="/" className="App">
     <Routes>
       <Route path="/admin/*" element={<AdminLayout />} />
       <Route path="/auth/*" element={<AuthLayout />} />
-      {/* Redirect to login page if not logged in */}
+      {/* Redirect to login page if 404 */}
       <Route path="*" element={<Navigate to="/auth/login" replace />} />
     </Routes>
-  </BrowserRouter>
+  </Router>
 );

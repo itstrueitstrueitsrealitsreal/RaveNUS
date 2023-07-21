@@ -5,7 +5,7 @@ import { auth, authForFirebaseUI } from "../../components/firebase";
 import { db } from "../../components/firebase";
 import { doc, getDoc, updateDoc, deleteField } from "firebase/firestore";
 import Spinner from 'react-bootstrap/Spinner';
-import img from "../../components/public/profpicheader.png";
+import img from "../../assets/img/profpicheader.png";
 import { useNavigate } from 'react-router-dom';
 import {
   Card,
@@ -333,7 +333,7 @@ function Sync() {
                         <ListGroupItem>
                           2. Click the Share/Sync button on the bottom right of the timetable as shown below.
                           <br />
-                          <img className="my-3 rounded img-fluid" src={require('../../components/public/nusmods_screenshot.png')} alt="screenshot of sync button" />
+                          <img className="my-3 rounded img-fluid" src={require('../../assets/img/nusmods_screenshot.png')} alt="screenshot of sync button" />
                         </ListGroupItem>
                         <ListGroupItem>
                           3. Copy and paste the URL into the box below!

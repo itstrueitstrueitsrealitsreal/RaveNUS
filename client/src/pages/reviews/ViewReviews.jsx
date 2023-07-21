@@ -15,7 +15,7 @@ import {
   Col,
   Button,
 } from "reactstrap";
-import img from "../../components/public/profpicheader.png";
+import img from "../../assets/img/profpicheader.png";
 
 function ViewReviews(props) {
   console.log("View Reviews Page called");

@@ -18,7 +18,8 @@ import {
   FormText,
   Card
 } from "reactstrap";
-import img from '../../components/public/profpicheader.png'
+import img from "../../assets/img/profpicheader.png";
+
 
 function CreateProfile() {
   console.log('Create Profile page');

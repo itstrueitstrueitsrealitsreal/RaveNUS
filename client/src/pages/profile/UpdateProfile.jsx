@@ -7,8 +7,8 @@ import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage
 import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
 import { v4 } from "uuid";
 import Input from "../../components/Input";
-import img from '../../components/public/profpicheader.png'
-import defaultImg from '../../components/public/defaultprofile.png'
+import img from "../../assets/img/profpicheader.png";
+import defaultImg from '../../assets/img/defaultprofile.png'
 import {
   Button,
   CardHeader,
