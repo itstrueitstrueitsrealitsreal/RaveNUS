@@ -15,11 +15,8 @@ import { db } from "../components/firebase.js";
 const Index = () => {
   console.log('Home Page called');
 
-  // page navigation
-  const navigate = useNavigate();
-
   const navigateToRecommmendation = () => {
-    navigate(`/admin/recommendation/${uid}`);
+    useNavigate(`/admin/recommendation/${uid}`);
   }
 
   // current userID
@@ -33,12 +30,12 @@ const Index = () => {
   });
 
   // Current Time
-  const now = new Date().toLocaleTimeString();
+  const now = new Date().toLocaleTimeString([], { hour12: false });
   const [time, setTime] = useState(now);
   setInterval(updateTime, 1000);
 
   function updateTime() {
-    setTime(new Date().toLocaleTimeString());
+    setTime(new Date().toLocaleTimeString([], { hour12: false }));
   }
 
   const quotes = [
@@ -120,10 +117,10 @@ const Index = () => {
         <Container className="mt-7" fluid>
           <Row>
             <div className="px-4 py-5 my-5 text-center">
-              <h1 className="display-5 fw-bold text-body-emphasis">{time}</h1>
-              <h1 className="display-5 fw-bold text-body-emphasis">"{quote.quote}"</h1>
+              <h1 className="display-5 fw-bold text-body-emphasis" data-testid='time'>{time}</h1>
+              <h1 className="display-5 fw-bold text-body-emphasis" data-testid='quote'>"{quote.quote}"</h1>
               <div className="col-lg-6 mx-auto">
-              <p className="lead mb-4">-{quote.person}</p>
+              <p className="lead mb-4" data-testid='person'>-{quote.person}</p>
                 <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
                   <Button className="" type='button' color="warning" 
                       onClick={ async (e) => {

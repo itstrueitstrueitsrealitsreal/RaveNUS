@@ -354,7 +354,6 @@ function Sync() {
                               await syncTimetable();
                             }}
                             color='success'
-                            href='#pablo'
                           >
                             Sync
                           </Button>
